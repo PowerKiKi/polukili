@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<app version="1">
+	<name>Box2D Balls</name>
+	<coder>0xtob</coder>
+	<version>1.0</version>
+	<short_description>Physics for the Wii!</short_description> 
+	<long_description>Box2D + Wiimote = Fun!
+
+Press A to create Balls
+Hold B and tilt the Wiimote to adjust gravity
+Press 1 to clear the screen
+
+Thanks to Erin Catto for Box2D!
+Also thanks to the authors of libwiisprite, wiiuse and libogc!
+And of course thanks to team twiizers who made Wii homebrew possible!</long_description> 
+</app>
+

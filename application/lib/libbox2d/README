@@ -1,0 +1,11 @@
+Overview:
+  This is a box2d port for the wii.  Box2d is an easy to use 2D physics library.
+
+Install:
+  Copy the contents of libbox2d to your libogc/ folder
+
+Useage:
+  See 0xtob's included Box2d Test program for useage with libwiisprite.
+
+Documentation:
+  www.box2d.org
