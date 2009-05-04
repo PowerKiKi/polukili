@@ -1,13 +1,13 @@
+#include <Ennemies/EnnemyGenerator.h>
 
-
-#include <EnnemyGenerator.h>
+#include <level.h>
 
 namespace Polukili 
 {
    namespace Ennemies 
    {
       /*************************************************/
-      EnnemyGenerator::(Level* level)
+      EnnemyGenerator::EnnemyGenerator(Level* level)
          : Ennemy(level)
       {
       }

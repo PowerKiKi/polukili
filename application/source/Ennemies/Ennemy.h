@@ -20,6 +20,8 @@ namespace Polukili
          **/
          Ennemy(Level* level);
          
+         virtual void initPhysic();
+         
          // Operations
       public:
 

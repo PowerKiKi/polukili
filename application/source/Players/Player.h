@@ -27,8 +27,6 @@ namespace Polukili
       * Initialize physic data
       */
       virtual void initPhysic();
-      
-      virtual void loadGraphics();
 
 
          //end of class Player

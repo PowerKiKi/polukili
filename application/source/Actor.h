@@ -34,9 +34,9 @@ namespace Polukili
       virtual void render();
 
       /** 
-      *  Load graphics data (wsp::Image) for the actor. In most cases the same Image will be loaded once for all instance of a specific class. So a static wsp::Image shall be used.
+      *  Load graphics data (wsp::Image) for the actor. In most cases the same Image will be loaded once for all instance of a specific class.
       */
-      virtual void loadGraphics()  = 0;
+      virtual void loadGraphics();
 
       /** 
       *  Returns if the actor is draggable using the wiimote. This will be true for Point'n'click actors.

@@ -5,6 +5,7 @@
 #include <stack>
 
 #include <Level.h>
+#include <ImageLibrary.h>
 
 namespace Polukili 
 {
@@ -31,6 +32,8 @@ namespace Polukili
       // Attributes
    public:
       std::stack< Level* > levels;
+      
+      ImageLibrary imageLibrary;
 
       //end of class Game
    };

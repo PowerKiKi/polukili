@@ -2,12 +2,18 @@
 #define polukili_Level_h_73616512_59b7_4686_b077_24fbdae36d1e
 
 #include <list>
+
 #include <Box2D.h>
 
 #include <Actor.h>
 
+using namespace std;
+
 namespace Polukili 
 {
+   class Game;
+   class Actor;
+   
    namespace Players 
    {
       class Player;
@@ -24,10 +30,6 @@ namespace Polukili
    {
       class Bullet;
    }
-}
-
-namespace Polukili 
-{
 
    /** 
    *  Represents a level, its ennemies and everything needed.
@@ -37,7 +39,7 @@ namespace Polukili
 
       // Operations
    public:
-      Level();
+      Level(Game* game);
       
       /** 
       *  Load level data from XML file.
@@ -61,11 +63,15 @@ namespace Polukili
 
       // Attributes
    public:
+      std::list< Actor* > actors;
       std::list< Players::Player* > players;
       std::list< Ennemies::Ennemy* > ennemies;
       std::list< Bullets::Bullet* > bullets;
       std::list< Pets::Pet* > pets;
       b2World* world;
+      
+   private: 
+      Game* game;
 
    };
 

@@ -11,12 +11,14 @@
 #include <Players/Lila.h>
 #include <Ennemies/Bee.h>
 #include <Ennemies/Spider.h>
+#include <Ennemies/Earthworm.h>
+
 
 namespace Polukili 
 {
    /*************************************************/
-   Level::Level()
-   : Actor(this), world(0)
+   Level::Level(Game* game)
+   : Actor(this), world(0), game(game)
    {
       // Nothing do to here
    }

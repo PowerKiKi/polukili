@@ -20,6 +20,12 @@ namespace Polukili
          return false;
       }
 
+      /*************************************************/
+      void Ennemy::initPhysic()
+      {
+        // TODO: should do something here
+      }
+      
    } /* End of namespace Polukili::Ennemies */
 } /* End of namespace Polukili */
 

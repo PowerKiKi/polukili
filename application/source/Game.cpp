@@ -21,7 +21,7 @@ namespace Polukili
    /*************************************************/
    void Game::changeLevel(const char* newLevelPath)
    {
-      Level* level = new Level();
+      Level* level = new Level(this);
       level->loadFromXML(newLevelPath);
       
       // Unload previous level graphics if any

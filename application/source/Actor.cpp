@@ -26,6 +26,12 @@ namespace Polukili
    }
 
    /*************************************************/
+   void Actor::loadGraphics()
+   {
+      
+   }
+
+   /*************************************************/
    void Actor::unloadGraphics()
    {
 

@@ -19,12 +19,6 @@ namespace Polukili
         // TODO: should do something here
       }
       
-      /*************************************************/
-      void Player::loadGraphics()
-      {
-        // TODO: should do something here
-      }
-      
    } /* End of namespace Polukili::Players */
 } /* End of namespace Polukili */
 
