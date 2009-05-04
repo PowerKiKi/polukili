@@ -10,6 +10,13 @@ namespace Polukili
 
       class EnnemyGenerator : public Ennemy
       {
+         public:
+         
+         /**
+         * Constructor
+         **/
+         EnnemyGenerator(Level* level);
+         
 
          // Attributes
       public:

@@ -10,6 +10,13 @@ namespace Polukili
 
       class Bee : public Ennemy
       {
+         public:
+         
+         /**
+         * Constructor
+         **/
+         Bee(Level* level);
+         
          //end of class Bee
       };
 

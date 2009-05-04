@@ -10,6 +10,13 @@ namespace Polukili
 
       class Kiki : public Player
       {
+         public:
+         
+         /**
+         * Constructor
+         **/
+         Kiki(Level* level);
+         
          //end of class Kiki
       };
 

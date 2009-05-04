@@ -10,6 +10,13 @@ namespace Polukili
 
       class Luna : public Player
       {
+         public:
+         
+         /**
+         * Constructor
+         **/
+         Luna(Level* level);
+         
          //end of class Luna
       };
 

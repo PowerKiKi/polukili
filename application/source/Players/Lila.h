@@ -10,6 +10,13 @@ namespace Polukili
 
       class Lila : public Player
       {
+         public:
+         
+         /**
+         * Constructor
+         **/
+         Lila(Level* level);
+         
          //end of class Lila
       };
 

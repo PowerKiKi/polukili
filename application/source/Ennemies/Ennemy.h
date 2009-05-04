@@ -13,7 +13,13 @@ namespace Polukili
       */
       class Ennemy : public Polukili::Actor
       {
-
+         public:
+         
+         /**
+         * Constructor
+         **/
+         Ennemy(Level* level);
+         
          // Operations
       public:
 

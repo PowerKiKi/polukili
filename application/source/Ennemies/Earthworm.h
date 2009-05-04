@@ -10,6 +10,13 @@ namespace Polukili
 
       class Earthworm : public Ennemy
       {
+         public:
+         
+         /**
+         * Constructor
+         **/
+         Earthworm(Level* level);
+         
          //end of class Earthworm
       };
 

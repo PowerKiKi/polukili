@@ -6,6 +6,11 @@ namespace Polukili
 {
    namespace Ennemies 
    {
+      /*************************************************/
+      Earthworm::Earthworm(Level* level)
+         : Ennemy(level)
+      {
+      }
 
    } /* End of namespace Polukili::Ennemies */
 } /* End of namespace Polukili */

@@ -91,23 +91,23 @@ namespace Polukili
       
          const char* type = mxmlElementGetAttr(data, "type");
          
+         // Players
          if (strcmp(type, "poupa") == 0)
-            actor = new Players::Poupa(this);/*
+            actor = new Players::Poupa(this);
          else if (strcmp(type, "luna") == 0)
-            actor = new Players::Luna();
+            actor = new Players::Luna(this);
          else if (strcmp(type, "kiki") == 0)
-            actor = new Players::Kiki();
+            actor = new Players::Kiki(this);
          else if (strcmp(type, "lila") == 0)
-            actor = new Players::Lila();
+            actor = new Players::Lila(this);
             
+         // Ennemies
          else if (strcmp(type, "bee") == 0)
-            actor = new Ennemies::Bee();
+            actor = new Ennemies::Bee(this);
          else if (strcmp(type, "spider") == 0)
-            actor = new Ennemies::Spider();
-         else if (strcmp(type, "bee") == 0)
-            actor = new Ennemies::Bee();
-         else if (strcmp(type, "bee") == 0)
-            actor = new Ennemies::Bee();*/
+            actor = new Ennemies::Spider(this);
+         else if (strcmp(type, "earthworm") == 0)
+            actor = new Ennemies::Earthworm(this);
                   
          
          (mxmlElementGetAttr(data, "isTarget"));

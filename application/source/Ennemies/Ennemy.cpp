@@ -6,8 +6,11 @@ namespace Polukili
 {
    namespace Ennemies 
    {
-
-      // Operations
+      /*************************************************/
+      Ennemy::Ennemy(Level* level)
+         : Actor(level)
+      {
+      }
 
       /** 
       *  Returns wether the ennemy must be destroyed to complete the level. It should always be true for boss.

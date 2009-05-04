@@ -10,6 +10,13 @@ namespace Polukili
 
       class Spider : public Ennemy
       {
+         public:
+         
+         /**
+         * Constructor
+         **/
+         Spider(Level* level);
+         
          //end of class Spider
       };
 
