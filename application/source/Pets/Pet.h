@@ -1,7 +1,7 @@
 #ifndef polukili_Pets_Pet_h_d713f2ef_f972_4a9d_8e7a_cd74affb1f10
 #define polukili_Pets_Pet_h_d713f2ef_f972_4a9d_8e7a_cd74affb1f10
 
-#include <Polukili/Actor.h>
+#include <Actor.h>
 
 namespace Polukili 
 {

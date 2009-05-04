@@ -1,7 +1,7 @@
 #ifndef polukili_Items_Item_h_0746e841_ca0d_4c34_b8a6_7932fc127309
 #define polukili_Items_Item_h_0746e841_ca0d_4c34_b8a6_7932fc127309
 
-#include <Polukili/Actor.h>
+#include <Actor.h>
 
 namespace Polukili 
 {

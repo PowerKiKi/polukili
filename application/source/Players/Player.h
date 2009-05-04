@@ -1,11 +1,10 @@
 #ifndef polukili_Players_Player_h_08f5452b_7458_424a_adf0_33de30429ebb
 #define polukili_Players_Player_h_08f5452b_7458_424a_adf0_33de30429ebb
 
+#include <Actor.h>
 
 namespace Polukili 
-{
-   class Actor;
-   
+{   
    namespace Players 
    {
 

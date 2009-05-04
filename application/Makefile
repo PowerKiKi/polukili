@@ -22,7 +22,7 @@ include $(DEVKITPPC)/wii_rules
 #---------------------------------------------------------------------------------
 TARGET		:=	$(notdir $(CURDIR))
 BUILD		:=	build
-SOURCES		:=	source
+SOURCES		:=	source source/Bullets source/Ennemies source/Items source/Pets source/Players
 DATA		:=
 TEXTURES	:=	textures
 INCLUDES	:=	source

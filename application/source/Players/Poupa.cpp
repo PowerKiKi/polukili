@@ -2,7 +2,6 @@
 
 #include <level.h>
 
-
 namespace Polukili 
 {
    namespace Players 
