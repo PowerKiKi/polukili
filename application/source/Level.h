@@ -39,8 +39,16 @@ namespace Polukili
 
       // Operations
    public:
+   
+      /** 
+      * Constructor.
+      */
       Level(Game* game);
       
+      /** 
+      * Destructor.
+      */
+      ~Level();
       /** 
       *  Load level data from XML file.
       */

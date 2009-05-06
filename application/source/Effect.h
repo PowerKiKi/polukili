@@ -7,7 +7,8 @@ namespace Polukili
 {
 
    /** 
-   *   It basically add a semi-transparent animated sprite over the actor's sprite to display effect.
+   * It basically add a semi-transparent animated sprite over the 
+   * actor's sprite to display effect such as explosion or frozen
    */
    class Effect
    {

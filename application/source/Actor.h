@@ -27,6 +27,11 @@ namespace Polukili
       * Constructor
       */
       Actor(Level* level);
+      
+      /**
+      * Destructor
+      */
+      virtual ~Actor();
 
       /** 
       *  Render the actor on screen according to current physic data and loaded sprite. Also render special effects if needed.

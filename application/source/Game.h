@@ -19,6 +19,16 @@ namespace Polukili
    public: 
    
    /**
+   * Constructor.
+   */
+   Game();
+   
+   /**
+   * Desstructor.
+   */
+   virtual ~Game();
+   
+   /**
    * Run the specified level. The path must point to the XML file description of the level.
    */
    void run(const char* initialLevel);
@@ -31,9 +41,11 @@ namespace Polukili
 
       // Attributes
    public:
-      std::stack< Level* > levels;
       
       ImageLibrary imageLibrary;
+      
+   private:
+      std::stack< Level* > levels;
 
       //end of class Game
    };

@@ -22,6 +22,13 @@ namespace Polukili
    {
       // Nothing do to here
    }
+   
+   /*************************************************/
+   Level::~Level()
+   {
+      while (!this->actors.empty())
+         delete this->actors.front();
+   }
 
    /*************************************************/
    void Level::loadFromXML(const char* filename)

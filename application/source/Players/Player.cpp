@@ -1,6 +1,6 @@
-
-
 #include <Players/Player.h>
+
+#include <Level.h>
 
 namespace Polukili 
 {
@@ -11,7 +11,15 @@ namespace Polukili
       Player::Player(Level* level)
          : Actor(level)
       {
+         this->level->players.push_back(this);
       }
+      
+      /*************************************************/
+      Player::~Player()
+      {
+         this->level->players.remove(this);
+      }
+
       
       /*************************************************/
       void Player::initPhysic()

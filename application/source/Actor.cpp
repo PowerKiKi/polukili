@@ -1,6 +1,6 @@
-
-
 #include <Actor.h>
+
+#include <Level.h>
 
 namespace Polukili 
 {
@@ -11,6 +11,13 @@ namespace Polukili
    Actor::Actor(Level* level)
    {
       this->level = level;
+      this->level->actors.push_back(this);
+   }
+   
+   /*************************************************/
+   Actor::~Actor()
+   {
+      this->level->actors.remove(this);
    }
 
    /*************************************************/

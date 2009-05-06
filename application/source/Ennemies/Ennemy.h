@@ -20,6 +20,11 @@ namespace Polukili
          **/
          Ennemy(Level* level);
          
+         /**
+         * Destructor
+         */
+         virtual ~Ennemy();
+         
          virtual void initPhysic();
          
          // Operations

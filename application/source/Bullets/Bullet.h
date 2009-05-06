@@ -13,9 +13,17 @@ namespace Polukili
       */
       class Bullet : public Polukili::Actor
       {
-
-         // Operations
       public:
+         
+         /**
+         * Constructor
+         **/
+         Bullet(Level* level);
+         
+         /**
+         * Destructor
+         */
+         virtual ~Bullet();
 
          virtual int attack(Polukili::Actor &actor);
 

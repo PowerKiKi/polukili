@@ -13,6 +13,15 @@ namespace Polukili
       // Nothing to do here
    }
    
+   /*************************************************/
+   ImageLibrary::~ImageLibrary()
+   {      
+      for (map<string, wsp::Image*>::iterator it = this->images.begin(); it != this->images.end(); it++)
+         delete it->second;
+      this->images.clear();
+   }
+   
+   /*************************************************/
    wsp::Image* ImageLibrary::get(const char* filename)
    {
       map<string, wsp::Image*>::iterator it = this->images.find(filename);
@@ -30,7 +39,7 @@ namespace Polukili
       return image;
    }
    
-   
+   /*************************************************/
    void ImageLibrary::remove(const char* filename)
    {
       map<string, wsp::Image*>::iterator it = this->images.find(filename);

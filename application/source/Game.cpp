@@ -8,13 +8,29 @@ namespace Polukili
 {
 
    /*************************************************/
+   Game::Game()
+   {
+      // TODO initiliaze libs and everything
+   }
+   
+   /*************************************************/
+   Game::~Game()
+   {
+      while (!this->levels.empty())
+      {
+         delete this->levels.top();
+         this->levels.pop();
+      }
+   }
+   
+   /*************************************************/
    void Game::run(const char* initialLevel)
    {
       this->changeLevel(initialLevel);
       
       while (!this->levels.empty())
       {
-      
+         // TODO game logic goes here
       }
    }
    

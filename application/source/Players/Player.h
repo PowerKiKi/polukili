@@ -13,20 +13,23 @@ namespace Polukili
       */
       class Player : public Actor
       {
-
-         // Associations
       public:
-      
-      /**
-      * Constructor.
-      */
-      Player(Level* level);
-      
+         
+         /**
+         * Constructor.
+         */
+         Player(Level* level);
+         
+         /**
+         * Destructor
+         */
+         virtual ~Player();
+         
 
-      /**
-      * Initialize physic data
-      */
-      virtual void initPhysic();
+         /**
+         * Initialize physic data
+         */
+         virtual void initPhysic();
 
 
          //end of class Player

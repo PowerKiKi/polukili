@@ -1,6 +1,6 @@
-
-
 #include <Ennemies/Ennemy.h>
+
+#include <Level.h>
 
 namespace Polukili 
 {
@@ -10,7 +10,15 @@ namespace Polukili
       Ennemy::Ennemy(Level* level)
          : Actor(level)
       {
+         this->level->ennemies.push_back(this);
       }
+      
+      /*************************************************/
+      Ennemy::~Ennemy()
+      {
+         this->level->ennemies.remove(this);
+      }
+
 
       /** 
       *  Returns wether the ennemy must be destroyed to complete the level. It should always be true for boss.

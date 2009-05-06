@@ -13,6 +13,17 @@ namespace Polukili
       */
       class Pet : public Polukili::Actor
       {
+         
+         /**
+         * Constructor
+         **/
+         Pet(Level* level);
+         
+         /**
+         * Destructor
+         */
+         virtual ~Pet();
+      
          //end of class Pet
       };
 
