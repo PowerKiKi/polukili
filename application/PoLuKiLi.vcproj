@@ -329,11 +329,19 @@
 			>
 		</File>
 		<File
+			RelativePath=".\source\ActorState.h"
+			>
+		</File>
+		<File
 			RelativePath=".\source\Effect.cpp"
 			>
 		</File>
 		<File
 			RelativePath=".\source\Effect.h"
+			>
+		</File>
+		<File
+			RelativePath=".\source\Element.h"
 			>
 		</File>
 		<File
@@ -350,6 +358,10 @@
 		</File>
 		<File
 			RelativePath=".\source\Level.h"
+			>
+		</File>
+		<File
+			RelativePath=".\source\main.cpp"
 			>
 		</File>
 		<File

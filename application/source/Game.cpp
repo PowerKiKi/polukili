@@ -9,6 +9,6 @@ namespace Polukili
    *  The game engine. It loads and "plays" levels.
    */
 
-   {
-   } /* End of namespace Polukili */
+
+} /* End of namespace Polukili */
 

@@ -1,6 +1,9 @@
 #ifndef polukili_Game_h_0f2f4ee3_873c_48e0_afcf_deae99ae06dc
 #define polukili_Game_h_0f2f4ee3_873c_48e0_afcf_deae99ae06dc
 
+
+#include <list>
+
 #include "Level.h"
 
 namespace Polukili 
@@ -14,7 +17,7 @@ namespace Polukili
 
       // Attributes
    public:
-      Level levels;
+      std::list< Level* > levels;
 
       //end of class Game
    };

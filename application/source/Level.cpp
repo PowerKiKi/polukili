@@ -5,21 +5,15 @@
 namespace Polukili 
 {
 
-   /** 
-   *  Represents a level, its ennemies and everything needed.
-   */
+   // Operations
 
+   /** 
+   *  Load level data from XML file.
+   */
+   void Level::loadFromXML(const char* filename)
    {
 
-      // Operations
+   }
 
-      /** 
-      *  Load level data from XML file.
-      */
-      void Level::loadFromXML(String filename)
-      {
-
-      }
-
-   } /* End of namespace Polukili */
+} /* End of namespace Polukili */
 

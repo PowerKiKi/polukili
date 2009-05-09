@@ -7,7 +7,7 @@ namespace Polukili
    namespace Pets 
    {
 
-      {
-      } /* End of namespace polukili::Pets */
-   } /* End of namespace Polukili */
+   
+   } /* End of namespace polukili::Pets */
+} /* End of namespace Polukili */
 

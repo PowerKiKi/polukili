@@ -1,7 +1,7 @@
 #ifndef polukili_Level_h_73616512_59b7_4686_b077_24fbdae36d1e
 #define polukili_Level_h_73616512_59b7_4686_b077_24fbdae36d1e
 
-#include <vector>
+#include <list>
 
 #include "Actor.h"
 
@@ -10,8 +10,20 @@ namespace Polukili
    namespace Players 
    {
       class Player;
-   } /* End of namespace polukili::Players */
-} /* End of namespace Polukili */
+   }
+   namespace Pets 
+   {
+      class Pet;
+   }
+   namespace Ennemies
+   {
+      class Ennemy;
+   }
+   namespace Bullets 
+   {
+      class Bullet;
+   }
+}
 
 namespace Polukili 
 {
@@ -28,24 +40,15 @@ namespace Polukili
       /** 
       *  Load level data from XML file.
       */
-      virtual void loadFromXML(String filename);
+      virtual void loadFromXML(const char* filename);
 
       // Attributes
    public:
-      int players;
-      int ennemies;
-      int bullets;
-      int pets;
+      std::list< Players::Player* > players;
+      std::list< Ennemies::Ennemy* > ennemies;
+      std::list< Bullets::Bullet* > bullets;
+      std::list< Pets::Pet* > pets;
 
-      // Associations
-   public:
-
-      /**
-      * @element-type Player
-      */
-      std::vector< Players::Player* > myPlayer;
-
-      //end of class Level
    };
 
 } /* End of namespace Polukili */

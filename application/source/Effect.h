@@ -1,7 +1,7 @@
 #ifndef polukili_Effect_h_897eab33_e849_46f9_97c7_88a8d43bd9ca
 #define polukili_Effect_h_897eab33_e849_46f9_97c7_88a8d43bd9ca
 
-#include <wsp/Sprite.h>
+#include <wiisprite.h>
 
 namespace Polukili 
 {
@@ -15,14 +15,14 @@ namespace Polukili
       // Operations
    public:
 
-      Effect(wsp::Sprite originalSprite);
+      Effect(const wsp::Sprite* originalSprite);
 
       // Attributes
 
    private:
       wsp::Sprite sprite;
       double duration;
-      const wsp::Sprite originalSprite;
+      const wsp::Sprite* originalSprite;
 
       //end of class Effect
    };

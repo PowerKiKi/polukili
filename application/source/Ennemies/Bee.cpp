@@ -7,7 +7,6 @@ namespace Polukili
    namespace Ennemies 
    {
 
-      {
-      } /* End of namespace polukili::Ennemies */
-   } /* End of namespace Polukili */
+   } /* End of namespace polukili::Ennemies */
+} /* End of namespace Polukili */
 

@@ -1,10 +1,12 @@
 #ifndef polukili_Actor_h_b64b7baa_3957_43a5_b7b0_78e992b91e8a
 #define polukili_Actor_h_b64b7baa_3957_43a5_b7b0_78e992b91e8a
 
-#include <Sprite.h>
+#include <wiisprite.h>
 
 #include "Actor.h"
 #include "Effect.h"
+#include "Element.h"
+#include "ActorState.h"
 
 namespace Polukili 
 {
@@ -84,7 +86,7 @@ namespace Polukili
       /** 
       *  The graphical sprite.
       */
-      wsp::Sprite sprite;
+      wsp::Sprite* sprite;
 
       /** 
       *  Current state of the actor. It may be several state at once (flags).
@@ -101,7 +103,7 @@ namespace Polukili
       /** 
       *  Current effect on the actor.
       */
-      Effect effect;
+      Effect* effect;
 
       //end of class Actor
    };
