@@ -20,6 +20,11 @@ namespace Polukili
       // Operations
    public:
 
+      /**
+      * Constructor
+      */
+      Actor(int physicWorld);
+
       /** 
       *  Render the actor on screen according to current physic data and loaded sprite. Also render special effects if needed.
       */
@@ -70,9 +75,10 @@ namespace Polukili
       */
       virtual void applyEffects();
 
+      /**
+      * Initialize physic data
+      */
       virtual void initPhysic()  = 0;
-
-      Actor(int physicWorld);
 
       // Attributes
 

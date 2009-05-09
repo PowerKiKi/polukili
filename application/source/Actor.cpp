@@ -6,6 +6,12 @@ namespace Polukili
 {
 
    // Operations
+   
+
+   Actor::Actor(int physicWorld)
+   {
+      
+   }
 
    /** 
    *  Render the actor on screen according to current physic data and loaded sprite. Also render special effects if needed.
@@ -77,11 +83,6 @@ namespace Polukili
    void Actor::applyEffects()
    {
 
-   }
-
-   Actor::Actor(int physicWorld)
-   {
-      
    }
 
 } /* End of namespace Polukili */
