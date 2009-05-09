@@ -61,7 +61,7 @@
 			C++
 		</plugin>
 </profile>
-<XMI xmi.version = '1.2' xmlns:UML = 'org.omg.xmi.namespace.UML' timestamp = 'Sat May 09 20:38:27 CEST 2009'>
+<XMI xmi.version = '1.2' xmlns:UML = 'org.omg.xmi.namespace.UML' timestamp = 'Sat May 09 20:43:07 CEST 2009'>
   <XMI.header>    <XMI.documentation>
       <XMI.exporter>ArgoUML (using Netbeans XMI Writer version 1.0)</XMI.exporter>
       <XMI.exporterVersion>0.28(6) revised on $Date: 2007-05-12 08:08:08 +0200 (Sat, 12 May 2007) $ </XMI.exporterVersion>
@@ -1510,7 +1510,7 @@
         x="504"
         y="265"
         width="188"
-        height="19"
+        height="16"
         fill="0"
         fillcolor="white"
         stroke="0"
@@ -1526,7 +1526,7 @@
         x="504"
         y="281"
         width="193"
-        height="19"
+        height="16"
         fill="0"
         fillcolor="white"
         stroke="0"
@@ -1671,8 +1671,8 @@
       <text name="Fig0.4.4"
         x="504"
         y="112"
-        width="98"
-        height="19"
+        width="97"
+        height="16"
         fill="0"
         fillcolor="white"
         stroke="0"
@@ -1703,8 +1703,8 @@
       <text name="Fig0.4.6"
         x="504"
         y="144"
-        width="76"
-        height="25"
+        width="74"
+        height="22"
         fill="0"
         fillcolor="white"
         stroke="0"
