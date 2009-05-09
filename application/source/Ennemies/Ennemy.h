@@ -1,0 +1,32 @@
+#ifndef polukili_Ennemies_Ennemy_h_3c76803b_6dad_4dfc_9f88_2fd20fc7f0d6
+#define polukili_Ennemies_Ennemy_h_3c76803b_6dad_4dfc_9f88_2fd20fc7f0d6
+
+#include <polukili/Actor.h>
+
+namespace Polukili 
+{
+   namespace Ennemies 
+   {
+
+      /** 
+      *  Represents an ennemy
+      */
+      class Ennemy : public polukili::Actor
+      {
+
+         // Operations
+      public:
+
+         /** 
+         *  Returns wether the ennemy must be destroyed to complete the level. It should always be true for boss.
+         */
+         virtual bool isTarget();
+
+         //end of class Ennemy
+      };
+
+   } /* End of namespace polukili::Ennemies */
+} /* End of namespace Polukili */
+
+#endif // polukili_Ennemies_Ennemy_h_3c76803b_6dad_4dfc_9f88_2fd20fc7f0d6
+
