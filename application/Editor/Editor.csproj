@@ -48,7 +48,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Box.cs" />
     <Compile Include="Circle.cs" />
     <Compile Include="MainWindow.cs">
       <SubType>Form</SubType>

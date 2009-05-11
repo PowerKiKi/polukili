@@ -30,7 +30,11 @@ namespace Editor
 
       public override void ToXML(System.Xml.XmlWriter writer)
       {
-         writer.WriteElementString("polygon", "value");
+         writer.WriteStartElement("polygon");
+         foreach (Point p in this.Points)
+            this.ToXML(writer, p);
+         writer.WriteEndElement();
+         
       }
    }
 }

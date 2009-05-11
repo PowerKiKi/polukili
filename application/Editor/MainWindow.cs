@@ -24,7 +24,6 @@ namespace Editor
          new Circle(new Point(20, 20), 20);
          new Circle(new Point(50, 50), 200);
          new Circle(new Point(300, 200), 200);
-         new Box(new Rectangle(new Point(300, 300), new Size(40, 100)));
          new Polygon();
       }
 
@@ -137,11 +136,6 @@ namespace Editor
       private void toolStripButton1_Click(object sender, EventArgs e)
       {
          new Circle(new Point(100, 100), 50);
-      }
-
-      private void toolStripButton2_Click(object sender, EventArgs e)
-      {
-         new Box();
       }
 
       private void toolStripButton3_Click(object sender, EventArgs e)
