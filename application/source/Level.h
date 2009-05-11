@@ -36,11 +36,27 @@ namespace Polukili
 
       // Operations
    public:
-
+      Level();
+      
       /** 
       *  Load level data from XML file.
       */
       virtual void loadFromXML(const char* filename);
+
+      /**
+      * Initialize physic data
+      */
+      virtual void initPhysic();
+      
+      /** 
+      *  Load graphics data (wsp::Image) for the actor. In most cases the same Image will be loaded once for all instance of a specific class. So a static wsp::Image shall be used.
+      */
+      virtual void loadGraphics();
+
+      /** 
+      *  Unload graphics data to free up memory.
+      */
+      virtual void unloadGraphics();
 
       // Attributes
    public:

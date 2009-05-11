@@ -8,8 +8,10 @@
 #include "Element.h"
 #include "ActorState.h"
 
+
 namespace Polukili 
 {
+   class Level;
 
    /** 
    *  The highest parent for every object in games, eg: players, bullets, ennemies, levels...
@@ -23,7 +25,7 @@ namespace Polukili
       /**
       * Constructor
       */
-      Actor(int physicWorld);
+      Actor(Level* level);
 
       /** 
       *  Render the actor on screen according to current physic data and loaded sprite. Also render special effects if needed.
@@ -43,7 +45,7 @@ namespace Polukili
       /** 
       *  Unload graphics data to free up memory.
       */
-      virtual bool unloadGraphics();
+      virtual void unloadGraphics();
 
       /** 
       *  Define the behavior of the actor for the next step. Apply forces/actions/modifications based on current context (wiimote inputs, state changes based on time, etc.)
@@ -83,7 +85,12 @@ namespace Polukili
       // Attributes
 
    protected:
-
+   
+      /**
+      * The level containing the actor.
+      */
+      Level* level;
+      
       /** 
       *  The physic body.
       */

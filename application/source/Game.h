@@ -2,7 +2,7 @@
 #define polukili_Game_h_0f2f4ee3_873c_48e0_afcf_deae99ae06dc
 
 
-#include <list>
+#include <stack>
 
 #include "Level.h"
 
@@ -14,10 +14,23 @@ namespace Polukili
    */
    class Game
    {
+   
+   public: 
+   
+   /**
+   * Run the specified level. The path must point to the XML file description of the level.
+   */
+   void run(const char* initialLevel);
+
+   /**
+   * Change the current level for the one specified.
+   * The current level will not be removed from stack. That means it will be resumed when new level is finished.
+   */
+   void changeLevel(const char* newLevelPath);
 
       // Attributes
    public:
-      std::list< Level* > levels;
+      std::stack< Level* > levels;
 
       //end of class Game
    };

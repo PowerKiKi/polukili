@@ -2,8 +2,8 @@
 
 int main( int argc, char **argv )
 {
-
-   Polukili::Game* game = new Polukili::Game();
+   Polukili::Game game;
+   game.run("/app/polukili/level_0.xml");
    
    return 0;
 }

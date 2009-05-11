@@ -2,13 +2,35 @@
 
 #include "Game.h"
 
+#include "Level.h"
+
 namespace Polukili 
 {
 
-   /** 
-   *  The game engine. It loads and "plays" levels.
-   */
-
+   /*************************************************/
+   void Game::run(const char* initialLevel)
+   {
+      this->changeLevel(initialLevel);
+      
+      while (!this->levels.empty())
+      {
+      
+      }
+   }
+   
+   /*************************************************/
+   void Game::changeLevel(const char* newLevelPath)
+   {
+      Level* level = new Level();
+      level->loadFromXML(newLevelPath);
+      
+      // Unload previous level graphics if any
+      if (!this->levels.empty())
+         this->levels.top()->unloadGraphics();
+      
+      level->loadGraphics();
+      this->levels.push(level);
+   }
 
 } /* End of namespace Polukili */
 
