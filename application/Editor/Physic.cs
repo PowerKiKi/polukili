@@ -8,36 +8,12 @@ using System.Drawing;
 
 namespace Editor
 {
-   abstract class Physic
+   abstract class Physic : Item
    {
-      private bool isVisible;
-      public bool IsVisible
-      {
-         get { return this.isVisible; }
-         set { this.isVisible = value; MainWindow.Singleton.UpdateControls(); }
-      }
-
       public Physic()
       {
-         this.IsVisible = true;
-         MainWindow.Singleton.physics.Add(this);
+         MainWindow.Singleton.lstPhysics.Items.Add(this);
          MainWindow.Singleton.UpdateControls();
-      }
-
-      public abstract void Paint(PaintEventArgs args, State state);
-      public abstract void ToXML(XmlWriter writer);
-
-      public void ToXML(XmlWriter writer, Point point)
-      {
-         writer.WriteStartElement("point");
-         writer.WriteAttributeString("x", point.X.ToString());
-         writer.WriteAttributeString("y", point.Y.ToString());
-         writer.WriteEndElement();
-      }
-
-      public override string ToString()
-      {
-         return base.ToString(); //+ " " + this.GetHashCode();
       }
    }
 }

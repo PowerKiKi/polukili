@@ -30,10 +30,16 @@
       {
          System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainWindow));
          this.pictureBox1 = new System.Windows.Forms.PictureBox();
-         this.checkedListBox1 = new System.Windows.Forms.CheckedListBox();
-         this.propertyGrid1 = new System.Windows.Forms.PropertyGrid();
+         this.lstPhysics = new System.Windows.Forms.CheckedListBox();
+         this.propertyGrid = new System.Windows.Forms.PropertyGrid();
          this.splitContainer1 = new System.Windows.Forms.SplitContainer();
          this.splitContainer2 = new System.Windows.Forms.SplitContainer();
+         this.tabControl1 = new System.Windows.Forms.TabControl();
+         this.tabPage1 = new System.Windows.Forms.TabPage();
+         this.tabPage2 = new System.Windows.Forms.TabPage();
+         this.lstActors = new System.Windows.Forms.CheckedListBox();
+         this.tabPage3 = new System.Windows.Forms.TabPage();
+         this.lstLevel = new System.Windows.Forms.CheckedListBox();
          this.toolStripContainer1 = new System.Windows.Forms.ToolStripContainer();
          this.menuStrip2 = new System.Windows.Forms.MenuStrip();
          this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -51,6 +57,7 @@
          this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
          this.toolStripButton3 = new System.Windows.Forms.ToolStripButton();
          this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+         this.toolStripButton2 = new System.Windows.Forms.ToolStripButton();
          this.toolStripButton4 = new System.Windows.Forms.ToolStripButton();
          ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
          this.splitContainer1.Panel1.SuspendLayout();
@@ -59,6 +66,10 @@
          this.splitContainer2.Panel1.SuspendLayout();
          this.splitContainer2.Panel2.SuspendLayout();
          this.splitContainer2.SuspendLayout();
+         this.tabControl1.SuspendLayout();
+         this.tabPage1.SuspendLayout();
+         this.tabPage2.SuspendLayout();
+         this.tabPage3.SuspendLayout();
          this.toolStripContainer1.ContentPanel.SuspendLayout();
          this.toolStripContainer1.TopToolStripPanel.SuspendLayout();
          this.toolStripContainer1.SuspendLayout();
@@ -73,29 +84,29 @@
          this.pictureBox1.InitialImage = ((System.Drawing.Image)(resources.GetObject("pictureBox1.InitialImage")));
          this.pictureBox1.Location = new System.Drawing.Point(0, 0);
          this.pictureBox1.Name = "pictureBox1";
-         this.pictureBox1.Size = new System.Drawing.Size(646, 487);
+         this.pictureBox1.Size = new System.Drawing.Size(513, 320);
          this.pictureBox1.TabIndex = 0;
          this.pictureBox1.TabStop = false;
          // 
-         // checkedListBox1
+         // lstPhysics
          // 
-         this.checkedListBox1.CheckOnClick = true;
-         this.checkedListBox1.Dock = System.Windows.Forms.DockStyle.Fill;
-         this.checkedListBox1.FormattingEnabled = true;
-         this.checkedListBox1.Location = new System.Drawing.Point(0, 0);
-         this.checkedListBox1.Name = "checkedListBox1";
-         this.checkedListBox1.Size = new System.Drawing.Size(178, 244);
-         this.checkedListBox1.TabIndex = 1;
-         this.checkedListBox1.SelectedIndexChanged += new System.EventHandler(this.checkedListBox1_SelectedIndexChanged);
-         this.checkedListBox1.ItemCheck += new System.Windows.Forms.ItemCheckEventHandler(this.checkedListBox1_ItemCheck);
+         this.lstPhysics.CheckOnClick = true;
+         this.lstPhysics.Dock = System.Windows.Forms.DockStyle.Fill;
+         this.lstPhysics.FormattingEnabled = true;
+         this.lstPhysics.Location = new System.Drawing.Point(3, 3);
+         this.lstPhysics.Name = "lstPhysics";
+         this.lstPhysics.Size = new System.Drawing.Size(127, 124);
+         this.lstPhysics.TabIndex = 1;
+         this.lstPhysics.SelectedIndexChanged += new System.EventHandler(this.checkedListBox1_SelectedIndexChanged);
+         this.lstPhysics.ItemCheck += new System.Windows.Forms.ItemCheckEventHandler(this.checkedListBox1_ItemCheck);
          // 
-         // propertyGrid1
+         // propertyGrid
          // 
-         this.propertyGrid1.Dock = System.Windows.Forms.DockStyle.Fill;
-         this.propertyGrid1.Location = new System.Drawing.Point(0, 0);
-         this.propertyGrid1.Name = "propertyGrid1";
-         this.propertyGrid1.Size = new System.Drawing.Size(178, 233);
-         this.propertyGrid1.TabIndex = 2;
+         this.propertyGrid.Dock = System.Windows.Forms.DockStyle.Fill;
+         this.propertyGrid.Location = new System.Drawing.Point(0, 0);
+         this.propertyGrid.Name = "propertyGrid";
+         this.propertyGrid.Size = new System.Drawing.Size(141, 152);
+         this.propertyGrid.TabIndex = 2;
          // 
          // splitContainer1
          // 
@@ -110,8 +121,8 @@
          // splitContainer1.Panel2
          // 
          this.splitContainer1.Panel2.Controls.Add(this.pictureBox1);
-         this.splitContainer1.Size = new System.Drawing.Size(828, 487);
-         this.splitContainer1.SplitterDistance = 178;
+         this.splitContainer1.Size = new System.Drawing.Size(658, 320);
+         this.splitContainer1.SplitterDistance = 141;
          this.splitContainer1.TabIndex = 3;
          // 
          // splitContainer2
@@ -123,14 +134,84 @@
          // 
          // splitContainer2.Panel1
          // 
-         this.splitContainer2.Panel1.Controls.Add(this.checkedListBox1);
+         this.splitContainer2.Panel1.Controls.Add(this.tabControl1);
          // 
          // splitContainer2.Panel2
          // 
-         this.splitContainer2.Panel2.Controls.Add(this.propertyGrid1);
-         this.splitContainer2.Size = new System.Drawing.Size(178, 487);
-         this.splitContainer2.SplitterDistance = 250;
+         this.splitContainer2.Panel2.Controls.Add(this.propertyGrid);
+         this.splitContainer2.Size = new System.Drawing.Size(141, 320);
+         this.splitContainer2.SplitterDistance = 164;
          this.splitContainer2.TabIndex = 0;
+         // 
+         // tabControl1
+         // 
+         this.tabControl1.Controls.Add(this.tabPage1);
+         this.tabControl1.Controls.Add(this.tabPage2);
+         this.tabControl1.Controls.Add(this.tabPage3);
+         this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
+         this.tabControl1.Location = new System.Drawing.Point(0, 0);
+         this.tabControl1.Name = "tabControl1";
+         this.tabControl1.SelectedIndex = 0;
+         this.tabControl1.Size = new System.Drawing.Size(141, 164);
+         this.tabControl1.TabIndex = 2;
+         this.tabControl1.SelectedIndexChanged += new System.EventHandler(this.tabControl1_SelectedIndexChanged);
+         // 
+         // tabPage1
+         // 
+         this.tabPage1.Controls.Add(this.lstPhysics);
+         this.tabPage1.Location = new System.Drawing.Point(4, 22);
+         this.tabPage1.Name = "tabPage1";
+         this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
+         this.tabPage1.Size = new System.Drawing.Size(133, 138);
+         this.tabPage1.TabIndex = 0;
+         this.tabPage1.Text = "Physics";
+         this.tabPage1.UseVisualStyleBackColor = true;
+         // 
+         // tabPage2
+         // 
+         this.tabPage2.Controls.Add(this.lstActors);
+         this.tabPage2.Location = new System.Drawing.Point(4, 22);
+         this.tabPage2.Name = "tabPage2";
+         this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
+         this.tabPage2.Size = new System.Drawing.Size(133, 138);
+         this.tabPage2.TabIndex = 1;
+         this.tabPage2.Text = "Actors";
+         this.tabPage2.UseVisualStyleBackColor = true;
+         // 
+         // lstActors
+         // 
+         this.lstActors.CheckOnClick = true;
+         this.lstActors.Dock = System.Windows.Forms.DockStyle.Fill;
+         this.lstActors.FormattingEnabled = true;
+         this.lstActors.Location = new System.Drawing.Point(3, 3);
+         this.lstActors.Name = "lstActors";
+         this.lstActors.Size = new System.Drawing.Size(127, 124);
+         this.lstActors.TabIndex = 0;
+         this.lstActors.SelectedIndexChanged += new System.EventHandler(this.checkedListBox1_SelectedIndexChanged);
+         this.lstActors.ItemCheck += new System.Windows.Forms.ItemCheckEventHandler(this.checkedListBox1_ItemCheck);
+         // 
+         // tabPage3
+         // 
+         this.tabPage3.Controls.Add(this.lstLevel);
+         this.tabPage3.Location = new System.Drawing.Point(4, 22);
+         this.tabPage3.Name = "tabPage3";
+         this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
+         this.tabPage3.Size = new System.Drawing.Size(133, 138);
+         this.tabPage3.TabIndex = 2;
+         this.tabPage3.Text = "Level";
+         this.tabPage3.UseVisualStyleBackColor = true;
+         // 
+         // lstLevel
+         // 
+         this.lstLevel.CheckOnClick = true;
+         this.lstLevel.Dock = System.Windows.Forms.DockStyle.Fill;
+         this.lstLevel.FormattingEnabled = true;
+         this.lstLevel.Location = new System.Drawing.Point(3, 3);
+         this.lstLevel.Name = "lstLevel";
+         this.lstLevel.Size = new System.Drawing.Size(127, 124);
+         this.lstLevel.TabIndex = 0;
+         this.lstLevel.SelectedIndexChanged += new System.EventHandler(this.checkedListBox1_SelectedIndexChanged);
+         this.lstLevel.ItemCheck += new System.Windows.Forms.ItemCheckEventHandler(this.checkedListBox1_ItemCheck);
          // 
          // toolStripContainer1
          // 
@@ -138,11 +219,11 @@
          // toolStripContainer1.ContentPanel
          // 
          this.toolStripContainer1.ContentPanel.Controls.Add(this.splitContainer1);
-         this.toolStripContainer1.ContentPanel.Size = new System.Drawing.Size(828, 487);
+         this.toolStripContainer1.ContentPanel.Size = new System.Drawing.Size(658, 320);
          this.toolStripContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
          this.toolStripContainer1.Location = new System.Drawing.Point(0, 0);
          this.toolStripContainer1.Name = "toolStripContainer1";
-         this.toolStripContainer1.Size = new System.Drawing.Size(828, 536);
+         this.toolStripContainer1.Size = new System.Drawing.Size(658, 369);
          this.toolStripContainer1.TabIndex = 6;
          this.toolStripContainer1.Text = "toolStripContainer1";
          // 
@@ -159,7 +240,7 @@
             this.viewToolStripMenuItem});
          this.menuStrip2.Location = new System.Drawing.Point(0, 0);
          this.menuStrip2.Name = "menuStrip2";
-         this.menuStrip2.Size = new System.Drawing.Size(828, 24);
+         this.menuStrip2.Size = new System.Drawing.Size(658, 24);
          this.menuStrip2.TabIndex = 5;
          this.menuStrip2.Text = "menuStrip2";
          // 
@@ -246,10 +327,11 @@
             this.toolStripButton1,
             this.toolStripButton3,
             this.toolStripSeparator1,
+            this.toolStripButton2,
             this.toolStripButton4});
          this.toolStrip1.Location = new System.Drawing.Point(3, 24);
          this.toolStrip1.Name = "toolStrip1";
-         this.toolStrip1.Size = new System.Drawing.Size(118, 25);
+         this.toolStrip1.Size = new System.Drawing.Size(110, 25);
          this.toolStrip1.TabIndex = 7;
          this.toolStrip1.Text = "toolStrip1";
          // 
@@ -278,6 +360,16 @@
          this.toolStripSeparator1.Name = "toolStripSeparator1";
          this.toolStripSeparator1.Size = new System.Drawing.Size(6, 25);
          // 
+         // toolStripButton2
+         // 
+         this.toolStripButton2.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+         this.toolStripButton2.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton2.Image")));
+         this.toolStripButton2.ImageTransparentColor = System.Drawing.Color.Magenta;
+         this.toolStripButton2.Name = "toolStripButton2";
+         this.toolStripButton2.Size = new System.Drawing.Size(23, 22);
+         this.toolStripButton2.Text = "toolStripButton2";
+         this.toolStripButton2.Click += new System.EventHandler(this.toolStripButton2_Click);
+         // 
          // toolStripButton4
          // 
          this.toolStripButton4.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
@@ -292,7 +384,7 @@
          // 
          this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
          this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-         this.ClientSize = new System.Drawing.Size(828, 536);
+         this.ClientSize = new System.Drawing.Size(658, 369);
          this.Controls.Add(this.toolStripContainer1);
          this.Name = "MainWindow";
          this.Text = "Polukili Editor";
@@ -304,6 +396,10 @@
          this.splitContainer2.Panel1.ResumeLayout(false);
          this.splitContainer2.Panel2.ResumeLayout(false);
          this.splitContainer2.ResumeLayout(false);
+         this.tabControl1.ResumeLayout(false);
+         this.tabPage1.ResumeLayout(false);
+         this.tabPage2.ResumeLayout(false);
+         this.tabPage3.ResumeLayout(false);
          this.toolStripContainer1.ContentPanel.ResumeLayout(false);
          this.toolStripContainer1.TopToolStripPanel.ResumeLayout(false);
          this.toolStripContainer1.TopToolStripPanel.PerformLayout();
@@ -320,8 +416,7 @@
       #endregion
 
       private System.Windows.Forms.PictureBox pictureBox1;
-      private System.Windows.Forms.PropertyGrid propertyGrid1;
-      private System.Windows.Forms.CheckedListBox checkedListBox1;
+      private System.Windows.Forms.PropertyGrid propertyGrid;
       private System.Windows.Forms.SplitContainer splitContainer1;
       private System.Windows.Forms.SplitContainer splitContainer2;
       private System.Windows.Forms.ToolStripContainer toolStripContainer1;
@@ -342,6 +437,14 @@
       private System.Windows.Forms.ToolStripButton toolStripButton3;
       private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
       private System.Windows.Forms.ToolStripButton toolStripButton4;
+      private System.Windows.Forms.TabControl tabControl1;
+      private System.Windows.Forms.TabPage tabPage1;
+      private System.Windows.Forms.TabPage tabPage2;
+      private System.Windows.Forms.TabPage tabPage3;
+      public System.Windows.Forms.CheckedListBox lstPhysics;
+      public System.Windows.Forms.CheckedListBox lstActors;
+      private System.Windows.Forms.CheckedListBox lstLevel;
+      private System.Windows.Forms.ToolStripButton toolStripButton2;
 
    }
 }
