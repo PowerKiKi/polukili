@@ -22,6 +22,10 @@ namespace Editor
          set { this.radius = value; MainWindow.Singleton.UpdateControls(); }
       }
 
+      public Circle()
+      {
+      }
+
       public Circle(Point center, int radius)
       {
          this.Center = center;
@@ -30,7 +34,7 @@ namespace Editor
 
       public override void Paint(System.Windows.Forms.PaintEventArgs args, State state)
       {
-         args.Graphics.FillPie(Brushes.Blue, this.Center.X - this.Radius, this.Center.Y - this.Radius, this.Radius, this.Radius, 0, 360);
+         args.Graphics.FillPie(Brushes.Red, this.Center.X - this.Radius, this.Center.Y - this.Radius, this.Radius, this.Radius, 0, 360);
       }
 
       public override void ToXML(System.Xml.XmlWriter writer)
@@ -39,6 +43,13 @@ namespace Editor
          writer.WriteAttributeString("radius", this.radius.ToString());
          this.ToXML(writer, this.center);
          writer.WriteEndElement();
+      }
+
+      public override void Read(System.Xml.XmlElement element)
+      {
+         this.radius = Int32.Parse(element.GetAttribute("radius"));
+         this.center = this.ReadPoint(element["point"]);
+
       }
    }
 }

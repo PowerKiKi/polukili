@@ -34,11 +34,19 @@ namespace Editor
          get { return this.position; }
          set { this.position = value; MainWindow.Singleton.UpdateControls(); }
       }
+
       private int powerFactor = 1;
       public int PowerFactor
       {
          get { return this.powerFactor; }
          set { this.powerFactor = value; MainWindow.Singleton.UpdateControls(); }
+      }
+
+      private bool isTarget = false;
+      public bool IsTarget
+      {
+         get { return this.isTarget; }
+         set { this.isTarget = value; MainWindow.Singleton.UpdateControls(); }
       }
 
       public Actor()
@@ -63,7 +71,19 @@ namespace Editor
          writer.WriteStartElement("actor");
          writer.WriteAttributeString("type", this.type.ToString());
          writer.WriteAttributeString("powerFactor", this.PowerFactor.ToString());
+         writer.WriteAttributeString("isTarget", this.IsTarget.ToString());
+         this.ToXML(writer, this.Position);
          writer.WriteEndElement();
+      }
+
+      public override void Read(System.Xml.XmlElement element)
+      {
+         this.type = (ActorType)Enum.Parse(typeof(ActorType), element.GetAttribute("type"));
+         if (element.HasAttribute("powerFactor"))
+            this.powerFactor = Int32.Parse(element.GetAttribute("powerFactor"));
+         if (element.HasAttribute("isTarget"))
+            this.IsTarget = bool.Parse(element.GetAttribute("isTarget"));
+         this.Position = this.ReadPoint(element["point"]);
       }
 
       public override string ToString()

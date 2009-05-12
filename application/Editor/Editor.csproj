@@ -51,6 +51,7 @@
     <Compile Include="Actor.cs" />
     <Compile Include="Circle.cs" />
     <Compile Include="Item.cs" />
+    <Compile Include="Level.cs" />
     <Compile Include="MainWindow.cs">
       <SubType>Form</SubType>
     </Compile>

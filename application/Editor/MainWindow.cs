@@ -21,6 +21,21 @@ namespace Editor
       {
          InitializeComponent();
          MainWindow.Singleton = this;
+         this.InitLevel();
+      }
+
+      private void ClearLevel()
+      {
+         this.lstLevel.Items.Clear();
+         this.lstActors.Items.Clear();
+         this.lstPhysics.Items.Clear();
+      }
+
+      private void InitLevel()
+      {
+         this.updating = true;
+
+         this.ClearLevel();
          new Circle(new Point(20, 20), 20);
          new Circle(new Point(50, 50), 200);
          new Circle(new Point(300, 200), 200);
@@ -29,6 +44,72 @@ namespace Editor
          new Actor(Actor.ActorType.luna);
          new Actor(Actor.ActorType.poupa);
          new Actor(Actor.ActorType.lila);
+         this.lstLevel.Items.Add(new Level());
+
+         this.updating = false;
+         this.UpdateControls();
+      }
+
+      private void ReadLevel()
+      {
+         this.updating = true;
+
+         var d = new OpenFileDialog();
+         if (d.ShowDialog() == DialogResult.OK)
+         {
+            this.ClearLevel();
+
+
+            var level = new Level();
+            level.SetFileName(d.FileName);
+            this.lstLevel.Items.Add(level);
+
+            XmlDocument xml = new XmlDocument();
+            xml.Load(d.FileName);
+            level.Read(xml["level"]);
+            foreach (XmlElement el in xml["level"]["actors"])
+            {
+               Actor actor = new Actor();
+               actor.Read(el);
+            }
+            foreach (XmlElement el in xml["level"]["physics"])
+            {
+               Physic p;
+               if (el.Name == "circle")
+                  p = new Circle();
+               else if (el.Name == "polygon")
+                  p = new Polygon();
+               else
+               {
+                  MessageBox.Show(string.Format("unsupported physic '{0}'. Element skipped.", el.Name));
+                  continue;
+               }
+               p.Read(el);
+            }
+         }
+
+         this.updating = false;
+         this.UpdateControls();
+         this.GetCurrent().SelectedItem = this.GetCurrent().Items[0];
+      }
+
+      public void WriteLevel(XmlWriter writer)
+      {
+         writer.WriteStartDocument();
+         foreach (Level level in this.lstLevel.Items)
+            level.ToXML(writer);
+
+         writer.WriteStartElement("physics");
+         foreach (Item p in this.lstPhysics.Items)
+            p.ToXML(writer);
+         writer.WriteEndElement();
+         writer.WriteStartElement("actors");
+         foreach (Item p in this.lstActors.Items)
+            p.ToXML(writer);
+
+         writer.WriteEndElement();
+         writer.WriteEndDocument();
+         writer.Close();
       }
 
       private void Form1_Load(object sender, EventArgs e)
@@ -39,13 +120,17 @@ namespace Editor
 
       void pictureBox1_Paint(object sender, PaintEventArgs e)
       {
-         foreach (Item Item in this.lstPhysics.Items)
-            if (Item.IsVisible)
-               Item.Paint(e, State.Normal);
+         foreach (Item item in this.lstLevel.Items)
+            if (item.IsVisible)
+               item.Paint(e, State.Normal);
 
-         foreach (Item Item in this.lstActors.Items)
-            if (Item.IsVisible)
-               Item.Paint(e, State.Normal);
+         foreach (Item item in this.lstPhysics.Items)
+            if (item.IsVisible)
+               item.Paint(e, State.Normal);
+
+         foreach (Item item in this.lstActors.Items)
+            if (item.IsVisible)
+               item.Paint(e, State.Normal);
       }
 
       public void UpdateControls()
@@ -61,25 +146,10 @@ namespace Editor
          if (this.xmlView.Visible)
          {
             XmlWriterSettings writerSettings = new XmlWriterSettings();
-
             writerSettings.Indent = true;
             var w = new System.IO.StringWriter();
             XmlWriter writer = XmlWriter.Create(w, writerSettings);
-
-            writer.WriteStartDocument();
-            writer.WriteStartElement("level");
-            writer.WriteStartElement("physics");
-            foreach (Item p in this.lstPhysics.Items)
-               p.ToXML(writer);
-            writer.WriteEndElement();
-            writer.WriteStartElement("actors");
-            foreach (Item p in this.lstActors.Items)
-               p.ToXML(writer);
-            writer.WriteEndElement();
-
-            writer.WriteEndElement();
-            writer.WriteEndDocument();
-            writer.Close();
+            this.WriteLevel(writer);
 
             this.xmlView.txtXML.Text = w.ToString();
          }
@@ -140,20 +210,29 @@ namespace Editor
 
       private void allVisibleToolStripMenuItem_Click(object sender, EventArgs e)
       {
+         this.updating = true;
          foreach (Item p in this.GetCurrent().Items)
             p.IsVisible = true;
+         this.updating = false;
+         this.UpdateControls();
       }
 
       private void noneVisibleToolStripMenuItem_Click(object sender, EventArgs e)
       {
+         this.updating = true;
          foreach (Item p in this.GetCurrent().Items)
             p.IsVisible = false;
+         this.updating = false;
+         this.UpdateControls();
       }
 
       private void invertVisibilityToolStripMenuItem_Click(object sender, EventArgs e)
       {
+         this.updating = true;
          foreach (Item p in this.GetCurrent().Items)
             p.IsVisible = !p.IsVisible;
+         this.updating = false;
+         this.UpdateControls();
       }
 
       private void generatedXMLToolStripMenuItem_Click(object sender, EventArgs e)
@@ -181,6 +260,44 @@ namespace Editor
       private void toolStripButton2_Click(object sender, EventArgs e)
       {
          new Actor();
+      }
+
+      private void deleteItem(object sender, KeyEventArgs e)
+      {
+         var list = ((CheckedListBox)sender);
+         if (list.SelectedItem != null && e.KeyCode == Keys.Delete)
+         {
+            list.Items.Remove(list.SelectedItem);
+            this.UpdateControls();
+         }
+      }
+
+      private void loadXmlToolStripMenuItem_Click(object sender, EventArgs e)
+      {
+         this.ReadLevel();
+      }
+
+      private void newToolStripMenuItem_Click(object sender, EventArgs e)
+      {
+         this.InitLevel();
+      }
+
+      private void saveXmlToolStripMenuItem_Click(object sender, EventArgs e)
+      {
+         Level level = (Level)this.lstLevel.Items[0];
+         if (level.FileName == string.Empty)
+         {
+            var d = new SaveFileDialog();
+            if (d.ShowDialog() != DialogResult.OK)
+               return;
+            level.SetFileName(d.FileName);
+         }
+
+         XmlWriterSettings writerSettings = new XmlWriterSettings();
+         writerSettings.Indent = true;
+         XmlWriter writer = XmlWriter.Create(level.FileName, writerSettings);
+         this.WriteLevel(writer);
+         this.UpdateControls();
       }
    }
 }
