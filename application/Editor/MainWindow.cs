@@ -114,12 +114,15 @@ namespace Editor
 
       private void Form1_Load(object sender, EventArgs e)
       {
-         this.pictureBox1.Image = Image.FromFile(@"D:\bordel\private\projets\polukili\application\data\level_0_background.png");
          this.pictureBox1.Paint += new PaintEventHandler(pictureBox1_Paint);
       }
 
       void pictureBox1_Paint(object sender, PaintEventArgs e)
       {
+         var m = new System.Drawing.Drawing2D.Matrix();
+         m.Translate(-this.hScrollBar.Value, -this.vScrollBar.Value);
+         e.Graphics.Transform = m;
+
          foreach (Item item in this.lstLevel.Items)
             if (item.IsVisible)
                item.Paint(e, State.Normal);
@@ -131,6 +134,7 @@ namespace Editor
          foreach (Item item in this.lstActors.Items)
             if (item.IsVisible)
                item.Paint(e, State.Normal);
+
       }
 
       public void UpdateControls()
@@ -143,6 +147,8 @@ namespace Editor
          this.UpdateCheckedList(this.lstLevel);
          this.propertyGrid.Refresh();
          this.pictureBox1.Refresh();
+         this.hScrollBar.Maximum = ((Level)this.lstLevel.Items[0]).Size.Width;
+         this.vScrollBar.Maximum = ((Level)this.lstLevel.Items[0]).Size.Height;
          if (this.xmlView.Visible)
          {
             XmlWriterSettings writerSettings = new XmlWriterSettings();
@@ -298,6 +304,11 @@ namespace Editor
          XmlWriter writer = XmlWriter.Create(level.FileName, writerSettings);
          this.WriteLevel(writer);
          this.UpdateControls();
+      }
+
+      private void ScrollBar_Scroll(object sender, ScrollEventArgs e)
+      {
+         this.pictureBox1.Refresh();
       }
    }
 }

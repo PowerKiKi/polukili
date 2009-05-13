@@ -40,6 +40,8 @@
          this.lstActors = new System.Windows.Forms.CheckedListBox();
          this.tabPage3 = new System.Windows.Forms.TabPage();
          this.lstLevel = new System.Windows.Forms.CheckedListBox();
+         this.vScrollBar = new System.Windows.Forms.VScrollBar();
+         this.hScrollBar = new System.Windows.Forms.HScrollBar();
          this.toolStripContainer1 = new System.Windows.Forms.ToolStripContainer();
          this.menuStrip2 = new System.Windows.Forms.MenuStrip();
          this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -82,7 +84,6 @@
          // pictureBox1
          // 
          this.pictureBox1.Dock = System.Windows.Forms.DockStyle.Fill;
-         this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
          this.pictureBox1.InitialImage = ((System.Drawing.Image)(resources.GetObject("pictureBox1.InitialImage")));
          this.pictureBox1.Location = new System.Drawing.Point(0, 0);
          this.pictureBox1.Name = "pictureBox1";
@@ -123,6 +124,8 @@
          // 
          // splitContainer1.Panel2
          // 
+         this.splitContainer1.Panel2.Controls.Add(this.vScrollBar);
+         this.splitContainer1.Panel2.Controls.Add(this.hScrollBar);
          this.splitContainer1.Panel2.Controls.Add(this.pictureBox1);
          this.splitContainer1.Size = new System.Drawing.Size(867, 490);
          this.splitContainer1.SplitterDistance = 211;
@@ -216,6 +219,24 @@
          this.lstLevel.TabIndex = 0;
          this.lstLevel.SelectedIndexChanged += new System.EventHandler(this.checkedListBox1_SelectedIndexChanged);
          this.lstLevel.ItemCheck += new System.Windows.Forms.ItemCheckEventHandler(this.checkedListBox1_ItemCheck);
+         // 
+         // vScrollBar
+         // 
+         this.vScrollBar.Dock = System.Windows.Forms.DockStyle.Right;
+         this.vScrollBar.Location = new System.Drawing.Point(640, 0);
+         this.vScrollBar.Name = "vScrollBar";
+         this.vScrollBar.Size = new System.Drawing.Size(12, 478);
+         this.vScrollBar.TabIndex = 2;
+         this.vScrollBar.Scroll += new System.Windows.Forms.ScrollEventHandler(this.ScrollBar_Scroll);
+         // 
+         // hScrollBar
+         // 
+         this.hScrollBar.Dock = System.Windows.Forms.DockStyle.Bottom;
+         this.hScrollBar.Location = new System.Drawing.Point(0, 478);
+         this.hScrollBar.Name = "hScrollBar";
+         this.hScrollBar.Size = new System.Drawing.Size(652, 12);
+         this.hScrollBar.TabIndex = 1;
+         this.hScrollBar.Scroll += new System.Windows.Forms.ScrollEventHandler(this.ScrollBar_Scroll);
          // 
          // toolStripContainer1
          // 
@@ -479,6 +500,8 @@
       private System.Windows.Forms.ToolStripMenuItem loadXmlToolStripMenuItem;
       private System.Windows.Forms.ToolStripMenuItem newToolStripMenuItem;
       private System.Windows.Forms.ToolStripMenuItem loadImageToolStripMenuItem;
+      private System.Windows.Forms.HScrollBar hScrollBar;
+      private System.Windows.Forms.VScrollBar vScrollBar;
 
    }
 }

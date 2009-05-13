@@ -30,7 +30,7 @@ namespace Editor
          set { this.nextLevel = value; MainWindow.Singleton.UpdateControls(); }
       }
 
-      private string background = "";
+      private string background = @"D:\bordel\private\projets\polukili\application\data\level_0_background.png";
       public string Background
       {
          get { return this.background; }
@@ -42,6 +42,13 @@ namespace Editor
       {
          get { return this.foreground; }
          set { this.foreground = value; MainWindow.Singleton.UpdateControls(); }
+      }
+
+      private Size size = new Size(640, 480);
+      public Size Size
+      {
+         get { return this.size; }
+         set { this.size = value; MainWindow.Singleton.UpdateControls(); }
       }
 
       public void SetFileName(string filename)
@@ -68,6 +75,8 @@ namespace Editor
          writer.WriteAttributeString("nextLevel", this.NextLevel);
          writer.WriteAttributeString("background", this.Background);
          writer.WriteAttributeString("foreground", this.Foreground);
+         writer.WriteAttributeString("width", this.size.Width.ToString());
+         writer.WriteAttributeString("height", this.size.Height.ToString());
       }
 
       public override void Read(System.Xml.XmlElement element)
@@ -76,6 +85,8 @@ namespace Editor
          this.NextLevel = element.GetAttribute("nextLevel");
          this.Background = element.GetAttribute("background");
          this.Foreground = element.GetAttribute("foreground");
+         this.Foreground = element.GetAttribute("foreground");
+         this.size = new Size(Int32.Parse(element.GetAttribute("width")), Int32.Parse(element.GetAttribute("height")));
       }
    }
 }
