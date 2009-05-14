@@ -1,6 +1,6 @@
 
 
-#include "Ennemy.h"
+#include <Ennemies/Ennemy.h>
 
 namespace Polukili 
 {
@@ -17,6 +17,6 @@ namespace Polukili
          return false;
       }
 
-   } /* End of namespace polukili::Ennemies */
+   } /* End of namespace Polukili::Ennemies */
 } /* End of namespace Polukili */
 

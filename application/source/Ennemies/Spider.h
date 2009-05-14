@@ -1,7 +1,7 @@
 #ifndef polukili_Ennemies_Spider_h_cea62887_1deb_4f62_a4a6_052fa0643fcf
 #define polukili_Ennemies_Spider_h_cea62887_1deb_4f62_a4a6_052fa0643fcf
 
-#include "Ennemy.h"
+#include <Ennemies/Ennemy.h>
 
 namespace Polukili 
 {
@@ -13,7 +13,7 @@ namespace Polukili
          //end of class Spider
       };
 
-   } /* End of namespace polukili::Ennemies */
+   } /* End of namespace Polukili::Ennemies */
 } /* End of namespace Polukili */
 
 #endif // polukili_Ennemies_Spider_h_cea62887_1deb_4f62_a4a6_052fa0643fcf

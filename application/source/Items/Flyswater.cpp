@@ -1,6 +1,6 @@
 
 
-#include "Flyswater.h"
+#include <Items/Flyswater.h>
 
 namespace Polukili 
 {
@@ -8,6 +8,6 @@ namespace Polukili
    {
 
    
-   } /* End of namespace polukili::Items */
+   } /* End of namespace Polukili::Items */
 } /* End of namespace Polukili */
 

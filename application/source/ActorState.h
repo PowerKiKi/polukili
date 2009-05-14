@@ -15,6 +15,6 @@ namespace Polukili
       burning        = 16,
    };
    
-}/* End of namespace polukili */
+}/* End of namespace Polukili */
 
 #endif // polukili_ActorState_h_42bdb625_de70_40bc_9396_0d2a7a0fba7d

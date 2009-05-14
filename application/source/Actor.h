@@ -2,11 +2,12 @@
 #define polukili_Actor_h_b64b7baa_3957_43a5_b7b0_78e992b91e8a
 
 #include <wiisprite.h>
+#include <mxml.h>
+#include <Box2D.h>
 
-#include "Actor.h"
-#include "Effect.h"
-#include "Element.h"
-#include "ActorState.h"
+#include <Effect.h>
+#include <Element.h>
+#include <ActorState.h>
 
 
 namespace Polukili 
@@ -80,7 +81,7 @@ namespace Polukili
       /**
       * Initialize physic data
       */
-      virtual void initPhysic()  = 0;
+      virtual void initPhysic() = 0;
 
       // Attributes
 
@@ -94,7 +95,7 @@ namespace Polukili
       /** 
       *  The physic body.
       */
-      int body;
+      b2Body* body;
 
       /** 
       *  The graphical sprite.

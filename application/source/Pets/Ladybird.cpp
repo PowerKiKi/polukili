@@ -1,6 +1,6 @@
 
 
-#include "Ladybird.h"
+#include <Pets/Ladybird.h>
 
 namespace Polukili 
 {
@@ -8,6 +8,6 @@ namespace Polukili
    {
 
    
-   } /* End of namespace polukili::Pets */
+   } /* End of namespace Polukili::Pets */
 } /* End of namespace Polukili */
 

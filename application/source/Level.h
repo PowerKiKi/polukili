@@ -2,8 +2,9 @@
 #define polukili_Level_h_73616512_59b7_4686_b077_24fbdae36d1e
 
 #include <list>
+#include <Box2D.h>
 
-#include "Actor.h"
+#include <Actor.h>
 
 namespace Polukili 
 {
@@ -64,6 +65,7 @@ namespace Polukili
       std::list< Ennemies::Ennemy* > ennemies;
       std::list< Bullets::Bullet* > bullets;
       std::list< Pets::Pet* > pets;
+      b2World* world;
 
    };
 

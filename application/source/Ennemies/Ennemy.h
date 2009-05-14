@@ -1,7 +1,7 @@
 #ifndef polukili_Ennemies_Ennemy_h_3c76803b_6dad_4dfc_9f88_2fd20fc7f0d6
 #define polukili_Ennemies_Ennemy_h_3c76803b_6dad_4dfc_9f88_2fd20fc7f0d6
 
-#include <polukili/Actor.h>
+#include <Actor.h>
 
 namespace Polukili 
 {
@@ -11,7 +11,7 @@ namespace Polukili
       /** 
       *  Represents an ennemy
       */
-      class Ennemy : public polukili::Actor
+      class Ennemy : public Polukili::Actor
       {
 
          // Operations
@@ -25,7 +25,7 @@ namespace Polukili
          //end of class Ennemy
       };
 
-   } /* End of namespace polukili::Ennemies */
+   } /* End of namespace Polukili::Ennemies */
 } /* End of namespace Polukili */
 
 #endif // polukili_Ennemies_Ennemy_h_3c76803b_6dad_4dfc_9f88_2fd20fc7f0d6

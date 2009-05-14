@@ -1,6 +1,6 @@
 
 
-#include "Bullet.h"
+#include <Bullets/Bullet.h>
 
 namespace Polukili 
 {
@@ -9,11 +9,11 @@ namespace Polukili
 
       // Operations
 
-      int Bullet::attack(polukili::Actor &actor)
+      int Bullet::attack(Polukili::Actor &actor)
       {
          return 0;
       }
 
-   } /* End of namespace polukili::Bullets */
+   } /* End of namespace Polukili::Bullets */
 } /* End of namespace Polukili */
 

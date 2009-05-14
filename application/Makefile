@@ -25,7 +25,7 @@ BUILD		:=	build
 SOURCES		:=	source
 DATA		:=
 TEXTURES	:=	textures
-INCLUDES	:=
+INCLUDES	:=	source
 
 #---------------------------------------------------------------------------------
 # options for code generation
@@ -39,7 +39,7 @@ LDFLAGS	=	-g $(MACHDEP) -Wl,-Map,$(notdir $@).map
 #---------------------------------------------------------------------------------
 # any extra libraries we wish to link with the project
 #---------------------------------------------------------------------------------
-LIBS	:=	-lwiiuse -lbte -logc -lm
+LIBS	:=	-lbox2d -lwiisprite -lpng -lz -lfat -lmxml -lwiiuse -lbte -logc -lm
 
 #---------------------------------------------------------------------------------
 # list of directories containing libraries, this must be the top level containing
