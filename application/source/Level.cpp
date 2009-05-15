@@ -42,8 +42,8 @@ namespace Polukili
       // Create the physic world and ground body
       b2AABB worldAABB;
       worldAABB.lowerBound.Set(0, 0);
-      float width = (float)atoi(mxmlElementGetAttr(data, "width"));
-      float height = (float)atoi(mxmlElementGetAttr(data, "height"));
+      float width = (float)atof(mxmlElementGetAttr(data, "width"));
+      float height = (float)atof(mxmlElementGetAttr(data, "height"));
       worldAABB.upperBound.Set(width, height);
       b2Vec2 gravity(0.0f, 10.0f);
       bool doSleep = false;      
@@ -59,9 +59,9 @@ namespace Polukili
       {
          if (strcmp(child->value.element.name, "circle") == 0)
          {
-            float radius = (float)atoi(mxmlElementGetAttr(child, "radius"));
-            float x = (float)atoi(mxmlElementGetAttr(child->child, "x"));
-            float y = (float)atoi(mxmlElementGetAttr(child->child, "y"));
+            float radius = (float)atof(mxmlElementGetAttr(child, "radius"));
+            float x = (float)atof(mxmlElementGetAttr(child->child, "x"));
+            float y = (float)atof(mxmlElementGetAttr(child->child, "y"));
             
             b2CircleDef def;
             def.radius = radius;
@@ -74,8 +74,8 @@ namespace Polukili
             polygonDef.vertexCount = 0;
             for (mxml_node_t* point = data->child; point != 0; point = point->next)
             {
-               float x = (float)atoi(mxmlElementGetAttr(point, "x"));
-               float y = (float)atoi(mxmlElementGetAttr(point, "y"));
+               float x = (float)atof(mxmlElementGetAttr(point, "x"));
+               float y = (float)atof(mxmlElementGetAttr(point, "y"));
                polygonDef.vertices[polygonDef.vertexCount++].Set(x, y);
             }
             
