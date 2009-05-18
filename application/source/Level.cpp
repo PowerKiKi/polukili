@@ -3,6 +3,7 @@
 #include <mxml.h>
 #include <Box2D.h>
 
+#include <Constants.h>
 
 #include <Players/Player.h>
 #include <Players/Poupa.h>
@@ -47,7 +48,7 @@ namespace Polukili
       float width = (float)atof(mxmlElementGetAttr(data, "width"));
       float height = (float)atof(mxmlElementGetAttr(data, "height"));
       worldAABB.upperBound.Set(width, height);
-      b2Vec2 gravity(0.0f, 10.0f);
+      b2Vec2 gravity(0.0f, Constants::defaultGravity);
       bool doSleep = false;      
       this->world = new b2World(worldAABB, gravity, doSleep);      
       b2BodyDef groundBodyDef;
