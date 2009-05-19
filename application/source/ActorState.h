@@ -14,6 +14,18 @@ namespace Polukili
       imploding      = 4,
       frozen         = 8,
       burning        = 16,
+      waiting        = 32,
+      walking        = 64,
+      running        = 128,
+      jumping        = 256,
+      flying         = 512,
+      movingLeft     = 1024,
+      movingRight    = 2048,
+      movingUp       = 4096,
+      movingDown     = 8192,
+      shooting       = 16384,
+      collapsing     = 32768,
+      dying          = 65536,
    };
    
 }/* End of namespace Polukili */
