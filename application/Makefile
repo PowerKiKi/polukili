@@ -31,7 +31,7 @@ INCLUDES	:=	source
 # options for code generation
 #---------------------------------------------------------------------------------
 
-CFLAGS	= -save-temps -g -O2 -Wall $(MACHDEP) $(INCLUDE)
+CFLAGS	= -save-temps -g -O2 -Wall $(MACHDEP) $(INCLUDE) -DTARGET_FLOAT32_IS_FIXED
 CXXFLAGS	=	$(CFLAGS)
 
 LDFLAGS	=	-g $(MACHDEP) -Wl,-Map,$(notdir $@).map
