@@ -9,6 +9,7 @@ namespace Polukili
    enum ActorState
    {
       normal         = 0,
+      dead           = 1,
       exploding      = 2,
       imploding      = 4,
       frozen         = 8,

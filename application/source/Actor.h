@@ -87,6 +87,11 @@ namespace Polukili
       * Initialize physic data
       */
       virtual void initPhysic() = 0;
+      
+      /**
+      * Returns wether the actor is in the given state.
+      */
+      bool is(ActorState state);
 
       // Attributes
 

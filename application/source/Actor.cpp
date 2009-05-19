@@ -79,5 +79,12 @@ namespace Polukili
    {
 
    }
+   
+   /*************************************************/
+   bool Actor::is(ActorState state)
+   {
+      return (this->state & state) == state;
+   }
+   
 } /* End of namespace Polukili */
 

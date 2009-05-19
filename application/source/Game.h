@@ -4,8 +4,15 @@
 
 #include <stack>
 
+#include <wiisprite.h>
+#include <Box2D.h>
+#include <fat.h>
+#include <gccore.h>
+#include <wiiuse/wpad.h>
+
 #include <Level.h>
 #include <ImageLibrary.h>
+
 
 namespace Polukili 
 {
@@ -46,6 +53,7 @@ namespace Polukili
       
    private:
       std::stack< Level* > levels;
+      wsp::GameWindow gameWindow;
 
       //end of class Game
    };
