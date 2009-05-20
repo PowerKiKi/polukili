@@ -32,7 +32,7 @@ namespace Polukili
       }
 
       /*************************************************/
-      void Ennemy::initPhysic()
+      void Ennemy::initPhysic(float x, float y)
       {
         // TODO: should do something here
       }

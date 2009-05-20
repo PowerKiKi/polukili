@@ -1,5 +1,6 @@
 #include <Players/Player.h>
 
+#include <Constants.h>
 #include <Level.h>
 
 namespace Polukili 
@@ -22,9 +23,27 @@ namespace Polukili
 
       
       /*************************************************/
-      void Player::initPhysic()
+      void Player::initPhysic(float x, float y)
       {
         // TODO: should do something here
+      }
+      
+      /*************************************************/
+      string Player::getImagePath() const
+      {
+         return Constants::basePath + "player.png";
+      }
+
+      /*************************************************/
+      int Player::getImageWidth() const
+      {
+         return 96;
+      }
+
+      /*************************************************/
+      int Player::getImageHeight() const
+      {
+         return 48;
       }
       
    } /* End of namespace Polukili::Players */

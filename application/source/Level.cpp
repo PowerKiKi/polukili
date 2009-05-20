@@ -9,6 +9,8 @@
 #include <Game.h>
 #include <ImageLibrary.h>
 
+#include <Bullets/Bullet.h>
+#include <Pets/Pet.h>
 #include <Players/Player.h>
 #include <Players/Poupa.h>
 #include <Players/Luna.h>
@@ -132,6 +134,11 @@ namespace Polukili
             actor = new Ennemies::Earthworm(this);
          else
             continue;
+            
+            
+         float x = (float)atof(mxmlElementGetAttr(data->child, "x"));
+         float y = (float)atof(mxmlElementGetAttr(data->child, "y"));
+         actor->initPhysic(x, y);
          
          Ennemies::Ennemy* ennemy = dynamic_cast<Ennemies::Ennemy*>(actor);
          if (ennemy && stricmp(mxmlElementGetAttr(data, "isTarget"), "True") == 0)
@@ -196,7 +203,7 @@ namespace Polukili
       for (list<Players::Player*>::iterator it = this->players.begin(); it != this->players.end(); it++)
          (*it)->render();
          
-      for (list<Bullets::Bullet*>::iterator it = this->pets.begin(); it != this->pets.end(); it++)
+      for (list<Pets::Pet*>::iterator it = this->pets.begin(); it != this->pets.end(); it++)
          (*it)->render();
          
       for (list<Bullets::Bullet*>::iterator it = this->bullets.begin(); it != this->bullets.end(); it++)

@@ -1,6 +1,10 @@
 #ifndef polukili_Constant_h_5932f181_5c91_439d_82ad_c1b3e506a9bf
 #define polukili_Constant_h_5932f181_5c91_439d_82ad_c1b3e506a9bf
 
+#include <string>
+
+using namespace std;
+
 namespace Polukili
 {
    /** 
@@ -10,6 +14,11 @@ namespace Polukili
    {
    public :
 	
+      /**
+      * Base path for data
+      */
+      static const string basePath;
+      
       static const int pixelsPerUnits;
 	
       static const float defaultGravity;
