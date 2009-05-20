@@ -79,7 +79,7 @@ namespace Polukili
       data = mxmlFindElement(tree, tree, "physics", NULL, NULL, MXML_DESCEND);
       for (child = data->child; child != 0; child = child->next)
       {
-         if (strcmp(child->value.element.name, "circle") == 0)
+         if (stricmp(child->value.element.name, "circle") == 0)
          {
             float radius = (float)atof(mxmlElementGetAttr(child, "radius"));
             float x = (float)atof(mxmlElementGetAttr(child->child, "x"));
@@ -90,7 +90,7 @@ namespace Polukili
             def.localPosition.Set(x, y);
 
          }
-         else if (strcmp(child->value.element.name, "polygon") == 0)
+         else if (stricmp(child->value.element.name, "polygon") == 0)
          {
             b2PolygonDef polygonDef;
             polygonDef.vertexCount = 0;
@@ -114,27 +114,27 @@ namespace Polukili
          const char* type = mxmlElementGetAttr(data, "type");
          
          // Players
-         if (strcmp(type, "poupa") == 0)
+         if (stricmp(type, "poupa") == 0)
             actor = new Players::Poupa(this);
-         else if (strcmp(type, "luna") == 0)
+         else if (stricmp(type, "luna") == 0)
             actor = new Players::Luna(this);
-         else if (strcmp(type, "kiki") == 0)
+         else if (stricmp(type, "kiki") == 0)
             actor = new Players::Kiki(this);
-         else if (strcmp(type, "lila") == 0)
+         else if (stricmp(type, "lila") == 0)
             actor = new Players::Lila(this);
             
          // Ennemies
-         else if (strcmp(type, "bee") == 0)
+         else if (stricmp(type, "bee") == 0)
             actor = new Ennemies::Bee(this);
-         else if (strcmp(type, "spider") == 0)
+         else if (stricmp(type, "spider") == 0)
             actor = new Ennemies::Spider(this);
-         else if (strcmp(type, "earthworm") == 0)
+         else if (stricmp(type, "earthworm") == 0)
             actor = new Ennemies::Earthworm(this);
          else
             continue;
          
          Ennemies::Ennemy* ennemy = dynamic_cast<Ennemies::Ennemy*>(actor);
-         if (ennemy && strcmp(mxmlElementGetAttr(data, "isTarget"), "True") == 0)
+         if (ennemy && stricmp(mxmlElementGetAttr(data, "isTarget"), "True") == 0)
             ennemy->setTarget(true);
       }
       
