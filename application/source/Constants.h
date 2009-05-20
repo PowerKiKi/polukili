@@ -13,12 +13,19 @@ namespace Polukili
    class Constants 
    {
    public :
-	   // scale between Box2D units and Screen units(pixels)
+   
+   
+      /**
+      * Full path to the lof file.
+      */
+      static const string logFilename;
+   
       /**
       * Base path for data
       */
       static const string basePath;
       
+	   // scale between Box2D units and Screen units(pixels)
       static const int pixelsPerUnits;
       
       // Earth gravity

@@ -15,13 +15,16 @@ namespace Polukili
    Game::Game()
    {
       fatInitDefault();
-   
+      Logger::log("fat initialised");
+      
       this->gameWindow.InitVideo();      
       this->gameWindow.SetBackground((GXColor){ 255, 255, 255, 255 });
+      Logger::log("video initialised");
       
       // Initialise Wiimote
       WPAD_Init();
       WPAD_SetDataFormat(WPAD_CHAN_0, WPAD_FMT_BTNS_ACC_IR);
+      Logger::log("wiimote initialized");
    }
    
    /*************************************************/
