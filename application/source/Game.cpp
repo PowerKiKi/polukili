@@ -35,41 +35,33 @@ namespace Polukili
    }
    
    /*************************************************/
-   void Game::run(const char* initialLevel)
+   void Game::run(const string& initialLevel)
    {
       this->changeLevel(initialLevel);
       
       while (!this->levels.empty())
       {
          Level* level = this->levels.top();
-         list<Actor*> actorsToDelete;
-      
-         WPAD_ScanPads();
-         
-         // Each actors reacts to current situation
-         for (list<Actor*>::iterator it = level->actors.begin(); it != level->actors.end(); it++)
-         {
-            (*it)->nextStep();
-            if ((*it)->is(dead))
-               actorsToDelete.push_back(*it);
-         }
-         
-         // Delete all dead actors
-         for (list<Actor*>::iterator it = actorsToDelete.begin(); it != actorsToDelete.end(); it++)
-            delete *it;
-         
-         // TODO game logic goes here
+                  
+         level->nextStep();
+         level->render();
          
          this->gameWindow.Flush();
          
-         float32 timeStep = 1.0f / 60.0f;
-         int32 iterations = 10;         
-         level->world->Step(timeStep, iterations); // TODO these variables should be in Constants class
+         // If level is finished, resume the previous one
+         if (level->isFinished())
+         {
+            this->levels.pop();
+            delete level;
+            
+            if (this->levels.top())
+               this->levels.top()->loadGraphics();
+         }
       }
    }
    
    /*************************************************/
-   void Game::changeLevel(const char* newLevelPath)
+   void Game::changeLevel(const string& newLevelPath)
    {
       Level* level = new Level(this);
       level->loadFromXML(newLevelPath);

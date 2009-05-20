@@ -33,13 +33,13 @@ namespace Polukili
       /*
       * Get an image from path. It will be loaded if needed.
       */
-      wsp::Image* get(const char* filename);
+      wsp::Image* get(const string& filename);
       
       /*
       * Remove the image from library if it exist (deallocate memory)
       * If the image is not present in library, do nothing.
       **/
-      void remove(const char* filename);
+      void remove(const string& filename);
       
 
       // Attributes

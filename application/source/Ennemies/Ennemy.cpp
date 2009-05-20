@@ -8,7 +8,7 @@ namespace Polukili
    {
       /*************************************************/
       Ennemy::Ennemy(Level* level)
-         : Actor(level)
+         : Actor(level), target(false)
       {
          this->level->ennemies.push_back(this);
       }
@@ -19,13 +19,16 @@ namespace Polukili
          this->level->ennemies.remove(this);
       }
 
-
-      /** 
-      *  Returns wether the ennemy must be destroyed to complete the level. It should always be true for boss.
-      */
-      bool Ennemy::isTarget()
+      /*************************************************/
+      void Ennemy::setTarget(bool isTarget)
       {
-         return false;
+         this->target = isTarget;
+      }
+      
+      /*************************************************/
+      bool Ennemy::isTarget() const
+      {
+         return this->target;
       }
 
       /*************************************************/

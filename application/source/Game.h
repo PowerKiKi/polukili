@@ -25,26 +25,26 @@ namespace Polukili
    
    public: 
    
-   /**
-   * Constructor.
-   */
-   Game();
-   
-   /**
-   * Desstructor.
-   */
-   virtual ~Game();
-   
-   /**
-   * Run the specified level. The path must point to the XML file description of the level.
-   */
-   void run(const char* initialLevel);
+      /**
+      * Constructor.
+      */
+      Game();
+      
+      /**
+      * Desstructor.
+      */
+      virtual ~Game();
+      
+      /**
+      * Run the specified level. The path must point to the XML file description of the level.
+      */
+      void run(const string& initialLevel);
 
-   /**
-   * Change the current level for the one specified.
-   * The current level will not be removed from stack. That means it will be resumed when new level is finished.
-   */
-   void changeLevel(const char* newLevelPath);
+      /**
+      * Change the current level for the one specified.
+      * The current level will not be removed from stack. That means it will be resumed when new level is finished.
+      */
+      void changeLevel(const string& newLevelPath);
 
       // Attributes
    public:

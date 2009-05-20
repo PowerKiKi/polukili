@@ -1,8 +1,4 @@
-
-
-#include <Game.h>
-
-#include <Level.h>
+#include <ImageLibrary.h>
 
 namespace Polukili 
 {
@@ -22,7 +18,7 @@ namespace Polukili
    }
    
    /*************************************************/
-   wsp::Image* ImageLibrary::get(const char* filename)
+   wsp::Image* ImageLibrary::get(const string& filename)
    {
       map<string, wsp::Image*>::iterator it = this->images.find(filename);
       
@@ -30,17 +26,19 @@ namespace Polukili
          return it->second;
          
       wsp::Image* image = new wsp::Image();
-      if (image->LoadImage(filename))
+      if (image->LoadImage(filename.data()))
       {
          delete image;
          image = 0;
       }
+      else
+         this->images.insert(make_pair(filename, image));
       
       return image;
    }
    
    /*************************************************/
-   void ImageLibrary::remove(const char* filename)
+   void ImageLibrary::remove(const string& filename)
    {
       map<string, wsp::Image*>::iterator it = this->images.find(filename);
       if (it != this->images.end())

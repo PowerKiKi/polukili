@@ -27,14 +27,19 @@ namespace Polukili
          
          virtual void initPhysic();
          
-         // Operations
-      public:
 
+         /** 
+         *  Sets wether the ennemy must be destroyed to complete the level. It should always be true for boss.
+         */
+         void setTarget(bool isTarget);
+         
          /** 
          *  Returns wether the ennemy must be destroyed to complete the level. It should always be true for boss.
          */
-         virtual bool isTarget();
+         virtual bool isTarget() const;
 
+      private:
+         bool target;
          //end of class Ennemy
       };
 
