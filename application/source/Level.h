@@ -83,15 +83,15 @@ namespace Polukili
 
       // Attributes
    public:
-      std::list< Actor* > actors;
-      std::list< Players::Player* > players;
-      std::list< Ennemies::Ennemy* > ennemies;
-      std::list< Bullets::Bullet* > bullets;
-      std::list< Pets::Pet* > pets;
+      list< Actor* > actors;
+      list< Players::Player* > players;
+      list< Ennemies::Ennemy* > ennemies;
+      list< Bullets::Bullet* > bullets;
+      list< Pets::Pet* > pets;
       b2World* world;
+      Game* game;
       
    private: 
-      Game* game;
       string backgroundPath;
       string foregroundPath;
       wsp::Sprite* backgroundSprite;

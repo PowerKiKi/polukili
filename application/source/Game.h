@@ -13,6 +13,7 @@
 #include <Level.h>
 #include <ImageLibrary.h>
 
+using namespace std;
 
 namespace Polukili 
 {
@@ -52,7 +53,7 @@ namespace Polukili
       ImageLibrary imageLibrary;
       
    private:
-      std::stack< Level* > levels;
+      stack< Level* > levels;
       wsp::GameWindow gameWindow;
 
       //end of class Game

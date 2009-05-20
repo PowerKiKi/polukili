@@ -143,7 +143,7 @@ namespace Polukili
    
    /*************************************************/
    void Level::loadGraphics()
-   {      
+   {
       wsp::Image* image;
       image = this->game->imageLibrary.get(this->backgroundPath);
       if (image)
@@ -158,28 +158,51 @@ namespace Polukili
          this->foregroundSprite = new wsp::Sprite();
          this->foregroundSprite->SetImage(image, image->GetWidth(), image->GetHeight());
       }
+      
+      for (list<Actor*>::iterator it = this->actors.begin(); it != this->actors.end(); it++)
+         (*it)->loadGraphics();
    }
 
    /*************************************************/
    void Level::unloadGraphics()
    {   
       if (this->backgroundSprite)
+      {
          delete this->backgroundSprite;
+         this->backgroundSprite = 0;
+      }
+      
       if (this->foregroundSprite)
-         delete this->foregroundSprite;
+      {
+         delete this->foregroundSprite;         
+         this->foregroundSprite = 0;
+      }
          
       this->game->imageLibrary.remove(this->backgroundPath);
       this->game->imageLibrary.remove(this->foregroundPath);
+      
+      for (list<Actor*>::iterator it = this->actors.begin(); it != this->actors.end(); it++)
+         (*it)->unloadGraphics();
    }
    
    /*************************************************/
    void Level::render()
-   {
-      
-      for (list<Actor*>::iterator it = this->actors.begin(); it != this->actors.end(); it++)
-      {
+   {   
+      this->backgroundSprite->Draw();      
+   
+      for (list<Ennemies::Ennemy*>::iterator it = this->ennemies.begin(); it != this->ennemies.end(); it++)
          (*it)->render();
-      }
+         
+      for (list<Players::Player*>::iterator it = this->players.begin(); it != this->players.end(); it++)
+         (*it)->render();
+         
+      for (list<Bullets::Bullet*>::iterator it = this->pets.begin(); it != this->pets.end(); it++)
+         (*it)->render();
+         
+      for (list<Bullets::Bullet*>::iterator it = this->bullets.begin(); it != this->bullets.end(); it++)
+         (*it)->render();
+      
+      this->foregroundSprite->Draw();
    }
    
    /*************************************************/

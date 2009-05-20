@@ -1,5 +1,7 @@
 #include <Actor.h>
 
+#include <Constants.h>
+#include <Game.h>
 #include <Level.h>
 
 namespace Polukili 
@@ -23,7 +25,10 @@ namespace Polukili
    /*************************************************/
    void Actor::render()
    {
-
+      this->sprite->SetRotation((float)this->body->GetAngle() / M_PI * 180.0);
+      b2Vec2 pos = body->GetPosition();
+      this->sprite->SetPosition(Constants::pixelsPerUnits * pos.x, Constants::pixelsPerUnits * pos.y);
+      this->sprite->Draw();
    }
 
    /*************************************************/
@@ -35,13 +40,21 @@ namespace Polukili
    /*************************************************/
    void Actor::loadGraphics()
    {
-      
+      wsp::Image* image = this->level->game->imageLibrary.get(this->getImagePath());
+      this->sprite = new wsp::Sprite();      
+      this->sprite->SetImage(image, this->getImageWidth(), this->getImageHeight());
    }
 
    /*************************************************/
    void Actor::unloadGraphics()
    {
-
+      if (this->sprite)
+      {
+         delete this->sprite;
+         this->sprite = 0;
+      }
+   
+      this->level->game->imageLibrary.remove(this->getImagePath());
    }
 
    /*************************************************/
@@ -80,6 +93,24 @@ namespace Polukili
 
    }
    
+   /*************************************************/
+   string Actor::getImagePath() const
+   {
+      return "/app/polukili/data/default.png";
+   }
+
+   /*************************************************/
+   int Actor::getImageWidth() const
+   {
+      return 32;
+   }
+
+   /*************************************************/
+   int Actor::getImageHeight() const
+   {
+      return 32;
+   }
+
    /*************************************************/
    bool Actor::is(ActorState state)
    {

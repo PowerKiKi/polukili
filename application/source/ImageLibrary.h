@@ -44,7 +44,7 @@ namespace Polukili
 
       // Attributes
    private:
-      std::map<string, wsp::Image* > images;
+      map<string, wsp::Image* > images;
 
       //end of class Game
    };

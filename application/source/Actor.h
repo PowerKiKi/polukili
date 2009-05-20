@@ -1,6 +1,8 @@
 #ifndef polukili_Actor_h_b64b7baa_3957_43a5_b7b0_78e992b91e8a
 #define polukili_Actor_h_b64b7baa_3957_43a5_b7b0_78e992b91e8a
 
+#include <string>
+
 #include <wiisprite.h>
 #include <mxml.h>
 #include <Box2D.h>
@@ -9,6 +11,7 @@
 #include <Element.h>
 #include <ActorState.h>
 
+using namespace std;
 
 namespace Polukili 
 {
@@ -87,6 +90,21 @@ namespace Polukili
       * Initialize physic data
       */
       virtual void initPhysic() = 0;
+
+      /**
+      * Returns the path to the image for the sprite.
+      */
+      virtual string getImagePath() const;
+      
+      /**
+      * Returns the width of the tile in the image (must be multiple of 4).
+      */
+      virtual int getImageWidth() const;
+      
+      /**
+      * Returns the height of the tile in the image (must be multiple of 4).
+      */
+      virtual int getImageHeight() const;
       
       /**
       * Returns wether the actor is in the given state.
