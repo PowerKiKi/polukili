@@ -1,14 +1,13 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<level name="Garden - test" nextLevel="" background="level_0_background.png" foreground="level_0_foreground.png" width="640" height="480">
+<level name="Garden - test" nextLevel="" background="/apps/polukili/data/level_0_background.png" foreground="/apps/polukili/data/level_0_foreground.png" width="640" height="480">
   <physics>
     <circle radius="50">
       <point x="350" y="80" />
     </circle>
     <polygon>
-      <point x="50" y="80" />
-      <point x="200" y="200" />
-      <point x="160" y="50" />
-      <point x="10" y="10" />
+      <point x="-1" y="0" />
+      <point x="1" y="0" />
+      <point x="0" y="2" />
     </polygon>
   </physics>
   <actors>
