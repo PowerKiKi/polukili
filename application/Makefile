@@ -20,7 +20,7 @@ include $(DEVKITPPC)/wii_rules
 # SOURCES is a list of directories containing source code
 # INCLUDES is a list of directories containing extra header files
 #---------------------------------------------------------------------------------
-TARGET		:=	$(notdir $(CURDIR))
+TARGET		:=	../polukili/boot
 BUILD		:=	build
 SOURCES		:=	source source/Bullets source/Ennemies source/Items source/Pets source/Players
 DATA		:=
