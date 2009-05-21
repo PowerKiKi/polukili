@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<level name="Garden - test" nextLevel="" background="level_0_background.png" foreground="level_0_foreground.png" width="640" height="480">
+  <physics>
+    <circle radius="50">
+      <point x="350" y="80" />
+    </circle>
+    <polygon>
+      <point x="50" y="80" />
+      <point x="200" y="200" />
+      <point x="160" y="50" />
+      <point x="10" y="10" />
+    </polygon>
+  </physics>
+  <actors>
+    <actor type="poupa" powerFactor="1" isTarget="False">
+      <point x="350" y="300" />
+    </actor>
+    <actor type="kiki" powerFactor="1" isTarget="False">
+      <point x="300" y="300" />
+    </actor>
+    <actor type="bee" powerFactor="1" isTarget="False">
+      <point x="200" y="150" />
+    </actor>
+    <actor type="bee" powerFactor="1" isTarget="False">
+      <point x="200" y="200" />
+    </actor>
+    <actor type="bee" powerFactor="3" isTarget="True">
+      <point x="200" y="250" />
+    </actor>
+  </actors>
+</level>
