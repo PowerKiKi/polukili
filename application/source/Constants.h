@@ -9,10 +9,18 @@ namespace Polukili
    class Constants 
    {
    public :
-	
+	   // scale between Box2D units and Screen units(pixels)
       static const int pixelsPerUnits;
-	
+      
+      // Earth gravity
       static const float defaultGravity;
+      
+      
+      static const float defaultDensity;
+      
+      static const float defaultFriction;
+      
+      static const float defaultRestitution;
    
    };/* End of class Constants*/
 } /* End of namespace Polukili*/
