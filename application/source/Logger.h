@@ -16,7 +16,7 @@ namespace Polukili
    public:
 
       static void init();
-      static void log(const string& text);
+      static void log(const string& input, ...);
 
       //end of class Effect
    };

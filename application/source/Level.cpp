@@ -140,10 +140,10 @@ namespace Polukili
                
                Logger::log("loadFromXML() - reading polygon before set");
                polygonDef.vertices[polygonDef.vertexCount++].Set(x, y);
-               Logger::log("loadFromXML() - reading polygon after set");
+               Logger::log("loadFromXML() - reading polygon after set value x:%f y:%f",x,y);
             }
             
-            Logger::log("loadFromXML() - reading polygon before create shape");
+            Logger::log("loadFromXML() - reading polygon before create shape ");
             //HERE IS THE BUG !!!!! TODO watching variables
             this->body->CreateShape(&polygonDef);
             
