@@ -11,7 +11,7 @@ namespace Polukili
    /** 
    * 
    */
-   class Logger = 0
+   class Logger 
    {
    public:
 

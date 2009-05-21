@@ -1,4 +1,7 @@
 #include <Logger.h>
+#include <fstream>
+
+#include <Constants.h>
 
 namespace Polukili 
 {
@@ -11,10 +14,9 @@ namespace Polukili
       
       void Logger::log(const string& text)
       {
-         fp = fopen(Constants::logFilename.data(), "a");
-         fwrite(fp, text.data());
-         fwrite(fp, "\n");
-         fclose(fp);
+         fstream fp(Constants::logFilename.data(),ios::app);
+         fp << text << endl;
+         fp.close();
       }
 
 } /* End of namespace Polukili */

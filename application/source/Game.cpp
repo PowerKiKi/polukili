@@ -5,6 +5,7 @@
 #include <fat.h>
 #include <gccore.h>
 #include <wiiuse/wpad.h>
+#include <Logger.h>
 
 #include <Level.h>
 
