@@ -5,6 +5,7 @@
 #include <mxml.h>
 #include <Box2D.h>
 
+#include <Logger.h>
 #include <Constants.h>
 #include <Game.h>
 #include <ImageLibrary.h>
@@ -42,10 +43,32 @@ namespace Polukili
       if (this->world != 0)
          delete this->world;
    }
+   
+   void dump(mxml_node_t* child)
+   {
+
+      string t;
+      if (child->type == MXML_CUSTOM)
+         t = "";
+      else if (child->type == MXML_ELEMENT)
+         t = "MXML_ELEMENT";
+      else if (child->type ==MXML_IGNORE )
+         t = "MXML_IGNORE";
+      else if (child->type ==MXML_INTEGER )
+         t = "MXML_INTEGER";
+      else if (child->type == MXML_OPAQUE)
+         t = "MXML_OPAQUE";
+      else if (child->type ==MXML_REAL )
+         t = "MXML_REAL";
+      else if (child->type == MXML_TEXT)
+         t = "MXML_TEXT";
+         Logger::log(t);
+   }
 
    /*************************************************/
    void Level::loadFromXML(const string& filename)
-   {
+   {   
+      Logger::log("loadFromXML()");
       if (this->world != 0) 
          delete this->world;
          
@@ -55,9 +78,10 @@ namespace Polukili
       mxml_node_t* child = 0;
       
       fp = fopen(filename.data(), "r");
-      tree = mxmlLoadFile(NULL, fp, MXML_NO_CALLBACK);
+      tree = mxmlLoadFile(NULL, fp, MXML_IGNORE_CALLBACK);
       fclose(fp);
       
+      Logger::log("loadFromXML() - file read");
       data = mxmlFindElement(tree, tree, "level", NULL, NULL, MXML_DESCEND);
       
       
@@ -73,39 +97,59 @@ namespace Polukili
       b2BodyDef groundBodyDef;
       groundBodyDef.position.Set(0.0f, 0.0f);
       this->body = this->world->CreateBody(&groundBodyDef);
+      Logger::log("loadFromXML() - physic world built");
       
       this->backgroundPath = mxmlElementGetAttr(data, "background");
       this->foregroundPath = mxmlElementGetAttr(data, "foreground");
       
       // Create physic shape for the level's ground
       data = mxmlFindElement(tree, tree, "physics", NULL, NULL, MXML_DESCEND);
+      
+      Logger::log(data->value.element.name);
+      dump(data);
       for (child = data->child; child != 0; child = child->next)
-      {
+      {            
          if (stricmp(child->value.element.name, "circle") == 0)
          {
+         
+            Logger::log("loadFromXML() - reading circle");
             float radius = (float)atof(mxmlElementGetAttr(child, "radius"));
             float x = (float)atof(mxmlElementGetAttr(child->child, "x"));
             float y = (float)atof(mxmlElementGetAttr(child->child, "y"));
             
-            b2CircleDef def;
-            def.radius = radius;
-            def.localPosition.Set(x, y);
+            Logger::log("loadFromXML() - reading circle");
+            b2CircleDef circleDef;
+            circleDef.radius = radius;
+            circleDef.localPosition.Set(x, y);
+            this->body->CreateShape(&circleDef);
+            
+            Logger::log("loadFromXML() - physic circle read");
 
          }
          else if (stricmp(child->value.element.name, "polygon") == 0)
          {
+            Logger::log("loadFromXML() - reading polygon");
             b2PolygonDef polygonDef;
             polygonDef.vertexCount = 0;
-            for (mxml_node_t* point = data->child; point != 0; point = point->next)
+            for (mxml_node_t* point = child->child; point != 0; point = point->next)
             {
+               dump(point);
+               Logger::log(point->value.element.name);
                float x = (float)atof(mxmlElementGetAttr(point, "x"));
                float y = (float)atof(mxmlElementGetAttr(point, "y"));
+               
+               Logger::log("loadFromXML() - reading polygon before set");
                polygonDef.vertices[polygonDef.vertexCount++].Set(x, y);
+               Logger::log("loadFromXML() - reading polygon after set");
             }
             
+            Logger::log("loadFromXML() - reading polygon before create shape");
             this->body->CreateShape(&polygonDef);
+            
+            Logger::log("loadFromXML() - physic polygon read");
          }
       }
+      Logger::log("loadFromXML() - physic shapes read");
       
       // Create all actors
       data = mxmlFindElement(tree, tree, "actors", NULL, NULL, MXML_DESCEND);
@@ -144,8 +188,11 @@ namespace Polukili
          if (ennemy && stricmp(mxmlElementGetAttr(data, "isTarget"), "True") == 0)
             ennemy->setTarget(true);
       }
+      Logger::log("loadFromXML() - actors read");
       
       mxmlDelete(tree);
+      
+      Logger::log("loadFromXML() end");
    }
    
    /*************************************************/

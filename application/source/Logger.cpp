@@ -14,7 +14,9 @@ namespace Polukili
       
       void Logger::log(const string& text)
       {
-         fstream fp(Constants::logFilename.data(),ios::app);
+         printf("logged %s\n", text.data());
+         fstream fp(Constants::logFilename.data(), ios::out | ios::app);
+         printf("open fail %i\n", fp.fail());
          fp << text << endl;
          fp.close();
       }

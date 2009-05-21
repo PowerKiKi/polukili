@@ -26,6 +26,8 @@ namespace Polukili
       WPAD_Init();
       WPAD_SetDataFormat(WPAD_CHAN_0, WPAD_FMT_BTNS_ACC_IR);
       Logger::log("wiimote initialized");
+      
+      Logger::log("Game creation end");
    }
    
    /*************************************************/
@@ -41,10 +43,15 @@ namespace Polukili
    /*************************************************/
    void Game::run(const string& initialLevel)
    {
+      Logger::log("run 0");
+      Logger::log(initialLevel.data());
       this->changeLevel(initialLevel);
+      Logger::log("run 1");
       
       while (!this->levels.empty())
       {
+      
+         Logger::log("run dedans");
          Level* level = this->levels.top();
                   
          level->nextStep();
@@ -60,13 +67,21 @@ namespace Polukili
             
             if (this->levels.top())
                this->levels.top()->loadGraphics();
-         }
+         }         
+         
+         // WPAD_ButtonsDown tells us which buttons were pressed in this loop
+         // this is a "one shot" state which will not fire again until the button has been released
+         u32 pressed = WPAD_ButtonsDown(0);
+
+         // We return to the launcher application via exit
+         if ( pressed & WPAD_BUTTON_HOME ) exit(0);
       }
    }
    
    /*************************************************/
    void Game::changeLevel(const string& newLevelPath)
    {
+      Logger::log("changeLevel()");
       Level* level = new Level(this);
       level->loadFromXML(newLevelPath);
       
@@ -76,6 +91,8 @@ namespace Polukili
       
       level->loadGraphics();
       this->levels.push(level);
+      
+      Logger::log("changeLevel() end");
    }
 
 } /* End of namespace Polukili */
