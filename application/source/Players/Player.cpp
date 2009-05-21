@@ -1,5 +1,6 @@
 #include <Players/Player.h>
 
+#include <Logger.h>
 #include <Constants.h>
 #include <Level.h>
 
@@ -12,6 +13,7 @@ namespace Polukili
       Player::Player(Level* level)
          : Actor(level)
       {
+         Logger::log("Player::Player() - new player");    
          this->level->players.push_back(this);
       }
       

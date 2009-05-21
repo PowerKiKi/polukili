@@ -16,23 +16,24 @@ namespace Polukili
    Game::Game()
    {
       
-      Logger::log("Game creation");
+      Logger::log("Game::Game()");
       
       this->gameWindow.InitVideo();      
       this->gameWindow.SetBackground((GXColor){ 255, 255, 255, 255 });
-      Logger::log("video initialised");
+      Logger::log("Game::Game() - video initialised");
       
       // Initialise Wiimote
       WPAD_Init();
       WPAD_SetDataFormat(WPAD_CHAN_0, WPAD_FMT_BTNS_ACC_IR);
-      Logger::log("wiimote initialized");
+      Logger::log("Game::Game() - wiimote initialized");
       
-      Logger::log("Game creation end");
+      Logger::log("Game::Game() - end");
    }
    
    /*************************************************/
    Game::~Game()
    {
+      Logger::log("Game::~Game()");
       while (!this->levels.empty())
       {
          delete this->levels.top();
@@ -43,15 +44,14 @@ namespace Polukili
    /*************************************************/
    void Game::run(const string& initialLevel)
    {
-      Logger::log("run 0");
-      Logger::log(initialLevel.data());
+      Logger::log("Game::run() - 0");
       this->changeLevel(initialLevel);
-      Logger::log("run 1");
+      Logger::log("Game::run() - 1");
       
       while (!this->levels.empty())
       {
       
-         Logger::log("run dedans");
+         Logger::log("Game::run() - dedans");
          Level* level = this->levels.top();
                   
          level->nextStep();
@@ -62,12 +62,14 @@ namespace Polukili
          // If level is finished, resume the previous one
          if (level->isFinished())
          {
+         
+            Logger::log("Game::run() - resume previous level");
             this->levels.pop();
             delete level;
             
             if (this->levels.top())
                this->levels.top()->loadGraphics();
-         }         
+         }
          
          // WPAD_ButtonsDown tells us which buttons were pressed in this loop
          // this is a "one shot" state which will not fire again until the button has been released
@@ -81,7 +83,7 @@ namespace Polukili
    /*************************************************/
    void Game::changeLevel(const string& newLevelPath)
    {
-      Logger::log("changeLevel()");
+      Logger::log("Game::changeLevel() - begin");
       Level* level = new Level(this);
       level->loadFromXML(newLevelPath);
       
@@ -92,7 +94,7 @@ namespace Polukili
       level->loadGraphics();
       this->levels.push(level);
       
-      Logger::log("changeLevel() end");
+      Logger::log("Game::changeLevel() - end");
    }
 
 } /* End of namespace Polukili */

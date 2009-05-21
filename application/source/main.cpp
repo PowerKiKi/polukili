@@ -58,7 +58,7 @@ int main(int argc, char **argv) {
    fatInitDefault();
 
    /*MXML TEST */
-   Polukili::Logger::log("========================init...==================");
+   Polukili::Logger::log("=============================================================");
    Polukili::Logger::log("fat initialised");
    Polukili::Game game;
    game.run(Polukili::Constants::basePath + "level_0.xml");

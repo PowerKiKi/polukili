@@ -1,5 +1,7 @@
 #include <ImageLibrary.h>
 
+#include <Logger.h>
+
 namespace Polukili 
 {
 
@@ -25,6 +27,8 @@ namespace Polukili
       if (it != this->images.end())
          return it->second;
          
+         
+      Logger::log("ImageLibrary::get() - loading %s", filename.data());
       wsp::Image* image = new wsp::Image();
       if (image->LoadImage(filename.data()))
       {
@@ -40,6 +44,7 @@ namespace Polukili
    /*************************************************/
    void ImageLibrary::remove(const string& filename)
    {
+      Logger::log("ImageLibrary::get() - unloading %s", filename.data());
       map<string, wsp::Image*>::iterator it = this->images.find(filename);
       if (it != this->images.end())
       {
