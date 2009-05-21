@@ -18,14 +18,8 @@ namespace Polukili
          va_start( args, input );
          char buffer[1024];
          vsprintf( buffer, input.c_str(), args );
-
-         std::string to_log( buffer );
-
-
-
-         printf("logged %s\n", input.data());
+         string to_log( buffer );
          fstream fp(Constants::logFilename.data(), ios::out | ios::app);
-         printf("open fail %i\n", fp.fail());
          fp << to_log << endl;
          fp.close();
       }
