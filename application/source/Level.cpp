@@ -144,6 +144,7 @@ namespace Polukili
             }
             
             Logger::log("loadFromXML() - reading polygon before create shape");
+            //HERE IS THE BUG !!!!! TODO watching variables
             this->body->CreateShape(&polygonDef);
             
             Logger::log("loadFromXML() - physic polygon read");
