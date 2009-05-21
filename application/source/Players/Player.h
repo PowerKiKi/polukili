@@ -23,13 +23,27 @@ namespace Polukili
          /**
          * Destructor
          */
-         virtual ~Player();
-         
+         virtual ~Player();         
 
          /**
          * Initialize physic data
          */
-         virtual void initPhysic();
+         virtual void initPhysic(float x, float y);
+            
+         /**
+         * Returns the path to the image for the sprite.
+         */
+         virtual string getImagePath() const;
+         
+         /**
+         * Returns the width of the tile in the image (must be multiple of 4).
+         */
+         virtual int getImageWidth() const;
+         
+         /**
+         * Returns the height of the tile in the image (must be multiple of 4).
+         */
+         virtual int getImageHeight() const;
 
 
          //end of class Player

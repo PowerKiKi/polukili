@@ -96,7 +96,7 @@ namespace Polukili
    /*************************************************/
    string Actor::getImagePath() const
    {
-      return "/app/polukili/data/default.png";
+      return Constants::basePath + "default.png";
    }
 
    /*************************************************/

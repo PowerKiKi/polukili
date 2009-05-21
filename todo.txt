@@ -1,0 +1,1 @@
+optimization de drawing avec requete AABB et dessin uniquement des acteurs dans l'ecran courant

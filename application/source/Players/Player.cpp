@@ -1,5 +1,6 @@
 #include <Players/Player.h>
 
+#include <Constants.h>
 #include <Level.h>
 
 namespace Polukili 
@@ -29,14 +30,32 @@ namespace Polukili
          bodyDef.position.Set(x/Constants::pixelsPerUnits, y/Constants::pixelsPerUnits); // arbitraire pour le y de toute facon il va tomber sur le ground
          this->body = level->world->CreateBody(&bodyDef);
          b2PolygonDef playerShape;
-         persoShape.SetAsBox(this->getImageWidth()/Constants::pixelsPerUnits,this->getImageHeight()/Constants::pixelsPerUnits);
+         playerShape.SetAsBox(this->getImageWidth()/Constants::pixelsPerUnits,this->getImageHeight()/Constants::pixelsPerUnits);
 	
-         persoShape.density = Constants::defaultDensity;
-         persoShape.friction = Constants::defaultFriction;
-         persoShape.restitution = Constants::defaultRestitution;
+         playerShape.density = Constants::defaultDensity;
+         playerShape.friction = Constants::defaultFriction;
+         playerShape.restitution = Constants::defaultRestitution;
          
          this->body->CreateShape(&playerShape);
          this->body->SetMassFromShapes();
+      }
+      
+      /*************************************************/
+      string Player::getImagePath() const
+      {
+         return Constants::basePath + "player.png";
+      }
+
+      /*************************************************/
+      int Player::getImageWidth() const
+      {
+         return 96;
+      }
+
+      /*************************************************/
+      int Player::getImageHeight() const
+      {
+         return 48;
       }
       
    } /* End of namespace Polukili::Players */

@@ -25,7 +25,7 @@ namespace Polukili
          */
          virtual ~Ennemy();
          
-         virtual void initPhysic();
+         virtual void initPhysic(float x, float y);
          
 
          /** 
