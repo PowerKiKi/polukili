@@ -2,10 +2,11 @@
 
 namespace Polukili 
 {
+   const string Constants::basePath("/APPS/Polukili/DATA/");
    
    const string Constants::logFilename(Constants::basePath + "polukili.log");
    
-   const string Constants::basePath("/APPS/Polukili/DATA/");
+   
    
    const int Constants::pixelsPerUnits = 15; 
       
