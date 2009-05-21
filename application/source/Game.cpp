@@ -15,8 +15,8 @@ namespace Polukili
    /*************************************************/
    Game::Game()
    {
-      fatInitDefault();
-      Logger::log("fat initialised");
+      
+      Logger::log("Game creation");
       
       this->gameWindow.InitVideo();      
       this->gameWindow.SetBackground((GXColor){ 255, 255, 255, 255 });
