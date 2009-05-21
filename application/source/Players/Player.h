@@ -7,7 +7,6 @@ namespace Polukili
 {   
    namespace Players 
    {
-
       /** 
       *  Represents a player.
       */

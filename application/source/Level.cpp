@@ -103,54 +103,49 @@ namespace Polukili
       this->foregroundPath = mxmlElementGetAttr(data, "foreground");
       
       // Create physic shape for the level's ground
-      data = mxmlFindElement(tree, tree, "physics", NULL, NULL, MXML_DESCEND);
-      
-      Logger::log(data->value.element.name);
-      dump(data);
+      Logger::log("loadFromXML() - shapes reading");
+      data = mxmlFindElement(tree, tree, "physics", NULL, NULL, MXML_DESCEND);      
       for (child = data->child; child != 0; child = child->next)
       {            
          if (stricmp(child->value.element.name, "circle") == 0)
          {
          
-            Logger::log("loadFromXML() - reading circle");
+            Logger::log("loadFromXML() - circle reading");
             float radius = (float)atof(mxmlElementGetAttr(child, "radius"));
             float x = (float)atof(mxmlElementGetAttr(child->child, "x"));
             float y = (float)atof(mxmlElementGetAttr(child->child, "y"));
             
-            Logger::log("loadFromXML() - reading circle");
             b2CircleDef circleDef;
             circleDef.radius = radius;
             circleDef.localPosition.Set(x, y);
             this->body->CreateShape(&circleDef);
             
-            Logger::log("loadFromXML() - physic circle read");
+            Logger::log("loadFromXML() - circle read (radius=%f x=%f y=%f)", radius, x, y);
 
          }
          else if (stricmp(child->value.element.name, "polygon") == 0)
          {
-            Logger::log("loadFromXML() - reading polygon");
+            Logger::log("loadFromXML() - polygon reading");
             b2PolygonDef polygonDef;
             polygonDef.vertexCount = 0;
             for (mxml_node_t* point = child->child; point != 0; point = point->next)
             {
-               dump(point);
-               Logger::log(point->value.element.name);
                float x = (float)atof(mxmlElementGetAttr(point, "x"));
                float y = (float)atof(mxmlElementGetAttr(point, "y"));
                
-               Logger::log("loadFromXML() - reading polygon before set");
+               Logger::log("loadFromXML() - polygon reading before set");
                polygonDef.vertices[polygonDef.vertexCount++].Set(x, y);
-               Logger::log("loadFromXML() - reading polygon after set value x:%f y:%f",x,y);
+               Logger::log("loadFromXML() - polygon reading after set value x:%f y:%f", polygonDef.vertices[polygonDef.vertexCount - 1].x, polygonDef.vertices[polygonDef.vertexCount - 1].y);
             }
             
-            Logger::log("loadFromXML() - reading polygon before create shape ");
+            Logger::log("loadFromXML() - polygon reading before create shape ");
             //HERE IS THE BUG !!!!! TODO watching variables
             this->body->CreateShape(&polygonDef);
             
-            Logger::log("loadFromXML() - physic polygon read");
+            Logger::log("loadFromXML() - polygon read");
          }
       }
-      Logger::log("loadFromXML() - physic shapes read");
+      Logger::log("loadFromXML() - shapes read");
       
       // Create all actors
       data = mxmlFindElement(tree, tree, "actors", NULL, NULL, MXML_DESCEND);
@@ -193,7 +188,7 @@ namespace Polukili
       
       mxmlDelete(tree);
       
-      Logger::log("loadFromXML() end");
+      Logger::log("loadFromXML() - end");
    }
    
    /*************************************************/

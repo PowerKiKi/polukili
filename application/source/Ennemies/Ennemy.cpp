@@ -1,5 +1,6 @@
 #include <Ennemies/Ennemy.h>
 
+#include <Constants.h>
 #include <Level.h>
 
 namespace Polukili 
