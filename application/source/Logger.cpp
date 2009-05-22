@@ -18,7 +18,6 @@ namespace Polukili
          va_start(args, input);
          char buffer[1024];
          vsprintf(buffer, input.c_str(), args);
-         string to_log( buffer );
          
          // Print time
          const int l = 50;
@@ -30,9 +29,10 @@ namespace Polukili
          strftime(buf, l, "%Y-%m-%d %H:%M:%S ", pt);
                   
          fstream fp(Constants::logFilename.data(), ios::out | ios::app);
-         fp << buf;
-         fp << to_log << endl;
+         fp << buf << buffer << endl;
          fp.close();
+         
+         printf("%s%s\n", buf, buffer);
       }
 
 } /* End of namespace Polukili */
