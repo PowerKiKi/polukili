@@ -12,6 +12,8 @@
 
 #include <Level.h>
 #include <ImageLibrary.h>
+#include <BibScreenFont.h>
+#include <Console.h>
 
 using namespace std;
 
@@ -55,7 +57,8 @@ namespace Polukili
    private:
       stack< Level* > levels;
       wsp::GameWindow gameWindow;
-
+      BibScreenFont font;
+      wsp_Console console;
       //end of class Game
    };
 

@@ -5,9 +5,12 @@
 #include <fat.h>
 #include <gccore.h>
 #include <wiiuse/wpad.h>
-#include <Logger.h>
 
+#include <Logger.h>
 #include <Level.h>
+#include <font_metrics.h>
+#include <Console.h>
+#include <Constants.h>
 
 namespace Polukili 
 {
@@ -15,8 +18,10 @@ namespace Polukili
    /*************************************************/
    Game::Game()
    {
-      
+      this->font.Initialize(this->imageLibrary.get(Constants::basePath + "font.png"),10 , 13, font_metrics);
+      this->console.InitConsole(&this->font);
       Logger::log("Game::Game()");
+      
       
       this->gameWindow.InitVideo();      
       this->gameWindow.SetBackground((GXColor){ 255, 255, 255, 255 });
@@ -57,12 +62,13 @@ namespace Polukili
          level->nextStep();
          level->render();
          
+      printf("ABCDEchocolat");
+         this->console.RenderConsole();
          this->gameWindow.Flush();
          
          // If level is finished, resume the previous one
          if (level->isFinished())
          {
-         
             Logger::log("Game::run() - resume previous level");
             this->levels.pop();
             delete level;
