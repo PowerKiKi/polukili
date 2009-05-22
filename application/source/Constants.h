@@ -37,6 +37,12 @@ namespace Polukili
       static const float defaultFriction;
       
       static const float defaultRestitution;
+      
+      static const float defaultImpulseSpeed;
+   
+      static const float timeStep;
+      
+      static const int iterations;   
    
    };/* End of class Constants*/
 } /* End of namespace Polukili*/
