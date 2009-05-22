@@ -44,27 +44,6 @@ namespace Polukili
       if (this->world != 0)
          delete this->world;
    }
-   
-   void dump(mxml_node_t* child)
-   {
-
-      string t;
-      if (child->type == MXML_CUSTOM)
-         t = "";
-      else if (child->type == MXML_ELEMENT)
-         t = "MXML_ELEMENT";
-      else if (child->type ==MXML_IGNORE )
-         t = "MXML_IGNORE";
-      else if (child->type ==MXML_INTEGER )
-         t = "MXML_INTEGER";
-      else if (child->type == MXML_OPAQUE)
-         t = "MXML_OPAQUE";
-      else if (child->type ==MXML_REAL )
-         t = "MXML_REAL";
-      else if (child->type == MXML_TEXT)
-         t = "MXML_TEXT";
-         Logger::log(t);
-   }
 
    /*************************************************/
    void Level::loadFromXML(const string& filename)
@@ -93,7 +72,7 @@ namespace Polukili
       float height = (float)atof(mxmlElementGetAttr(data, "height"));
       worldAABB.upperBound.Set(width, height);
       b2Vec2 gravity(0.0f, Constants::defaultGravity);
-      bool doSleep = false;      
+      bool doSleep = false;
       this->world = new b2World(worldAABB, gravity, doSleep);
       b2BodyDef groundBodyDef;
       groundBodyDef.position.Set(0.0f, 0.0f);
@@ -136,17 +115,27 @@ namespace Polukili
                
                Logger::log("Level::loadFromXML() - polygon reading before set");
                polygonDef.vertices[polygonDef.vertexCount++].Set(x, y);
-               Logger::log("Level::loadFromXML() - polygon reading after set value x:%f y:%f", (float)polygonDef.vertices[polygonDef.vertexCount - 1].x, (float)polygonDef.vertices[polygonDef.vertexCount - 1].y);
+               Logger::log("Level::loadFromXML() - polygon reading values x=%f y=%f", (float)polygonDef.vertices[polygonDef.vertexCount - 1].x, (float)polygonDef.vertices[polygonDef.vertexCount - 1].y);
             }
-            //polygonDef.vertexCount = 3;
-            //polygonDef.vertices[0].Set(-1.0f, 0.0f);
-            //polygonDef.vertices[1].Set(1.0f, 0.0f);
-            //polygonDef.vertices[2].Set(0.0f, 2.0f);
+
+
+            for (int32 i = 0; i < polygonDef.vertexCount; ++i)
+            {
+               int32 i1 = i;
+               int32 i2 = i + 1 < polygonDef.vertexCount ? i + 1 : 0;
+               b2Vec2 edge = polygonDef.vertices[i2] - polygonDef.vertices[i1];
+               Logger::log("Level::loadFromXML() - checking:  p1 x=%f p1 y=%f", (float)polygonDef.vertices[i1].x , (float)polygonDef.vertices[i1].y);
+               Logger::log("Level::loadFromXML() - checking:  p2 x=%f p2 y=%f", (float)polygonDef.vertices[i2].x , (float)polygonDef.vertices[i2].y);
+               Logger::log("Level::loadFromXML() - checking:  edge x=%f edge y=%f", (float)edge.x , (float)edge.y);
+               Logger::log("Level::loadFromXML() - checking:  length=%f minimum=%f", (float)edge.LengthSquared() , (float)(B2_FLT_EPSILON * B2_FLT_EPSILON));
+               
+               //b2Assert(edge.LengthSquared() > B2_FLT_EPSILON * B2_FLT_EPSILON);
+               //m_normals[i] = b2Cross(edge, 1.0f);
+               //m_normals[i].Normalize();
+            }
+
+            
             Logger::log("Level::loadFromXML() - polygon vertex count=%d", polygonDef.vertexCount);
-            //polygonDef.SetAsBox(1.0f, 1.0f);
-            //polygonDef.density = 1.0f;
-            //polygonDef.friction = 0.3f;
-            Logger::log("Level::loadFromXML() - polygon reading before create shape ");
             Logger::log(this->body ? "not null" : "null");
             //HERE IS THE BUG !!!!! TODO watching variables
             this->body->CreateShape(&polygonDef);
