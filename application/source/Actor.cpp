@@ -62,6 +62,7 @@ namespace Polukili
       wsp::Image* image = this->level->game->imageLibrary.get(this->getImagePath());
       this->sprite = new wsp::Sprite();      
       this->sprite->SetImage(image, this->getImageWidth(), this->getImageHeight());
+      this->sprite->SetRefPixelPositioning(wsp::REFPIXEL_POS_PIXEL);
       this->sprite->SetRefPixelPosition(((int)this->getImageWidth()/2),(int)(this->getImageHeight()/2));
    }
 

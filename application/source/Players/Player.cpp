@@ -56,13 +56,13 @@ namespace Polukili
       /*************************************************/
       int Player::getImageWidth() const
       {
-         return 96;
+         return 48;
       }
 
       /*************************************************/
       int Player::getImageHeight() const
       {
-         return 48;
+         return 96;
       }
       
    } /* End of namespace Polukili::Players */
