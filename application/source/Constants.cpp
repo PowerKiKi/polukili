@@ -18,7 +18,7 @@ namespace Polukili
       
    const float Constants::defaultRestitution = 0.2f;
    
-   const float Constants::defaultImpulseSpeed = 100.0f;
+   const float Constants::defaultImpulseSpeed = 10.0f;
    
    const float Constants::timeStep = 1.0f / 60.0f;
    
