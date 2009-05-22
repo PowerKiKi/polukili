@@ -1,7 +1,7 @@
 #include <Game.h>
 
 #include <wiisprite.h>
-#include <../lib/box2d/Box2D.h>
+#include <Box2D.h>
 #include <fat.h>
 #include <gccore.h>
 #include <wiiuse/wpad.h>

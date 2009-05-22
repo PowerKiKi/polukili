@@ -4,7 +4,7 @@
 #include <list>
 #include <string>
 
-#include <../lib/box2d/Box2D.h>
+#include <Box2D.h>
 
 #include <Actor.h>
 
