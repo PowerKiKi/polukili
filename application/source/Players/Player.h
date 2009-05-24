@@ -29,6 +29,11 @@ namespace Polukili
          */
          virtual void initPhysic(float x, float y);
             
+         /** 
+         *  Define the behavior of the actor for the next step. Apply forces/actions/modifications based on current context (wiimote inputs, state changes based on time, etc.)
+         */
+         virtual void nextStep();
+         
          /**
          * Returns the path to the image for the sprite.
          */

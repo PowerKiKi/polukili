@@ -3,6 +3,7 @@
 #include <Logger.h>
 #include <Constants.h>
 #include <Level.h>
+#include <wiiuse/wpad.h>
 
 namespace Polukili 
 {
@@ -38,6 +39,27 @@ namespace Polukili
 
          this->body->CreateShape(&playerShape);
          this->body->SetMassFromShapes();
+      }
+      
+      /*************************************************/
+      void Player::nextStep()
+      {
+         u16 btnsheld = WPAD_ButtonsHeld(0);
+         
+         if(btnsheld & WPAD_BUTTON_UP)
+         {
+            this->body->ApplyImpulse(b2Vec2(-Constants::defaultImpulseSpeed,0),this->body->GetPosition());
+            
+         }
+         if(btnsheld & WPAD_BUTTON_DOWN)
+         {
+            this->body->ApplyImpulse(b2Vec2(Constants::defaultImpulseSpeed,0),this->body->GetPosition());
+            
+         }
+         if(btnsheld & WPAD_BUTTON_2)
+         {
+            this->body->ApplyImpulse(b2Vec2(0,-3*Constants::defaultImpulseSpeed),this->body->GetPosition());
+         }
       }
       
       /*************************************************/

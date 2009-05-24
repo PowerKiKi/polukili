@@ -18,4 +18,6 @@ namespace Polukili
       
    const float Constants::defaultRestitution = 0.2f;
    
+   const float Constants::defaultImpulseSpeed = 100.0f;
+   
 } /* End of namespace Polukili */
