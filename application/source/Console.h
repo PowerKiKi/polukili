@@ -1,5 +1,5 @@
 /*
-	wsp_console class
+	Console class
 
 	console (printf) support for libwiisprite
 */
@@ -11,11 +11,12 @@
 
 using namespace std;
 
-class wsp_Console
+class Console
 {
 public:
-	void InitConsole(BibScreenFont* font);
-	void RenderConsole (void);
+	void initialize(BibScreenFont* font);
+	void render();
+   void clear();
    
    static fstream logFile;
 private:

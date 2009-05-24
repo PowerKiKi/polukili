@@ -25,6 +25,7 @@
 #ifndef _BIBSCREENFONT_H_
 #define _BIBSCREENFONT_H_
 
+#include <wiisprite.h>
 
 class BibScreenFont
 {
@@ -39,7 +40,12 @@ public:
 
 	void Initialize (wsp::Image * pImage, int nXLetterWidth, int nYLetterHeight, 
 					const unsigned char * nCharWidths);
-	void DisplayText (int nXScreenLoc, int nYScreenLoc, const char * szText, int nTransparency = 0xFF);
+	void DisplayText(int nXScreenLoc, int nYScreenLoc, const char * szText, int nTransparency = 0xFF);
+   
+   /**
+   * Returns the height in pixels of a character.
+   */
+   int getCharacterHeight() const;
 
 
 };

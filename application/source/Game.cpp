@@ -18,8 +18,9 @@ namespace Polukili
    /*************************************************/
    Game::Game()
    {
-      this->font.Initialize(this->imageLibrary.get(Constants::basePath + "font.png"),10 , 13, font_metrics);
-      this->console.InitConsole(&this->font);
+      wsp::Image* fontImage = this->imageLibrary.get(Constants::basePath + "font.png");
+      this->font.Initialize(fontImage, fontImage->GetWidth() / 16, fontImage->GetHeight() / 16, font_metrics);
+      this->console.initialize(&this->font);
       Logger::log("Game::Game()");
       
       
@@ -63,7 +64,7 @@ namespace Polukili
          level->render();
          
       printf("ABCDEchocolat");
-         this->console.RenderConsole();
+         this->console.render();
          this->gameWindow.Flush();
          
          // If level is finished, resume the previous one
