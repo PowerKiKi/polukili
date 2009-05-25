@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <level name="Garden - test" nextLevel="" background="/apps/polukili/data/level_0_background.png" foreground="/apps/polukili/data/level_0_foreground.png" width="640" height="480">
   <physics>
     <circle radius="50">

@@ -40,6 +40,10 @@ namespace Polukili
       
       static const float defaultImpulseSpeed;
    
+      static const float timeStep;
+      
+      static const int iterations;   
+   
    };/* End of class Constants*/
 } /* End of namespace Polukili*/
 

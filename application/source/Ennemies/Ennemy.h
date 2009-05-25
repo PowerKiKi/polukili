@@ -25,9 +25,6 @@ namespace Polukili
          */
          virtual ~Ennemy();
          
-         virtual void initPhysic(float x, float y);
-         
-
          /** 
          *  Sets wether the ennemy must be destroyed to complete the level. It should always be true for boss.
          */

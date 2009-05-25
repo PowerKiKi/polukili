@@ -89,7 +89,7 @@ namespace Polukili
       /**
       * Initialize physic data
       */
-      virtual void initPhysic(float x, float y) = 0;
+      virtual void initPhysic(float x, float y);
 
       /**
       * Returns the path to the image for the sprite.

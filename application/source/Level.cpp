@@ -91,7 +91,7 @@ namespace Polukili
       worldAABB.lowerBound.Set(0, 0);
       float width = (float)atof(mxmlElementGetAttr(data, "width"));
       float height = (float)atof(mxmlElementGetAttr(data, "height"));
-      worldAABB.upperBound.Set(width, height);
+      worldAABB.upperBound.Set(width / Constants::pixelsPerUnits, height / Constants::pixelsPerUnits);
       b2Vec2 gravity(0.0f, Constants::defaultGravity);
       bool doSleep = false;      
       this->world = new b2World(worldAABB, gravity, doSleep);
@@ -117,8 +117,8 @@ namespace Polukili
             float y = (float)atof(mxmlElementGetAttr(child->child, "y"));
             
             b2CircleDef circleDef;
-            circleDef.radius = radius;
-            circleDef.localPosition.Set(x, y);
+            circleDef.radius = radius / Constants::pixelsPerUnits;
+            circleDef.localPosition.Set(x / Constants::pixelsPerUnits, y / Constants::pixelsPerUnits);
             this->body->CreateShape(&circleDef);
             
             Logger::log("Level::loadFromXML() - circle read (radius=%f x=%f y=%f)", radius, x, y);
@@ -135,7 +135,7 @@ namespace Polukili
                float y = (float)atof(mxmlElementGetAttr(point, "y"));
                
                Logger::log("Level::loadFromXML() - polygon reading before set");
-               polygonDef.vertices[polygonDef.vertexCount++].Set(x, y);
+               polygonDef.vertices[polygonDef.vertexCount++].Set(x / Constants::pixelsPerUnits, y / Constants::pixelsPerUnits);
                Logger::log("Level::loadFromXML() - polygon reading after set value x:%f y:%f", (float)polygonDef.vertices[polygonDef.vertexCount - 1].x, (float)polygonDef.vertices[polygonDef.vertexCount - 1].y);
             }
             //polygonDef.vertexCount = 3;
@@ -309,9 +309,8 @@ namespace Polukili
       
       
       Logger::log("Level::nextStep() - nextstep physic");
-      float32 timeStep = 1.0f / 60.0f;
-      int32 iterations = 10;         
-      this->world->Step(timeStep, iterations); // TODO these variables should be in Constants class
+      
+      this->world->Step(Constants::timeStep, Constants::iterations); 
       
       Logger::log("Level::nextStep() - level nextStep end");
    }

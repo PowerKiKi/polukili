@@ -8,7 +8,7 @@ namespace Polukili
    
    
    
-   const int Constants::pixelsPerUnits = 15; 
+   const int Constants::pixelsPerUnits = 48; 
       
    const float Constants::defaultGravity = 9.81f; 
             
@@ -20,4 +20,8 @@ namespace Polukili
    
    const float Constants::defaultImpulseSpeed = 100.0f;
    
+   const float Constants::timeStep = 1.0f / 60.0f;
+   
+   const int Constants::iterations = 10;   
+
 } /* End of namespace Polukili */
