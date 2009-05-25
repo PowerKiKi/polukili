@@ -22,7 +22,7 @@ include $(DEVKITPPC)/wii_rules
 #---------------------------------------------------------------------------------
 TARGET		:=	../polukili/boot
 BUILD		:=	build
-SOURCES		:=	source source/Bullets source/Ennemies source/Items source/Pets source/Players
+SOURCES		:=	source source/Bullets source/Ennemies source/Items source/Pets source/Players lib/box2d/Collision lib/box2d/Collision/Shapes lib/box2d/Common lib/box2d/Dynamics lib/box2d/Dynamics/Contacts lib/box2d/Dynamics/Joints 
 DATA		:=
 TEXTURES	:=	textures
 INCLUDES	:=	source
@@ -31,7 +31,7 @@ INCLUDES	:=	source
 # options for code generation
 #---------------------------------------------------------------------------------
 
-CFLAGS	= -save-temps -g -O2 -Wall $(MACHDEP) $(INCLUDE) -DTARGET_FLOAT32_IS_FIXED
+CFLAGS	= -save-temps -g -O2 -Wall $(MACHDEP) $(INCLUDE) 
 CXXFLAGS	=	$(CFLAGS)
 
 LDFLAGS	=	-g $(MACHDEP) -Wl,-Map,$(notdir $@).map
@@ -39,7 +39,7 @@ LDFLAGS	=	-g $(MACHDEP) -Wl,-Map,$(notdir $@).map
 #---------------------------------------------------------------------------------
 # any extra libraries we wish to link with the project
 #---------------------------------------------------------------------------------
-LIBS	:=	-lbox2d -lwiisprite -lpng -lz -lfat -lmxml -lwiiuse -lbte -logc -lm
+LIBS	:=	-lwiisprite -lpng -lz -lfat -lmxml -lwiiuse -lbte -logc -lm
 
 #---------------------------------------------------------------------------------
 # list of directories containing libraries, this must be the top level containing

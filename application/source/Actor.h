@@ -5,7 +5,7 @@
 
 #include <wiisprite.h>
 #include <mxml.h>
-#include <Box2D.h>
+#include <../lib/box2d/Box2D.h>
 
 #include <Effect.h>
 #include <Element.h>
