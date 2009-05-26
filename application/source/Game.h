@@ -58,7 +58,7 @@ namespace Polukili
       stack< Level* > levels;
       wsp::GameWindow gameWindow;
       BibScreenFont font;
-      wsp_Console console;
+      Console console;
       //end of class Game
    };
 

@@ -20,6 +20,8 @@ namespace Polukili
          
          this->body->ApplyForce(b2Vec2(0.0f,-Constants::defaultGravity*this->body->GetMass()),this->body->GetPosition());
          
+         float deltaX = 180.0f/Constants::pixelsPerUnits;
+         float deltaY = 180.0f/Constants::pixelsPerUnits;
          
          b2Vec2 position = this->body->GetPosition();
          b2Vec2 linearVelocity = this->body->GetLinearVelocity();
@@ -33,11 +35,7 @@ namespace Polukili
          {
             forces.y = cos(position.x-this->basePosition->x)*4.0f;
          }
-         if((forces.y<=0.1f&&forces.y>=-0.1f)&&(position.x<this->basePosition->x||position.x>this->basePosition->x))
-         {
-     
-            forces.x = -forces.x;
-         }
+         
          this->body->SetLinearVelocity(forces);
       }
    } /* End of namespace Polukili::Ennemies */

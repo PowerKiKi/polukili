@@ -1,33 +1,27 @@
 /*
-	wsp_console class
+	Console class
 
 	console (printf) support for libwiisprite
 */
-
-#include <wiisprite.h>
-
 #include <Console.h>
+
+#include <sys/iosupport.h>
+#include <wiisprite.h>
 
 #include <Constants.h>
 #include <Logger.h>
 
-#include <sys/iosupport.h>
 
-#define MAX_CON_ROWS	24
-#define MAX_CON_COLS	80
-#define X_PIXELS_PER_CHAR	(640/MAX_CON_COLS)
-#define Y_PIXELS_PER_CHAR	(480/MAX_CON_ROWS)
-#define TAB_SIZE		4
+fstream Console::logFile;
 
-fstream wsp_Console::logFile; 
-
+static const int tabSize = 4;
+static const int maximumRows = 24;
+static const int maximumColumns = 80;
 static int cursor_row = 0;
 static int cursor_col = 0;
-static int con_rows = MAX_CON_ROWS;
-static int con_cols = MAX_CON_COLS;
-static char the_console [MAX_CON_ROWS] [MAX_CON_COLS];
+static char the_console[maximumRows][maximumColumns + 1];
 
-ssize_t wsp_console_write(struct _reent* rUnused, int fdUnused, const char* ptr, size_t len)
+ssize_t Console_write(struct _reent* rUnused, int fdUnused, const char* ptr, size_t len)
 {
    // Get timestamp
    const int l = 50;
@@ -39,21 +33,20 @@ ssize_t wsp_console_write(struct _reent* rUnused, int fdUnused, const char* ptr,
    strftime(timeBuffer, l, "%Y-%m-%d %H:%M:%S ", pt);
    
    // Log message in logfile
-   wsp_Console::logFile << timeBuffer << ptr << endl;
-   wsp_Console::logFile.flush();
+   Console::logFile << timeBuffer << ptr << endl;
+   Console::logFile.flush();
 
 
-	size_t i = 0;
+	
 	char *tmp = (char*)ptr;
-	char chr;
 
 	if (!tmp || len<=0)
 		return -1;
 
-	i = 0;
-	while(*tmp!='\0' && i<len)
-	{
-		chr = *tmp++;
+	size_t i = 0;
+	while(*tmp != '\0' && i < len)
+	{		
+      char chr = *tmp++;
 		i++;
 		if ( (chr == 0x1b) && (*tmp == '[') )
 		{
@@ -68,6 +61,7 @@ ssize_t wsp_console_write(struct _reent* rUnused, int fdUnused, const char* ptr,
 		}
 		else
 		{
+         the_console[cursor_row][cursor_col] = '\0'; // Default the character to end of string to avoid overflow when reading
 			switch(chr)
 			{
 				case '\n':
@@ -88,16 +82,20 @@ ssize_t wsp_console_write(struct _reent* rUnused, int fdUnused, const char* ptr,
 					cursor_row++;
 					break;
 				case '\t':
-					if(cursor_col%TAB_SIZE)
-						cursor_col += (cursor_col%TAB_SIZE);
-					else 
-						cursor_col += TAB_SIZE;
+               // Fill the gap for tab with spaces, but do not overflow if tab is the last character of the line
+               {
+                  int gapSize = (cursor_col % tabSize) ? (cursor_col % tabSize) : tabSize;               
+                  for (int g = 0; g < gapSize && cursor_col < maximumColumns; g++)
+                     the_console[cursor_row][cursor_col++] = ' ';
+               }
+               the_console[cursor_row][cursor_col] = '\0';
+                  
 					break;
 				default:
-					the_console [cursor_row] [cursor_col] = chr;
+					the_console[cursor_row][cursor_col] = chr;
 					cursor_col++;
 
-					if (cursor_col >= con_cols)
+					if (cursor_col >= maximumColumns)
 					{
 						/* if right border reached wrap around */
 						cursor_row++;
@@ -106,20 +104,20 @@ ssize_t wsp_console_write(struct _reent* rUnused, int fdUnused, const char* ptr,
 			}
 		}
 
-		if( cursor_row >= con_rows)
+		if (cursor_row >= maximumRows)
 		{
 			// Copy data up after reaching bottom.
-			for (int i = 0; i < MAX_CON_ROWS - 1; i ++)
+			for (int i = 0; i < maximumRows - 1; i ++)
 			{
-				for (int j = 0; j < MAX_CON_COLS; j ++)
+				for (int j = 0; j < maximumColumns; j ++)
 				{
 					the_console [i] [j] = the_console [i + 1] [j];
 				}
 			}
 
-			for (int j = 0; j < MAX_CON_COLS; j ++)
+			for (int j = 0; j < maximumColumns; j ++)
 			{
-				the_console [MAX_CON_ROWS - 1] [j] = 0;
+				the_console [maximumRows - 1] [j] = 0;
 			}
 
 			cursor_row--;
@@ -137,7 +135,7 @@ const devoptab_t wsp_dotab_stdout =
 	0,			// size of file structure
 	NULL,		// device open
 	NULL,		// device close
-	wsp_console_write,	// device write
+	Console_write,	// device write
 	NULL,		// device read
 	NULL,		// device seek
 	NULL,		// device fstat
@@ -155,38 +153,39 @@ const devoptab_t wsp_dotab_stdout =
 	NULL		// device statvfs_r
 };
 
-void wsp_Console::InitConsole(BibScreenFont* font)
+/*************************************************/
+void Console::initialize(BibScreenFont* font)
 {
    this->font = font;
    cursor_row = 0;
    cursor_col = 0;
-
-   //const unsigned int nSave = (unsigned int) (devoptab_list[STD_OUT]);
 
    devoptab_list[STD_OUT] = &wsp_dotab_stdout;
    devoptab_list[STD_ERR] = &wsp_dotab_stdout;
 
    setvbuf(stdout, NULL , _IONBF, 0);
    
-   wsp_Console::logFile.open(Polukili::Constants::logFilename.data(), ios::out | ios::app);
+   Console::logFile.open(Polukili::Constants::logFilename.data(), ios::out);
+   this->clear();
 }
 
-void wsp_Console::RenderConsole (void)
+/*************************************************/
+void Console::render()
 {
-int i, j;
-char twoBuf [2];
 
-	twoBuf [1] = 0;
-	for (i = 0; i < MAX_CON_ROWS; i ++)
+Console::logFile << "char size=" <<  this->font->getCharacterHeight() << endl;
+	for (int i = 0; i < maximumRows; i ++)
 	{
-		for (j = 0; j < MAX_CON_COLS; j ++)
-		{
-			if (the_console [i] [j])
-			{
-				twoBuf [0] = the_console [i] [j];
-				this->font->DisplayText (j * X_PIXELS_PER_CHAR, i * Y_PIXELS_PER_CHAR, twoBuf);
-			}
-		}
-	}
+      this->font->DisplayText(0, i * this->font->getCharacterHeight(), the_console[i]);
+   }
+}
 
+/*************************************************/
+void Console::clear()
+{
+	for (int i = 0; i < maximumRows; i ++)
+	{
+      the_console[i][0] = '\0';
+      the_console[i][maximumColumns] = '\0';
+   }   
 }

@@ -42,4 +42,8 @@ void BibScreenFont::DisplayText (int nXScreenLoc, int nYScreenLoc, const char * 
 	}
 }
 
-
+/*************************************************/
+int BibScreenFont::getCharacterHeight() const
+{
+   return nYLetterHeight;
+}
