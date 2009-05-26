@@ -17,6 +17,11 @@ namespace Polukili
          **/
          Bee(Level* level);
          
+         
+         /** 
+         *  Define the behavior of the bee for the next step. Apply forces/actions/modifications based on current context (wiimote inputs, state changes based on time, etc.)
+         */
+         virtual void nextStep();
          //end of class Bee
       };
 
