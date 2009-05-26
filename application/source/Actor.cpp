@@ -1,7 +1,7 @@
 #include <Actor.h>
 
 #include <Constants.h>
-#include <Logger.h>
+#include <Console.h>
 #include <Game.h>
 #include <Level.h>
 
@@ -13,7 +13,7 @@ namespace Polukili
    /*************************************************/
    Actor::Actor(Level* level)
    {
-      Logger::log("Actor::Actor() - new actor");
+      Console::log(LOG_INFO, "Actor::Actor() - new actor");
       this->level = level;
       this->level->actors.push_back(this);
    }

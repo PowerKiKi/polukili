@@ -6,7 +6,6 @@
 #include <gccore.h>
 #include <wiiuse/wpad.h>
 
-#include <Logger.h>
 #include <Level.h>
 #include <font_metrics.h>
 #include <Console.h>
@@ -21,25 +20,25 @@ namespace Polukili
       wsp::Image* fontImage = this->imageLibrary.get(Constants::basePath + "font.png");
       this->font.Initialize(fontImage, fontImage->GetWidth() / 16, fontImage->GetHeight() / 16, font_metrics);
       this->console.initialize(&this->font);
-      Logger::log("Game::Game()");
+      Console::log(LOG_INFO, "Game::Game()");
       
       
       this->gameWindow.InitVideo();      
       this->gameWindow.SetBackground((GXColor){ 255, 255, 255, 255 });
-      Logger::log("Game::Game() - video initialised");
+      Console::log(LOG_INFO, "Game::Game() - video initialised");
       
       // Initialise Wiimote
       WPAD_Init();
       WPAD_SetDataFormat(WPAD_CHAN_0, WPAD_FMT_BTNS_ACC_IR);
-      Logger::log("Game::Game() - wiimote initialized");
+      Console::log(LOG_INFO, "Game::Game() - wiimote initialized");
       
-      Logger::log("Game::Game() - end");
+      Console::log(LOG_INFO, "Game::Game() - end");
    }
    
    /*************************************************/
    Game::~Game()
    {
-      Logger::log("Game::~Game()");
+      Console::log(LOG_INFO, "Game::~Game()");
       while (!this->levels.empty())
       {
          delete this->levels.top();
@@ -50,14 +49,14 @@ namespace Polukili
    /*************************************************/
    void Game::run(const string& initialLevel)
    {
-      Logger::log("Game::run() - 0");
+      Console::log(LOG_INFO, "Game::run() - 0");
       this->changeLevel(initialLevel);
-      Logger::log("Game::run() - 1");
+      Console::log(LOG_INFO, "Game::run() - 1");
       
       while (!this->levels.empty())
       {
       
-         Logger::log("Game::run() - dedans");
+         Console::log(LOG_INFO, "Game::run() - dedans");
          Level* level = this->levels.top();
                   
          level->nextStep();
@@ -70,7 +69,7 @@ namespace Polukili
          // If level is finished, resume the previous one
          if (level->isFinished())
          {
-            Logger::log("Game::run() - resume previous level");
+            Console::log(LOG_INFO, "Game::run() - resume previous level");
             this->levels.pop();
             delete level;
             
@@ -90,7 +89,7 @@ namespace Polukili
    /*************************************************/
    void Game::changeLevel(const string& newLevelPath)
    {
-      Logger::log("Game::changeLevel() - begin");
+      Console::log(LOG_INFO, "Game::changeLevel() - begin");
       Level* level = new Level(this);
       level->loadFromXML(newLevelPath);
       
@@ -101,7 +100,7 @@ namespace Polukili
       level->loadGraphics();
       this->levels.push(level);
       
-      Logger::log("Game::changeLevel() - end");
+      Console::log(LOG_INFO, "Game::changeLevel() - end");
    }
 
 } /* End of namespace Polukili */

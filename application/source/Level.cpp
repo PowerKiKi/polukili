@@ -5,7 +5,7 @@
 #include <mxml.h>
 #include <Box2D.h>
 
-#include <Logger.h>
+#include <Console.h>
 #include <Constants.h>
 #include <Game.h>
 #include <ImageLibrary.h>
@@ -35,7 +35,7 @@ namespace Polukili
    /*************************************************/
    Level::~Level()
    {
-      Logger::log("Level::~Level()");
+      Console::log(LOG_INFO, "Level::~Level()");
       this->unloadGraphics();
    
       while (!this->actors.empty())
@@ -48,7 +48,7 @@ namespace Polukili
    /*************************************************/
    void Level::loadFromXML(const string& filename)
    {   
-      Logger::log("Level::loadFromXML() - filename=%s", filename.data());
+      Console::log(LOG_INFO, "Level::loadFromXML() - filename=%s", filename.data());
       if (this->world != 0) 
          delete this->world;
          
@@ -61,7 +61,7 @@ namespace Polukili
       tree = mxmlLoadFile(NULL, fp, MXML_IGNORE_CALLBACK);
       fclose(fp);
       
-      Logger::log("Level::loadFromXML() - file read");
+      Console::log(LOG_INFO, "Level::loadFromXML() - file read");
       data = mxmlFindElement(tree, tree, "level", NULL, NULL, MXML_DESCEND);
       
       
@@ -77,20 +77,20 @@ namespace Polukili
       b2BodyDef groundBodyDef;
       groundBodyDef.position.Set(0.0f, 0.0f);
       this->body = this->world->CreateBody(&groundBodyDef);
-      Logger::log("Level::loadFromXML() - physic world built");
+      Console::log(LOG_INFO, "Level::loadFromXML() - physic world built");
       
       this->backgroundPath = mxmlElementGetAttr(data, "background");
       this->foregroundPath = mxmlElementGetAttr(data, "foreground");
       
       // Create physic shape for the level's ground
-      Logger::log("Level::loadFromXML() - shapes reading");
+      Console::log(LOG_INFO, "Level::loadFromXML() - shapes reading");
       data = mxmlFindElement(tree, tree, "physics", NULL, NULL, MXML_DESCEND);      
       for (child = data->child; child != 0; child = child->next)
       {            
          if (stricmp(child->value.element.name, "circle") == 0)
          {
          
-            Logger::log("Level::loadFromXML() - circle reading");
+            Console::log(LOG_INFO, "Level::loadFromXML() - circle reading");
             float radius = (float)atof(mxmlElementGetAttr(child, "radius"));
             float x = (float)atof(mxmlElementGetAttr(child->child, "x"));
             float y = (float)atof(mxmlElementGetAttr(child->child, "y"));
@@ -100,12 +100,12 @@ namespace Polukili
             circleDef.localPosition.Set(x / Constants::pixelsPerUnits, y / Constants::pixelsPerUnits);
             this->body->CreateShape(&circleDef);
             
-            Logger::log("Level::loadFromXML() - circle read (radius=%f x=%f y=%f)", radius, x, y);
+            Console::log(LOG_INFO, "Level::loadFromXML() - circle read (radius=%f x=%f y=%f)", radius, x, y);
 
          }
          else if (stricmp(child->value.element.name, "polygon") == 0)
          {
-            Logger::log("Level::loadFromXML() - polygon reading");
+            Console::log(LOG_INFO, "Level::loadFromXML() - polygon reading");
             b2PolygonDef polygonDef;
             polygonDef.vertexCount = 0;
             for (mxml_node_t* point = child->child; point != 0; point = point->next)
@@ -113,9 +113,9 @@ namespace Polukili
                float x = (float)atof(mxmlElementGetAttr(point, "x"));
                float y = (float)atof(mxmlElementGetAttr(point, "y"));
                
-               Logger::log("Level::loadFromXML() - polygon reading before set");
+               Console::log(LOG_INFO, "Level::loadFromXML() - polygon reading before set");
                polygonDef.vertices[polygonDef.vertexCount++].Set(x / Constants::pixelsPerUnits, y / Constants::pixelsPerUnits);
-               Logger::log("Level::loadFromXML() - polygon reading values x=%f y=%f", (float)polygonDef.vertices[polygonDef.vertexCount - 1].x, (float)polygonDef.vertices[polygonDef.vertexCount - 1].y);
+               Console::log(LOG_INFO, "Level::loadFromXML() - polygon reading values x=%f y=%f", (float)polygonDef.vertices[polygonDef.vertexCount - 1].x, (float)polygonDef.vertices[polygonDef.vertexCount - 1].y);
             }
 
 
@@ -124,10 +124,11 @@ namespace Polukili
                int32 i1 = i;
                int32 i2 = i + 1 < polygonDef.vertexCount ? i + 1 : 0;
                b2Vec2 edge = polygonDef.vertices[i2] - polygonDef.vertices[i1];
-               Logger::log("Level::loadFromXML() - checking:  p1 x=%f p1 y=%f", (float)polygonDef.vertices[i1].x , (float)polygonDef.vertices[i1].y);
-               Logger::log("Level::loadFromXML() - checking:  p2 x=%f p2 y=%f", (float)polygonDef.vertices[i2].x , (float)polygonDef.vertices[i2].y);
-               Logger::log("Level::loadFromXML() - checking:  edge x=%f edge y=%f", (float)edge.x , (float)edge.y);
-               Logger::log("Level::loadFromXML() - checking:  length=%f minimum=%f", (float)edge.LengthSquared() , (float)(B2_FLT_EPSILON * B2_FLT_EPSILON));
+               Console::log(LOG_INFO, "Level::loadFromXML() - checking:  p1 x=%f p1 y=%f", (float)polygonDef.vertices[i1].x , (float)polygonDef.vertices[i1].y);
+               Console::log(LOG_INFO, "Level::loadFromXML() - checking:  p2 x=%f p2 y=%f", (float)polygonDef.vertices[i2].x , (float)polygonDef.vertices[i2].y);
+               Console::log(LOG_INFO, "Level::loadFromXML() - checking:  edge x=%f edge y=%f", (float)edge.x , (float)edge.y);
+               Console::log(LOG_INFO, "Level::loadFromXML() - checking:  length=%f minimum=%f", (float)edge.LengthSquared() , (float)(B2_FLT_EPSILON * B2_FLT_EPSILON));
+               
                
                //b2Assert(edge.LengthSquared() > B2_FLT_EPSILON * B2_FLT_EPSILON);
                //m_normals[i] = b2Cross(edge, 1.0f);
@@ -135,29 +136,28 @@ namespace Polukili
             }
 
             
-            Logger::log("Level::loadFromXML() - polygon vertex count=%d", polygonDef.vertexCount);
-            Logger::log(this->body ? "not null" : "null");
-            //HERE IS THE BUG !!!!! TODO watching variables
+            Console::log(LOG_INFO, "Level::loadFromXML() - polygon vertex count=%d", polygonDef.vertexCount);
+            Console::log(LOG_INFO, this->body ? "not null" : "null");
             this->body->CreateShape(&polygonDef);
             
-            Logger::log("Level::loadFromXML() - polygon read");
+            Console::log(LOG_INFO, "Level::loadFromXML() - polygon read");
          }
       }
-      Logger::log("Level::loadFromXML() - shapes read");
+      Console::log(LOG_INFO, "Level::loadFromXML() - shapes read");
       
       // Create all actors
       data = mxmlFindElement(tree, tree, "actors", NULL, NULL, MXML_DESCEND);
       for (child = data->child; child != 0; child = child->next)
       {
-         Logger::log("Level::loadFromXML() - actor reading");
+         Console::log(LOG_INFO, "Level::loadFromXML() - actor reading");
          Actor* actor;
       
          const char* type = mxmlElementGetAttr(child, "type");
          if (type)
-            Logger::log("Level::loadFromXML() - actor type=%s", type);
+            Console::log(LOG_INFO, "Level::loadFromXML() - actor type=%s", type);
          else
          {
-            Logger::log("Level::loadFromXML() - actor type not found. Actor skipped.", type);
+            Console::log(LOG_INFO, "Level::loadFromXML() - actor type not found. Actor skipped.", type);
             continue;
          }
          
@@ -180,28 +180,28 @@ namespace Polukili
             actor = new Ennemies::Earthworm(this);
          else
          {
-            Logger::log("Level::loadFromXML() - actor type unknown. Actor skipped.", type);
+            Console::log(LOG_INFO, "Level::loadFromXML() - actor type unknown. Actor skipped.", type);
             continue;
          }
             
             
-         Logger::log("Level::loadFromXML() - actor reading will init physic.", type);
+         Console::log(LOG_INFO, "Level::loadFromXML() - actor reading will init physic.", type);
          float x = (float)atof(mxmlElementGetAttr(child->child, "x"));
          float y = (float)atof(mxmlElementGetAttr(child->child, "y"));
          actor->initPhysic(x, y);
-         Logger::log("Level::loadFromXML() - actor reading init physic.", type);
+         Console::log(LOG_INFO, "Level::loadFromXML() - actor reading init physic.", type);
          
          Ennemies::Ennemy* ennemy = dynamic_cast<Ennemies::Ennemy*>(actor);
          if (ennemy && stricmp(mxmlElementGetAttr(child, "isTarget"), "True") == 0)
             ennemy->setTarget(true);
             
-         Logger::log("Level::loadFromXML() - actor read");
+         Console::log(LOG_INFO, "Level::loadFromXML() - actor read");
       }
-      Logger::log("Level::loadFromXML() - actors read");
+      Console::log(LOG_INFO, "Level::loadFromXML() - actors read");
       
       mxmlDelete(tree);
       
-      Logger::log("Level::loadFromXML() - end");
+      Console::log(LOG_INFO, "Level::loadFromXML() - end");
    }
    
    /*************************************************/
@@ -251,7 +251,7 @@ namespace Polukili
    /*************************************************/
    void Level::render()
    {   
-      Logger::log("Level::render() - begin");
+      Console::log(LOG_INFO, "Level::render() - begin");
       
       if (this->backgroundSprite)
          this->backgroundSprite->Draw();      
@@ -270,13 +270,13 @@ namespace Polukili
       
       if (this->foregroundSprite)
          this->foregroundSprite->Draw();
-      Logger::log("Level::render() - end");
+      Console::log(LOG_INFO, "Level::render() - end");
    }
    
    /*************************************************/
    void Level::nextStep()
    {
-      Logger::log("Level::nextStep() - level nextStep begin");
+      Console::log(LOG_INFO, "Level::nextStep() - level nextStep begin");
       list<Actor*> actorsToDelete;
    
       WPAD_ScanPads();
@@ -290,18 +290,18 @@ namespace Polukili
       }
       
       
-      Logger::log("Level::nextStep() - destroy dead actors");
+      Console::log(LOG_INFO, "Level::nextStep() - destroy dead actors");
       // Delete all dead actors
       for (list<Actor*>::iterator it = actorsToDelete.begin(); it != actorsToDelete.end(); it++)
          delete *it;
       
       
       
-      Logger::log("Level::nextStep() - nextstep physic");
+      Console::log(LOG_INFO, "Level::nextStep() - nextstep physic");
       
       this->world->Step(Constants::timeStep, Constants::iterations); 
       
-      Logger::log("Level::nextStep() - level nextStep end");
+      Console::log(LOG_INFO, "Level::nextStep() - level nextStep end");
    }
    
    /*************************************************/
@@ -313,7 +313,7 @@ namespace Polukili
             return false;
             
       
-      Logger::log("nextStep() - level is finished");
+      Console::log(LOG_INFO, "nextStep() - level is finished");
       return true;
    }
 

@@ -7,10 +7,9 @@
 #include <Constants.h>
 #include <Game.h>
 
-#include <Logger.h>
+#include <Console.h>
 /*Include these for mxml*/
 #include <fat.h>
-#include <Logger.h>
 #include "mxml.h"
 
 static void *xfb = NULL;
@@ -58,8 +57,8 @@ int main(int argc, char **argv) {
    fatInitDefault();
 
    /*MXML TEST */
-   Polukili::Logger::log("=============================================================");
-   Polukili::Logger::log("fat initialised");
+   Polukili::Console::log(LOG_INFO, "=============================================================");
+   Polukili::Console::log(LOG_INFO, "fat initialised");
    Polukili::Game game;
    game.run(Polukili::Constants::basePath + "level_0.xml");
 

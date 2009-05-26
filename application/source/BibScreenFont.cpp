@@ -5,7 +5,7 @@
 */
 
 #include <wiisprite.h>
-#include <Logger.h>
+#include <Console.h>
 #include "BibScreenFont.h"
 
 
