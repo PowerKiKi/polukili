@@ -29,6 +29,7 @@ namespace Polukili
    void Actor::initPhysic(float x, float y)
    {
       b2BodyDef bodyDef;
+      this->basePosition = new b2Vec2(x / Constants::pixelsPerUnits, y / Constants::pixelsPerUnits);
       bodyDef.position.Set(x / Constants::pixelsPerUnits, y / Constants::pixelsPerUnits); 
       this->body = level->world->CreateBody(&bodyDef);
       b2PolygonDef actorShape;

@@ -124,6 +124,11 @@ namespace Polukili
       *  The physic body.
       */
       b2Body* body;
+      
+      /** 
+      *  The body base position.
+      */
+      b2Vec2* basePosition;
 
       /** 
       *  The graphical sprite.
