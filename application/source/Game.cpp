@@ -62,7 +62,7 @@ namespace Polukili
          level->nextStep();
          level->render();
          
-      printf("ABCDEchocolat");
+      
          this->console.RenderConsole();
          this->gameWindow.Flush();
          
