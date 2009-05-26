@@ -44,7 +44,7 @@ namespace Polukili
    /*************************************************/
    void Actor::render()
    {
-      this->sprite->SetRotation((float)this->body->GetAngle() / M_PI * 180.0);
+      this->sprite->SetRotation((float)this->body->GetAngle() / M_PI * 90.0);
       b2Vec2 pos = body->GetPosition();
       this->sprite->SetPosition(Constants::pixelsPerUnits * pos.x, Constants::pixelsPerUnits * pos.y);
       this->sprite->Draw();
