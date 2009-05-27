@@ -1,12 +1,7 @@
-
-
 #include <Ennemies/Bee.h>
 
-#include <Logger.h>
+#include <Console.h>
 #include <Constants.h>
-
-
-
 
 namespace Polukili 
 {
