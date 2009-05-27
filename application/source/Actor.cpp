@@ -12,6 +12,7 @@ namespace Polukili
    
    /*************************************************/
    Actor::Actor(Level* level)
+      : powerFactor(1)
    {
       Console::log(LOG_INFO, "Actor::Actor() - new actor");
       this->level = level;
@@ -26,7 +27,6 @@ namespace Polukili
    }
 
    /*************************************************/
-
    void Actor::initPhysic(float x, float y)
    {
       this->timer = new Timer;
@@ -35,7 +35,7 @@ namespace Polukili
       bodyDef.position.Set(x / Constants::pixelsPerUnits, y / Constants::pixelsPerUnits); 
       this->body = level->world->CreateBody(&bodyDef);
       b2PolygonDef actorShape;
-      actorShape.SetAsBox((((float)this->getImageWidth() / Constants::pixelsPerUnits) / 2.0f), (((float)this->getImageHeight() / Constants::pixelsPerUnits) / 2.0f));
+      actorShape.SetAsBox(((float)this->getImageWidth() * this->powerFactor / Constants::pixelsPerUnits) / 2.0f, ((float)this->getImageHeight() * this->powerFactor / Constants::pixelsPerUnits) / 2.0f);
       actorShape.density = Constants::defaultDensity;
       actorShape.friction = Constants::defaultFriction;
       actorShape.restitution = Constants::defaultRestitution;
@@ -47,6 +47,7 @@ namespace Polukili
    /*************************************************/
    void Actor::render()
    {
+      this->sprite->SetZoom(this->powerFactor);
       this->sprite->SetRotation((float)this->body->GetAngle() / M_PI * 90.0);
       b2Vec2 pos = body->GetPosition();
       this->sprite->SetPosition(Constants::pixelsPerUnits * pos.x, Constants::pixelsPerUnits * pos.y);
