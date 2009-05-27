@@ -20,8 +20,7 @@ namespace Polukili
       wsp::Image* fontImage = this->imageLibrary.get(Constants::basePath + "font.png");
       this->font.Initialize(fontImage, fontImage->GetWidth() / 16, fontImage->GetHeight() / 16, font_metrics);
       this->console.initialize(&this->font);
-      Console::log(LOG_INFO, "Game::Game()");
-      
+      Console::log(LOG_INFO, "=============================================================");
       
       this->gameWindow.InitVideo();      
       this->gameWindow.SetBackground((GXColor){ 0, 0, 0, 255 });
