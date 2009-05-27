@@ -10,6 +10,7 @@
 #include <Effect.h>
 #include <Element.h>
 #include <ActorState.h>
+#include <Timer.h>
 
 using namespace std;
 
@@ -144,6 +145,8 @@ namespace Polukili
       *  The factor of power for the actor. The highest the factor, the biggest the actor (zoom on sprite) and the most powerful he is. Value 1 is default factor.
       */
       double powerFactor;
+      
+      Timer* timer;
 
    private:
 
@@ -151,7 +154,8 @@ namespace Polukili
       *  Current effect on the actor.
       */
       Effect* effect;
-
+      
+      
       //end of class Actor
    };
 

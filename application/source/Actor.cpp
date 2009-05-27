@@ -16,6 +16,7 @@ namespace Polukili
       Logger::log("Actor::Actor() - new actor");
       this->level = level;
       this->level->actors.push_back(this);
+      
    }
    
    /*************************************************/
@@ -28,6 +29,7 @@ namespace Polukili
 
    void Actor::initPhysic(float x, float y)
    {
+      this->timer = new Timer;
       b2BodyDef bodyDef;
       this->basePosition = new b2Vec2(x / Constants::pixelsPerUnits, y / Constants::pixelsPerUnits);
       bodyDef.position.Set(x / Constants::pixelsPerUnits, y / Constants::pixelsPerUnits); 

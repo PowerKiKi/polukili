@@ -278,7 +278,7 @@ namespace Polukili
    {
       Logger::log("Level::nextStep() - level nextStep begin");
       list<Actor*> actorsToDelete;
-   
+      
       WPAD_ScanPads();
       
       // Each actors reacts to current situation
