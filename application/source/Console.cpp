@@ -176,7 +176,7 @@ void Console::render()
 Console::logFile << "char size=" <<  this->font->getCharacterHeight() << endl;
 	for (int i = 0; i < maximumRows; i ++)
 	{
-      this->font->DisplayText(0, i * this->font->getCharacterHeight(), the_console[i]);
+      this->font->DisplayText(16, 16 + i * this->font->getCharacterHeight(), the_console[i]);
    }
 }
 
