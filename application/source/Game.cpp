@@ -79,7 +79,7 @@ namespace Polukili
          
          // WPAD_ButtonsDown tells us which buttons were pressed in this loop
          // this is a "one shot" state which will not fire again until the button has been released
-         u32 pressed = WPAD_ButtonsDown(WPAD_CHAN_ALL);
+         u32 pressed = WPAD_ButtonsDown(WPAD_CHAN_0);
 
          // We return to the launcher application via exit
          if (pressed & WPAD_BUTTON_HOME) exit(0);
