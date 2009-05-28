@@ -17,7 +17,7 @@ namespace Polukili
          **/
          Bee(Level* level);
          
-         virtual void initPhysic(float x, float y);
+         virtual void initPhysic(const b2Vec2& position);
          /** 
          *  Define the behavior of the bee for the next step. Apply forces/actions/modifications based on current context (wiimote inputs, state changes based on time, etc.)
          */

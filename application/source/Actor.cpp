@@ -31,7 +31,7 @@ namespace Polukili
    {
       this->timer = new Timer;
       b2BodyDef bodyDef;
-      this->basePosition = position;
+      basePosition = position;
       bodyDef.position = position;
       this->body = level->world->CreateBody(&bodyDef);
       b2PolygonDef actorShape;

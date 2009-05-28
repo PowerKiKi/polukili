@@ -15,12 +15,12 @@ namespace Polukili
       {
       
       }
-      void Bee::initPhysic(float x, float y)
+      void Bee::initPhysic(const b2Vec2& position)
       {
          this->timer = new Timer;
          b2BodyDef bodyDef;
-         this->basePosition = new b2Vec2(x / Constants::pixelsPerUnits, y / Constants::pixelsPerUnits);
-         bodyDef.position.Set(x / Constants::pixelsPerUnits, y / Constants::pixelsPerUnits); 
+         basePosition = position;
+         bodyDef.position = position; 
          this->body = level->world->CreateBody(&bodyDef);
          b2PolygonDef beeShape;
          beeShape.SetAsBox((((float)this->getImageWidth() / Constants::pixelsPerUnits) / 2.0f), (((float)this->getImageHeight() / Constants::pixelsPerUnits) / 2.0f));
@@ -38,12 +38,12 @@ namespace Polukili
          // bee movement ( circle ) 
          
          b2BodyDef rotationCenterDef;
-         rotationCenterDef.position.Set(this->basePosition->x+1.0f,this->basePosition->y);
+         rotationCenterDef.position.Set(basePosition.x+1.0f,basePosition.y);
          this->rotationCenter = level->world->CreateBody(&rotationCenterDef);
          
          b2CircleDef rotationCenterShapeDef;
          rotationCenterShapeDef.density= 0.0f;
-         rotationCenterShapeDef.radius = 0.1f;
+         rotationCenterShapeDef.radius = 0.2f;
          rotationCenterShapeDef.localPosition.Set(0.0f, 0.0f);
          // TO COMMENT ! perhaps creating an enum with categories
          // deal with who collide and doesn't
@@ -63,16 +63,18 @@ namespace Polukili
       }
       void Bee::nextStep()
       {
+      
          b2Vec2 force(this->body->GetPosition()-this->rotationCenter->GetPosition());
          //flying
          if(this->timer->getMilliseconds()>250)
          {
             force.x = -force.y;
-            force.y = -(this->body->GetPosition()-this->rotationCenter->GetPosition()).x;
-            this->body->ApplyImpulse(force,this->body->GetPosition());
+            force.y = -(this->body->GetPosition()-this->rotationCenter->GetPosition()).x + this->body->GetMass()*Constants::defaultGravity; 
+            this->body->ApplyForce(force,this->body->GetPosition());
             this->timer->reset();
          }  
-         
+  
+       
          
       }
    } /* End of namespace Polukili::Ennemies */
