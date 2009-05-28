@@ -76,6 +76,7 @@ namespace Polukili
       this->world = new b2World(worldAABB, gravity, doSleep);
       b2BodyDef groundBodyDef;
       groundBodyDef.position.Set(0.0f, 0.0f);
+      
       this->body = this->world->CreateBody(&groundBodyDef);
       Console::log(LOG_INFO, "Level::loadFromXML() - physic world built");
       
@@ -98,6 +99,10 @@ namespace Polukili
             b2CircleDef circleDef;
             circleDef.radius = radius / Constants::pixelsPerUnits;
             circleDef.localPosition.Set(x / Constants::pixelsPerUnits, y / Constants::pixelsPerUnits);
+            // TO COMMENT ! perhaps creating an enum with categories
+            // deal with who collide and doesn't
+            circleDef.filter.categoryBits   = 0x0001;
+            
             this->body->CreateShape(&circleDef);
             
             Console::log(LOG_INFO, "Level::loadFromXML() - circle read (radius=%f x=%f y=%f)", radius, x, y);
@@ -138,6 +143,9 @@ namespace Polukili
             
             Console::log(LOG_INFO, "Level::loadFromXML() - polygon vertex count=%d", polygonDef.vertexCount);
             Console::log(LOG_INFO, this->body ? "not null" : "null");
+            // TO COMMENT ! perhaps creating an enum with categories
+            // deal with who collide and doesn't
+            polygonDef.filter.categoryBits   = 0x0001;
             this->body->CreateShape(&polygonDef);
             
             Console::log(LOG_INFO, "Level::loadFromXML() - polygon read");

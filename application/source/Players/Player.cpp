@@ -24,7 +24,27 @@ namespace Polukili
          this->level->players.remove(this);
       }
       
-
+      void Player::initPhysic(float x, float y)
+      {
+         this->timer = new Timer;
+         b2BodyDef bodyDef;
+         this->basePosition = new b2Vec2(x / Constants::pixelsPerUnits, y / Constants::pixelsPerUnits);
+         bodyDef.position.Set(x / Constants::pixelsPerUnits, y / Constants::pixelsPerUnits); 
+         this->body = level->world->CreateBody(&bodyDef);
+         b2PolygonDef playerShape;
+         playerShape.SetAsBox((((float)this->getImageWidth() / Constants::pixelsPerUnits) / 2.0f), (((float)this->getImageHeight() / Constants::pixelsPerUnits) / 2.0f));
+         playerShape.density = Constants::defaultDensity;
+         playerShape.friction = Constants::defaultFriction;
+         playerShape.restitution = Constants::defaultRestitution;
+         
+         // TO COMMENT ! perhaps creating an enum with categories
+         // deal with who collide and doesn't
+         playerShape.filter.categoryBits   = 0x0002;
+         playerShape.filter.maskBits      = 0x0005;
+         
+         this->body->CreateShape(&playerShape);
+         this->body->SetMassFromShapes();
+      }
       
       /*************************************************/
       void Player::nextStep()
