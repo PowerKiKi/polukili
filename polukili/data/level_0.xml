@@ -10,6 +10,12 @@
       <point x="640" y="480" />
       <point x="0" y="480" />
     </polygon>
+    <polygon>
+      <point x="0" y="0" />
+      <point x="640" y="0" />
+      <point x="640" y="50" />
+      <point x="0" y="50" />
+    </polygon>
   </physics>
   <actors>
     <actor type="poupa" powerFactor="1" isTarget="False">
