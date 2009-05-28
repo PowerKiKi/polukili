@@ -13,18 +13,17 @@
 
 namespace Polukili 
 {
-
    /*************************************************/
    Game::Game()
+      : consoleVisible(true)
    {
       wsp::Image* fontImage = this->imageLibrary.get(Constants::basePath + "font.png");
       this->font.Initialize(fontImage, fontImage->GetWidth() / 16, fontImage->GetHeight() / 16, font_metrics);
       this->console.initialize(&this->font);
-      Console::log(LOG_INFO, "Game::Game()");
-      
+      Console::log(LOG_INFO, "=============================================================");
       
       this->gameWindow.InitVideo();      
-      this->gameWindow.SetBackground((GXColor){ 255, 255, 255, 255 });
+      this->gameWindow.SetBackground((GXColor){ 0, 0, 0, 255 });
       Console::log(LOG_INFO, "Game::Game() - video initialised");
       
       // Initialise Wiimote
@@ -49,21 +48,18 @@ namespace Polukili
    /*************************************************/
    void Game::run(const string& initialLevel)
    {
-      Console::log(LOG_INFO, "Game::run() - 0");
       this->changeLevel(initialLevel);
-      Console::log(LOG_INFO, "Game::run() - 1");
       
       while (!this->levels.empty())
       {
-      
-         Console::log(LOG_INFO, "Game::run() - dedans");
          Level* level = this->levels.top();
                   
          level->nextStep();
          level->render();
          
-      printf("ABCDEchocolat");
-         this->console.render();
+         if (this->consoleVisible)
+            this->console.render();
+            
          this->gameWindow.Flush();
          
          // If level is finished, resume the previous one
@@ -79,10 +75,11 @@ namespace Polukili
          
          // WPAD_ButtonsDown tells us which buttons were pressed in this loop
          // this is a "one shot" state which will not fire again until the button has been released
-         u32 pressed = WPAD_ButtonsDown(0);
+         u32 pressed = WPAD_ButtonsDown(WPAD_CHAN_0);
 
          // We return to the launcher application via exit
-         if ( pressed & WPAD_BUTTON_HOME ) exit(0);
+         if (pressed & WPAD_BUTTON_HOME) exit(0);
+         if (pressed & WPAD_BUTTON_PLUS) this->consoleVisible = !this->consoleVisible;
       }
    }
    

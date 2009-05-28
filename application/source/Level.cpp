@@ -48,7 +48,7 @@ namespace Polukili
    /*************************************************/
    void Level::loadFromXML(const string& filename)
    {   
-      Console::log(LOG_INFO, "Level::loadFromXML() - filename=%s", filename.data());
+      Console::log(LOG_INFO, "Level::loadFromXML() - filename=%s", filename.c_str());
       if (this->world != 0) 
          delete this->world;
          
@@ -57,7 +57,7 @@ namespace Polukili
       mxml_node_t* data = 0;
       mxml_node_t* child = 0;
       
-      fp = fopen(filename.data(), "r");
+      fp = fopen(filename.c_str(), "r");
       tree = mxmlLoadFile(NULL, fp, MXML_IGNORE_CALLBACK);
       fclose(fp);
       
@@ -196,7 +196,7 @@ namespace Polukili
          Console::log(LOG_INFO, "Level::loadFromXML() - actor reading will init physic.", type);
          float x = (float)atof(mxmlElementGetAttr(child->child, "x"));
          float y = (float)atof(mxmlElementGetAttr(child->child, "y"));
-         actor->initPhysic(x, y);
+         actor->initPhysic(b2Vec2(x / Constants::pixelsPerUnits, y / Constants::pixelsPerUnits));
          Console::log(LOG_INFO, "Level::loadFromXML() - actor reading init physic.", type);
          
          Ennemies::Ennemy* ennemy = dynamic_cast<Ennemies::Ennemy*>(actor);

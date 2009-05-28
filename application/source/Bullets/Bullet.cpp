@@ -1,10 +1,12 @@
 #include <Bullets/Bullet.h>
 
 #include <Level.h>
+#include <Constants.h>
+#include <Console.h>
 
 namespace Polukili 
 {
-   namespace Bullets 
+   namespace Bullets
    {
       /*************************************************/
       Bullet::Bullet(Level* level)
@@ -19,6 +21,24 @@ namespace Polukili
          this->level->bullets.remove(this);
       }
 
+      /*************************************************/
+      string Bullet::getImagePath() const
+      {
+         return Constants::basePath + "default_bullet.png";
+      }
+
+      /*************************************************/
+      int Bullet::getImageWidth() const
+      {
+         return 8;
+      }
+
+      /*************************************************/
+      int Bullet::getImageHeight() const
+      {
+         return 8;
+      }
+      
       /*************************************************/
       int Bullet::attack(Polukili::Actor &actor)
       {

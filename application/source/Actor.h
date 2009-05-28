@@ -90,7 +90,7 @@ namespace Polukili
       /**
       * Initialize physic data
       */
-      virtual void initPhysic(float x, float y);
+      virtual void initPhysic(const b2Vec2& position);
 
       /**
       * Returns the path to the image for the sprite.
@@ -129,7 +129,7 @@ namespace Polukili
       /** 
       *  The body base position.
       */
-      b2Vec2* basePosition;
+      b2Vec2 basePosition;
 
       /** 
       *  The graphical sprite.

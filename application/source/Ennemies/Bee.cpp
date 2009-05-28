@@ -1,14 +1,9 @@
-
-
 #include <Ennemies/Bee.h>
 
-
+#include <Console.h>
 #include <Constants.h>
 #include <Level.h>
 #include <Box2D.h>
-
-
-
 
 namespace Polukili 
 {

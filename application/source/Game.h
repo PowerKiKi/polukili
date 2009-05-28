@@ -59,7 +59,7 @@ namespace Polukili
       wsp::GameWindow gameWindow;
       BibScreenFont font;
       Console console;
-      //end of class Game
+      bool consoleVisible;
    };
 
 } /* End of namespace Polukili */

@@ -65,7 +65,7 @@ namespace Polukili
 
       setvbuf(stdout, NULL , _IONBF, 0);
       
-      Console::logFile.open(Polukili::Constants::logFilename.data(), ios::out);
+      Console::logFile.open(Polukili::Constants::logFilename.c_str(), ios::out | ios::trunc);
       this->clear();
    }
 
