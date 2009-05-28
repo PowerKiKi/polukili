@@ -30,16 +30,17 @@ namespace Polukili
          
       Console::log(LOG_INFO, "loading %s", filename.c_str());
       wsp::Image* image = new wsp::Image();
-      if (image->LoadImage(filename.c_str()))
+      IMG_LOAD_ERROR err = image->LoadImage(filename.c_str());
+      if (err == IMG_LOAD_ERROR_NONE)
+      {
+         Console::log(LOG_INFO, "ok");
+         this->images.insert(make_pair(filename, image));
+      }
+      else
       {
          Console::log(LOG_INFO, "FAILED !");
          delete image;
          image = 0;
-      }
-      else
-      {
-         Console::log(LOG_INFO, "ok");
-         this->images.insert(make_pair(filename, image));
       }
       
       return image;
