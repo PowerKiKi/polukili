@@ -27,12 +27,12 @@ namespace Polukili
    }
 
    /*************************************************/
-   void Actor::initPhysic(float x, float y)
+   void Actor::initPhysic(const b2Vec2& position)
    {
       this->timer = new Timer;
       b2BodyDef bodyDef;
-      this->basePosition = new b2Vec2(x / Constants::pixelsPerUnits, y / Constants::pixelsPerUnits);
-      bodyDef.position.Set(x / Constants::pixelsPerUnits, y / Constants::pixelsPerUnits); 
+      this->basePosition = position;
+      bodyDef.position = position;
       this->body = level->world->CreateBody(&bodyDef);
       b2PolygonDef actorShape;
       actorShape.SetAsBox(((float)this->getImageWidth() * this->powerFactor / Constants::pixelsPerUnits) / 2.0f, ((float)this->getImageHeight() * this->powerFactor / Constants::pixelsPerUnits) / 2.0f);
