@@ -188,7 +188,7 @@ namespace Polukili
          Console::log(LOG_INFO, "Level::loadFromXML() - actor reading will init physic.", type);
          float x = (float)atof(mxmlElementGetAttr(child->child, "x"));
          float y = (float)atof(mxmlElementGetAttr(child->child, "y"));
-         actor->initPhysic(x, y);
+         actor->initPhysic(b2Vec2(x / Constants::pixelsPerUnits, y / Constants::pixelsPerUnits));
          Console::log(LOG_INFO, "Level::loadFromXML() - actor reading init physic.", type);
          
          Ennemies::Ennemy* ennemy = dynamic_cast<Ennemies::Ennemy*>(actor);

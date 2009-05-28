@@ -1,9 +1,11 @@
 #include <Players/Player.h>
 
+#include <wiiuse/wpad.h>
+
 #include <Console.h>
 #include <Constants.h>
 #include <Level.h>
-#include <wiiuse/wpad.h>
+#include <Bullets/Bullet.h>
 
 namespace Polukili 
 {
@@ -23,28 +25,29 @@ namespace Polukili
       {
          this->level->players.remove(this);
       }
-      
-
-      
+            
       /*************************************************/
       void Player::nextStep()
       {
-         u16 btnsheld = WPAD_ButtonsHeld(0);
+         u16 btnsheld = WPAD_ButtonsHeld(WPAD_CHAN_0);
          
-         if(btnsheld & WPAD_BUTTON_UP)
-         {
+         if (btnsheld & WPAD_BUTTON_UP)
             this->body->ApplyImpulse(b2Vec2(-Constants::defaultImpulseSpeed,0),this->body->GetPosition());
             
-         }
-         if(btnsheld & WPAD_BUTTON_DOWN)
-         {
+         if (btnsheld & WPAD_BUTTON_DOWN)
             this->body->ApplyImpulse(b2Vec2(Constants::defaultImpulseSpeed,0),this->body->GetPosition());
             
-         }
-         if(btnsheld & WPAD_BUTTON_2)
-         {
+         if (btnsheld & WPAD_BUTTON_2)
             this->body->ApplyImpulse(b2Vec2(0,-3*Constants::defaultImpulseSpeed),this->body->GetPosition());
+            
+         if (btnsheld & WPAD_BUTTON_1)
+         {
+            Bullets::Bullet* bullet = new Bullets::Bullet(this->level);
+            b2Vec2 pos = body->GetPosition();
+            pos.x += 0.5;
+            bullet->initPhysic(pos);
          }
+            
       }
       
       /*************************************************/
