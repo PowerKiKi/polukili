@@ -28,15 +28,19 @@ namespace Polukili
          return it->second;
          
          
-      Console::log(LOG_INFO, "ImageLibrary::get() - loading %s", filename.data());
+      Console::log(LOG_INFO, "loading %s", filename.c_str());
       wsp::Image* image = new wsp::Image();
-      if (image->LoadImage(filename.data()))
+      if (image->LoadImage(filename.c_str()))
       {
+         Console::log(LOG_INFO, "FAILED !");
          delete image;
          image = 0;
       }
       else
+      {
+         Console::log(LOG_INFO, "ok");
          this->images.insert(make_pair(filename, image));
+      }
       
       return image;
    }
@@ -44,7 +48,7 @@ namespace Polukili
    /*************************************************/
    void ImageLibrary::remove(const string& filename)
    {
-      Console::log(LOG_INFO, "ImageLibrary::get() - unloading %s", filename.data());
+      Console::log(LOG_INFO, "unloading %s", filename.c_str());
       map<string, wsp::Image*>::iterator it = this->images.find(filename);
       if (it != this->images.end())
       {

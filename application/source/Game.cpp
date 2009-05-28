@@ -48,14 +48,10 @@ namespace Polukili
    /*************************************************/
    void Game::run(const string& initialLevel)
    {
-      Console::log(LOG_INFO, "Game::run() - 0");
       this->changeLevel(initialLevel);
-      Console::log(LOG_INFO, "Game::run() - 1");
       
       while (!this->levels.empty())
       {
-      
-         Console::log(LOG_INFO, "Game::run() - dedans");
          Level* level = this->levels.top();
                   
          level->nextStep();

@@ -42,10 +42,14 @@ namespace Polukili
             
          if (btnsheld & WPAD_BUTTON_1)
          {
+            Console::log(LOG_INFO, "will shoot");
             Bullets::Bullet* bullet = new Bullets::Bullet(this->level);
+            bullet->loadGraphics();
             b2Vec2 pos = body->GetPosition();
             pos.x += 0.5;
             bullet->initPhysic(pos);
+            
+            Console::log(LOG_INFO, "shot");
          }
             
       }

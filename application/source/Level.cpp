@@ -48,7 +48,7 @@ namespace Polukili
    /*************************************************/
    void Level::loadFromXML(const string& filename)
    {   
-      Console::log(LOG_INFO, "Level::loadFromXML() - filename=%s", filename.data());
+      Console::log(LOG_INFO, "Level::loadFromXML() - filename=%s", filename.c_str());
       if (this->world != 0) 
          delete this->world;
          
@@ -57,7 +57,7 @@ namespace Polukili
       mxml_node_t* data = 0;
       mxml_node_t* child = 0;
       
-      fp = fopen(filename.data(), "r");
+      fp = fopen(filename.c_str(), "r");
       tree = mxmlLoadFile(NULL, fp, MXML_IGNORE_CALLBACK);
       fclose(fp);
       
