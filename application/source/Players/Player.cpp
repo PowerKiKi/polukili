@@ -32,6 +32,7 @@ namespace Polukili
          b2BodyDef bodyDef;
          basePosition = position;
          bodyDef.position = position; 
+         bodyDef.fixedRotation= true;
          this->body = level->world->CreateBody(&bodyDef);
          b2PolygonDef playerShape;
          playerShape.SetAsBox((((float)this->getImageWidth() / Constants::pixelsPerUnits) / 2.0f), (((float)this->getImageHeight() / Constants::pixelsPerUnits) / 2.0f));

@@ -20,10 +20,11 @@ namespace Polukili
          this->timer = new Timer;
          b2BodyDef bodyDef;
          basePosition = position;
-         bodyDef.position = position; 
+         bodyDef.position = position;
+         
          this->body = level->world->CreateBody(&bodyDef);
-         b2PolygonDef beeShape;
-         beeShape.SetAsBox((((float)this->getImageWidth() / Constants::pixelsPerUnits) / 2.0f), (((float)this->getImageHeight() / Constants::pixelsPerUnits) / 2.0f));
+         b2CircleDef beeShape;
+         beeShape.radius=((float)this->getImageWidth() / Constants::pixelsPerUnits) / 2.0f;
          beeShape.density = Constants::defaultDensity;
          beeShape.friction = Constants::defaultFriction;
          beeShape.restitution = Constants::defaultRestitution;
@@ -52,8 +53,10 @@ namespace Polukili
          this->rotationCenter->CreateShape(&rotationCenterShapeDef);
          
          
-         b2DistanceJointDef jointDef;
-         jointDef.Initialize(this->body, this->rotationCenter, this->body->GetPosition() , this->rotationCenter->GetPosition());
+         b2RevoluteJointDef  jointDef;
+         jointDef.Initialize(this->rotationCenter, this->body, this->rotationCenter->GetPosition());
+         jointDef.motorSpeed     = 10.0f;
+         jointDef.enableMotor    = true;
          jointDef.collideConnected = false;
          
          this->jointToRotationCenter = level->world->CreateJoint(&jointDef);
@@ -61,20 +64,19 @@ namespace Polukili
 
     
       }
+         
+      void Bee::render()
+      {
+         this->sprite->SetZoom(this->powerFactor);
+         b2Vec2 pos = body->GetPosition();
+         this->sprite->SetPosition(Constants::pixelsPerUnits * pos.x, Constants::pixelsPerUnits * pos.y);
+         this->sprite->Draw();
+      }
+
       void Bee::nextStep()
       {
-      
-         b2Vec2 force(this->body->GetPosition()-this->rotationCenter->GetPosition());
-         //flying
-         if(this->timer->getMilliseconds()>250)
-         {
-            force.x = -force.y;
-            force.y = -(this->body->GetPosition()-this->rotationCenter->GetPosition()).x + this->body->GetMass()*Constants::defaultGravity; 
-            this->body->ApplyForce(force,this->body->GetPosition());
-            this->timer->reset();
-         }  
-  
-       
+         
+         this->body->ApplyForce(b2Vec2(0.0f, Constants::defaultGravity*this->body->GetMass()), this->basePosition);
          
       }
    } /* End of namespace Polukili::Ennemies */
