@@ -39,27 +39,64 @@ namespace Polukili
          playerShape.density = Constants::defaultDensity;
          playerShape.friction = Constants::defaultFriction;
          playerShape.restitution = Constants::defaultRestitution;
-         
-         // TO COMMENT ! perhaps creating an enum with categories
+          // TO COMMENT ! perhaps creating an enum with categories
          // deal with who collide and doesn't
          playerShape.filter.categoryBits   = 0x0002;
          playerShape.filter.maskBits      = 0x0005;
          
+         
          this->body->CreateShape(&playerShape);
-         this->body->SetMassFromShapes();
+         this->body->SetMassFromShapes();        
+         
+         
+         b2BodyDef aimDef;
+         aimDef.position.x = position.x + 0.5f; 
+         aimDef.position.y = position.y; 
+         this->aimPoint = level->world->CreateBody(&aimDef);
+         b2CircleDef aimShape;
+         aimShape.density = Constants::defaultDensity;
+
+         aimShape.radius = 0.1f;
+         aimShape.localPosition.Set(0.0f, 0.0f);
+         // TO COMMENT ! perhaps creating an enum with categories
+         // deal with who collide and doesn't
+         aimShape.filter.categoryBits   = 0x0008;
+         aimShape.filter.maskBits      = 0x0006;
+         this->aimPoint->CreateShape(&aimShape);
+         this->aimPoint->SetMassFromShapes();  
+         
+         b2DistanceJointDef  jointDef;
+         jointDef.Initialize(this->body, this->aimPoint, this->body->GetPosition(), this->aimPoint->GetPosition());
+         jointDef.collideConnected = false;
+         
+         level->world->CreateJoint(&jointDef);
+
+         
+
+         
+
       }
       
       /*************************************************/
       void Player::nextStep()
       {
          u16 btnsheld = WPAD_ButtonsHeld(WPAD_CHAN_0);
-         
+         this->aimPoint->ApplyForce(b2Vec2(0.0f, Constants::defaultGravity*this->aimPoint->GetMass()), this->aimPoint->GetPosition());
          if (btnsheld & WPAD_BUTTON_UP)
+         {
             this->body->ApplyImpulse(b2Vec2(-Constants::defaultImpulseSpeed,0),this->body->GetPosition());
-            
+            this->aimPoint->ApplyForce(b2Vec2(-20.0f,0),this->aimPoint->GetPosition());
+         }  
          if (btnsheld & WPAD_BUTTON_DOWN)
+         {
             this->body->ApplyImpulse(b2Vec2(Constants::defaultImpulseSpeed,0),this->body->GetPosition());
+            this->aimPoint->ApplyForce(b2Vec2(20.0f,0),this->aimPoint->GetPosition());
+         }  
+         if (btnsheld & WPAD_BUTTON_RIGHT)
+         {
             
+            this->aimPoint->ApplyForce(b2Vec2(0,20.0f),this->aimPoint->GetPosition());
+         } 
          if (btnsheld & WPAD_BUTTON_2)
             this->body->ApplyImpulse(b2Vec2(0,-3*Constants::defaultImpulseSpeed),this->body->GetPosition());
             
@@ -68,9 +105,7 @@ namespace Polukili
             Console::log(LOG_INFO, "will shoot");
             Bullets::Bullet* bullet = new Bullets::Bullet(this->level);
             bullet->loadGraphics();
-            b2Vec2 pos = body->GetPosition();
-            pos.x += 0.5;
-            bullet->initPhysic(pos);
+            bullet->initPhysic(this->aimPoint->GetPosition());
             
             Console::log(LOG_INFO, "shot");
          }

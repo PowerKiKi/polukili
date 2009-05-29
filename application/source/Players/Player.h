@@ -45,9 +45,12 @@ namespace Polukili
          * Returns the height of the tile in the image (must be multiple of 4).
          */
          virtual int getImageHeight() const;
-
+      
+      protected:
+         b2Body* aimPoint;
 
          //end of class Player
+         
       };
 
    } /* End of namespace Polukili::Players */

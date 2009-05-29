@@ -43,7 +43,6 @@ namespace Polukili
          this->rotationCenter = level->world->CreateBody(&rotationCenterDef);
          
          b2CircleDef rotationCenterShapeDef;
-         rotationCenterShapeDef.density= 0.0f;
          rotationCenterShapeDef.radius = 0.2f;
          rotationCenterShapeDef.localPosition.Set(0.0f, 0.0f);
          // TO COMMENT ! perhaps creating an enum with categories
@@ -76,7 +75,7 @@ namespace Polukili
       void Bee::nextStep()
       {
          
-         this->body->ApplyForce(b2Vec2(0.0f, Constants::defaultGravity*this->body->GetMass()), this->basePosition);
+      //this->body->ApplyForce(b2Vec2(0.0f, Constants::defaultGravity*this->body->GetMass()), this->basePosition);
          
       }
    } /* End of namespace Polukili::Ennemies */
