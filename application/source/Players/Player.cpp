@@ -62,7 +62,7 @@ namespace Polukili
          // TO COMMENT ! perhaps creating an enum with categories
          // deal with who collide and doesn't
          aimShape.filter.categoryBits   = anchors;
-         aimShape.filter.maskBits      = all;
+         aimShape.filter.maskBits      = nothing;
          this->aimPoint->CreateShape(&aimShape);
          this->aimPoint->SetMassFromShapes();  
          
