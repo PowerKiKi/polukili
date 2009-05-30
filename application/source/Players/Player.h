@@ -48,7 +48,7 @@ namespace Polukili
       
       protected:
          b2Body* aimPoint;
-
+         b2RevoluteJoint* aimJoint;
          //end of class Player
          
       };

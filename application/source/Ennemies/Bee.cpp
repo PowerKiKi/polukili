@@ -1,9 +1,12 @@
+
+
 #include <Ennemies/Bee.h>
 
 #include <Console.h>
 #include <Constants.h>
 #include <Level.h>
 #include <Box2D.h>
+#include <CollisionCategories.h>
 
 namespace Polukili 
 {
@@ -31,8 +34,9 @@ namespace Polukili
          // TO COMMENT ! perhaps creating an enum with categories
          // deal with who collide and doesn't
 
-         beeShape.filter.categoryBits   = 0x0004;
-         beeShape.filter.maskBits      = 0x0012;
+         beeShape.filter.categoryBits   = enemies;
+         
+         beeShape.filter.maskBits = players+ground;
 
          this->body->CreateShape(&beeShape);
          this->body->SetMassFromShapes();
@@ -47,8 +51,8 @@ namespace Polukili
          rotationCenterShapeDef.localPosition.Set(0.0f, 0.0f);
          // TO COMMENT ! perhaps creating an enum with categories
          // deal with who collide and doesn't
-         rotationCenterShapeDef.filter.categoryBits   = 0x0008;
-         rotationCenterShapeDef.filter.maskBits      = 0x0006;
+         rotationCenterShapeDef.filter.categoryBits   = anchors;
+         rotationCenterShapeDef.filter.maskBits       = nothing;
          this->rotationCenter->CreateShape(&rotationCenterShapeDef);
          
          
@@ -75,7 +79,7 @@ namespace Polukili
       void Bee::nextStep()
       {
          
-      //this->body->ApplyForce(b2Vec2(0.0f, Constants::defaultGravity*this->body->GetMass()), this->basePosition);
+      this->body->ApplyForce(b2Vec2(0.0f, Constants::defaultGravity*this->body->GetMass()), this->basePosition);
          
       }
    } /* End of namespace Polukili::Ennemies */
