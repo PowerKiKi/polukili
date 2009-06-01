@@ -50,7 +50,7 @@ namespace Polukili
          b2Body* aimPoint;
          b2RevoluteJoint* aimJoint;
          //end of class Player
-         
+         Timer* bulletTimer;
       };
 
    } /* End of namespace Polukili::Players */

@@ -7,6 +7,7 @@
 #include <Level.h>
 #include <Bullets/Bullet.h>
 #include <CollisionCategories.h>
+#include <Timer.h>
 
 namespace Polukili 
 {
@@ -30,6 +31,8 @@ namespace Polukili
       void Player::initPhysic(const b2Vec2& position)
       {
          this->timer = new Timer;
+         this->bulletTimer = new Timer;
+
          b2BodyDef bodyDef;
          basePosition = position;
          bodyDef.position = position; 
@@ -69,9 +72,11 @@ namespace Polukili
          b2RevoluteJointDef  jointDef;
          jointDef.Initialize(this->body, this->aimPoint, this->body->GetPosition());
          jointDef.collideConnected = false;
+         jointDef.enableLimit = true;
          jointDef.lowerAngle = -1.0f * b2_pi; // -180 degrees
-         jointDef.upperAngle = 1.0f * b2_pi; // 180 degrees
-         jointDef.enableMotor    = false;
+         jointDef.upperAngle = 0.0f * b2_pi; // 180 degrees
+         jointDef.motorSpeed = 0.0f;
+         jointDef.enableMotor    = true;
          jointDef.collideConnected = false;
 
          this->aimJoint =  dynamic_cast<b2RevoluteJoint*> (level->world->CreateJoint(&jointDef));
@@ -86,36 +91,76 @@ namespace Polukili
       void Player::nextStep()
       {
          u16 btnsheld = WPAD_ButtonsHeld(WPAD_CHAN_0);
-         this->aimPoint->ApplyForce(b2Vec2(0.0f, -Constants::defaultGravity*this->aimPoint->GetMass()), this->aimPoint->GetPosition());
-         if (btnsheld & WPAD_BUTTON_UP)
+         
+         // moving and aiming
+         this->aimPoint->ApplyForce(b2Vec2(-Constants::defaultGravity*this->aimPoint->GetMass(),0), this->aimPoint->GetPosition());
+         Console::log(LOG_INFO, "%f",this->aimJoint->GetJointAngle() );
+         if(btnsheld & WPAD_BUTTON_UP && !(btnsheld & WPAD_BUTTON_RIGHT))
          {
+            //WPAD_BUTTON_UP only
             this->body->ApplyImpulse(b2Vec2(-Constants::defaultImpulseSpeed,0),this->body->GetPosition());
-            this->aimJoint->EnableMotor(this->aimJoint->GetJointAngle()<1.0f);
-         }  
-         if (btnsheld & WPAD_BUTTON_DOWN)
-         {
-            this->body->ApplyImpulse(b2Vec2(Constants::defaultImpulseSpeed,0),this->body->GetPosition());
-            this->aimJoint->EnableMotor(this->aimJoint->GetJointAngle()>0.0f);
-         }  
-         if (btnsheld & WPAD_BUTTON_RIGHT)
-         {
-            
-            //this->aimPoint->ApplyForce(b2Vec2(0,-20.0f),this->aimPoint->GetPosition());
-         } 
-         if (btnsheld & WPAD_BUTTON_2)
-            this->body->ApplyImpulse(b2Vec2(0,-3*Constants::defaultImpulseSpeed),this->body->GetPosition());
-            
-         if (btnsheld & WPAD_BUTTON_1)
-         {
-            Console::log(LOG_INFO, "will shoot");
-            Bullets::Bullet* bullet = new Bullets::Bullet(this->level);
-            bullet->loadGraphics();
-            bullet->initPhysic(this->aimPoint->GetPosition());
-            
-            Console::log(LOG_INFO, "shot");
+            /*
+            if(this->aimJoint->GetJointAngle()>(-1.0f * b2_pi))
+               this->aimJoint->SetMotorSpeed(-1000.0f);*/
          }
-            
-      }
+         if(btnsheld & WPAD_BUTTON_RIGHT )
+         {
+            if(btnsheld & WPAD_BUTTON_UP)
+            {
+               //WPAD_BUTTON_UP & WPAD_BUTTON_RIGHT
+               /*if(this->aimJoint->GetJointAngle()>(-0.75f * b2_pi))
+                  this->aimJoint->SetMotorSpeed(-1000.0f);
+               if(this->aimJoint->GetJointAngle()<(-0.75f * b2_pi))
+                  this->aimJoint->SetMotorSpeed(1000.0f);*/
+            }  
+            else if (btnsheld & WPAD_BUTTON_DOWN)
+            {
+               //WPAD_BUTTON_RIGHT & WPAD_BUTTON_DOWN
+               /*if(this->aimJoint->GetJointAngle()>(-0.25f * b2_pi))
+                  this->aimJoint->SetMotorSpeed(-1000.0f);
+               if(this->aimJoint->GetJointAngle()<(-0.25f * b2_pi))
+                  this->aimJoint->SetMotorSpeed(1000.0f);*/
+              
+            }
+            else
+            {
+               //WPAD_BUTTON_RIGHT
+              /* if(this->aimJoint->GetJointAngle()>(-0.5f * b2_pi))
+                  this->aimJoint->SetMotorSpeed(-1000.0f);
+               if(this->aimJoint->GetJointAngle()<(-0.5f * b2_pi))
+                  this->aimJoint->SetMotorSpeed(1000.0f);*/
+            }            
+         }            
+         if(btnsheld & WPAD_BUTTON_DOWN && !(btnsheld & WPAD_BUTTON_RIGHT))
+         {
+            //WPAD_BUTTON_DOWN only
+            this->body->ApplyImpulse(b2Vec2(Constants::defaultImpulseSpeed,0),this->body->GetPosition());
+            //Console::log(LOG_INFO, "WPAD_BUTTON_DOWN");
+           /* if(this->aimJoint->GetJointAngle()>(-1.0f * b2_pi))
+               this->aimJoint->SetMotorSpeed(1000.0f);*/
+         }            
+
+         //Shooting & Jumping
+         if(btnsheld & WPAD_BUTTON_1)
+         {
+            if(this->bulletTimer->getMilliseconds()>=250)
+            {
+               Console::log(LOG_INFO, "will shoot");
+               Bullets::Bullet* bullet = new Bullets::Bullet(this->level);
+               bullet->loadGraphics();
+               bullet->initPhysic(this->aimPoint->GetPosition());
+               
+               Console::log(LOG_INFO, "shot");
+               this->bulletTimer->reset();
+            }              
+         }
+         if(btnsheld & WPAD_BUTTON_2 )
+         {
+            this->body->ApplyImpulse(b2Vec2(0,-3*Constants::defaultImpulseSpeed),this->body->GetPosition());
+         }  
+      }  
+              
+
       
       /*************************************************/
       string Player::getImagePath() const

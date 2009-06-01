@@ -25,6 +25,12 @@ namespace Polukili
          */
          virtual ~Bullet();         
          
+         
+         
+         /**
+         * Initialize physic data
+         */
+         virtual void initPhysic(const b2Vec2& position);
          /**
          * Returns the path to the image for the sprite.
          */

@@ -7,7 +7,7 @@
 #include <Level.h>
 #include <Box2D.h>
 #include <CollisionCategories.h>
-
+ 
 namespace Polukili 
 {
    namespace Ennemies 
@@ -36,7 +36,7 @@ namespace Polukili
 
          beeShape.filter.categoryBits   = enemies;
          
-         beeShape.filter.maskBits = players+ground;
+         beeShape.filter.maskBits = players+ground+bullets;
 
          this->body->CreateShape(&beeShape);
          this->body->SetMassFromShapes();
