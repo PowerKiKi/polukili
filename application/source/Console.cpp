@@ -5,6 +5,7 @@
 */
 #include <Console.h>
 
+#include <stdio.h>
 #include <sys/iosupport.h>
 #include <wiisprite.h>
 
@@ -66,7 +67,9 @@ namespace Polukili
 
       setvbuf(stdout, NULL , _IONBF, 0);
       
+      remove(Console::logFile);      
       Console::logFile.open(Polukili::Constants::logFilename.c_str(), ios::out | ios::trunc);
+      
       this->clear();
    }
 
