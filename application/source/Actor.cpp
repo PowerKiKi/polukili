@@ -34,14 +34,7 @@ namespace Polukili
       basePosition = position;
       bodyDef.position = position;
       this->body = level->world->CreateBody(&bodyDef);
-      b2PolygonDef actorShape;
-      actorShape.SetAsBox(((float)this->getImageWidth() * this->powerFactor / Constants::pixelsPerUnits) / 2.0f, ((float)this->getImageHeight() * this->powerFactor / Constants::pixelsPerUnits) / 2.0f);
-      actorShape.density = Constants::defaultDensity;
-      actorShape.friction = Constants::defaultFriction;
-      actorShape.restitution = Constants::defaultRestitution;
 
-      this->body->CreateShape(&actorShape);
-      this->body->SetMassFromShapes();
    }
    
    /*************************************************/

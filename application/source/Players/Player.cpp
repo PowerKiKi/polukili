@@ -30,21 +30,14 @@ namespace Polukili
       /*************************************************/
       void Player::initPhysic(const b2Vec2& position)
       {
-         this->timer = new Timer;
+         this->Actor::initPhysic(position);
          this->bulletTimer = new Timer;
-
-         b2BodyDef bodyDef;
-         basePosition = position;
-         bodyDef.position = position; 
-         bodyDef.fixedRotation= true;
-         this->body = level->world->CreateBody(&bodyDef);
          b2PolygonDef playerShape;
          playerShape.SetAsBox((((float)this->getImageWidth() / Constants::pixelsPerUnits) / 2.0f), (((float)this->getImageHeight() / Constants::pixelsPerUnits) / 2.0f));
          playerShape.density = Constants::defaultDensity;
          playerShape.friction = Constants::defaultFriction;
          playerShape.restitution = Constants::defaultRestitution;
-          // TO COMMENT ! perhaps creating an enum with categories
-         // deal with who collide and doesn't
+
          playerShape.filter.categoryBits   = players;
          playerShape.filter.maskBits      = ground+enemies;
          
@@ -62,8 +55,7 @@ namespace Polukili
 
          aimShape.radius = 0.1f;
          aimShape.localPosition.Set(0.0f, 0.0f);
-         // TO COMMENT ! perhaps creating an enum with categories
-         // deal with who collide and doesn't
+
          aimShape.filter.categoryBits   = anchors;
          aimShape.filter.maskBits      = nothing;
          this->aimPoint->CreateShape(&aimShape);
@@ -91,7 +83,7 @@ namespace Polukili
       void Player::nextStep()
       {
          u16 btnsheld = WPAD_ButtonsHeld(this->wiimoteChannel);
-         
+         this->body->SetAngularVelocity(0.0f);
          // moving and aiming
          this->aimPoint->ApplyForce(b2Vec2(-Constants::defaultGravity*this->aimPoint->GetMass(),0), this->aimPoint->GetPosition());
          Console::log(LOG_INFO, "%f",this->aimJoint->GetJointAngle() );
@@ -99,45 +91,32 @@ namespace Polukili
          {
             //WPAD_BUTTON_UP only
             this->body->ApplyImpulse(b2Vec2(-Constants::defaultImpulseSpeed,0),this->body->GetPosition());
-            /*
-            if(this->aimJoint->GetJointAngle()>(-1.0f * b2_pi))
-               this->aimJoint->SetMotorSpeed(-1000.0f);*/
+
          }
          if(btnsheld & WPAD_BUTTON_RIGHT )
          {
             if(btnsheld & WPAD_BUTTON_UP)
             {
                //WPAD_BUTTON_UP & WPAD_BUTTON_RIGHT
-               /*if(this->aimJoint->GetJointAngle()>(-0.75f * b2_pi))
-                  this->aimJoint->SetMotorSpeed(-1000.0f);
-               if(this->aimJoint->GetJointAngle()<(-0.75f * b2_pi))
-                  this->aimJoint->SetMotorSpeed(1000.0f);*/
+
             }  
             else if (btnsheld & WPAD_BUTTON_DOWN)
             {
                //WPAD_BUTTON_RIGHT & WPAD_BUTTON_DOWN
-               /*if(this->aimJoint->GetJointAngle()>(-0.25f * b2_pi))
-                  this->aimJoint->SetMotorSpeed(-1000.0f);
-               if(this->aimJoint->GetJointAngle()<(-0.25f * b2_pi))
-                  this->aimJoint->SetMotorSpeed(1000.0f);*/
+   
               
             }
             else
             {
                //WPAD_BUTTON_RIGHT
-              /* if(this->aimJoint->GetJointAngle()>(-0.5f * b2_pi))
-                  this->aimJoint->SetMotorSpeed(-1000.0f);
-               if(this->aimJoint->GetJointAngle()<(-0.5f * b2_pi))
-                  this->aimJoint->SetMotorSpeed(1000.0f);*/
+
             }            
          }            
          if(btnsheld & WPAD_BUTTON_DOWN && !(btnsheld & WPAD_BUTTON_RIGHT))
          {
             //WPAD_BUTTON_DOWN only
             this->body->ApplyImpulse(b2Vec2(Constants::defaultImpulseSpeed,0),this->body->GetPosition());
-            //Console::log(LOG_INFO, "WPAD_BUTTON_DOWN");
-           /* if(this->aimJoint->GetJointAngle()>(-1.0f * b2_pi))
-               this->aimJoint->SetMotorSpeed(1000.0f);*/
+
          }            
 
          //Shooting & Jumping

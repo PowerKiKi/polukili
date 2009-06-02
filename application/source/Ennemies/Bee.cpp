@@ -22,19 +22,12 @@ namespace Polukili
       /*************************************************/
       void Bee::initPhysic(const b2Vec2& position)
       {
-         this->timer = new Timer;
-         b2BodyDef bodyDef;
-         basePosition = position;
-         bodyDef.position = position;
-         
-         this->body = level->world->CreateBody(&bodyDef);
+         this->Actor::initPhysic(position);
          b2CircleDef beeShape;
-         beeShape.radius=((float)this->getImageWidth() / Constants::pixelsPerUnits) / 2.0f;
+         beeShape.radius=((float)this->getImageWidth() * this->powerFactor / Constants::pixelsPerUnits) / 2.0f;
          beeShape.density = Constants::defaultDensity;
          beeShape.friction = Constants::defaultFriction;
          beeShape.restitution = Constants::defaultRestitution;
-         // TO COMMENT ! perhaps creating an enum with categories
-         // deal with who collide and doesn't
 
          beeShape.filter.categoryBits   = enemies;
          
@@ -51,8 +44,7 @@ namespace Polukili
          b2CircleDef rotationCenterShapeDef;
          rotationCenterShapeDef.radius = 0.2f;
          rotationCenterShapeDef.localPosition.Set(0.0f, 0.0f);
-         // TO COMMENT ! perhaps creating an enum with categories
-         // deal with who collide and doesn't
+
          rotationCenterShapeDef.filter.categoryBits   = anchors;
          rotationCenterShapeDef.filter.maskBits       = nothing;
          this->rotationCenter->CreateShape(&rotationCenterShapeDef);
@@ -83,7 +75,7 @@ namespace Polukili
       void Bee::nextStep()
       {
          
-      this->body->ApplyForce(b2Vec2(0.0f, Constants::defaultGravity*this->body->GetMass()), this->basePosition);
+         this->body->ApplyForce(b2Vec2(0.0f, Constants::defaultGravity*this->body->GetMass()), this->basePosition);
          
       }
    } /* End of namespace Polukili::Ennemies */

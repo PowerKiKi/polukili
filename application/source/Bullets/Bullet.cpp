@@ -25,11 +25,7 @@ namespace Polukili
       /*************************************************/
       void Bullet::initPhysic(const b2Vec2& position)
       {
-         this->timer = new Timer;
-         b2BodyDef bodyDef;
-         basePosition = position;
-         bodyDef.position = position;
-         this->body = level->world->CreateBody(&bodyDef);
+         this->Actor::initPhysic(position);
          b2PolygonDef bulletShape;
          bulletShape.SetAsBox(((float)this->getImageWidth() * this->powerFactor / Constants::pixelsPerUnits) / 2.0f, ((float)this->getImageHeight() * this->powerFactor / Constants::pixelsPerUnits) / 2.0f);
          bulletShape.density = Constants::defaultDensity;
