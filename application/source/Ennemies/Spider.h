@@ -1,5 +1,5 @@
-#ifndef polukili_Ennemies_Spider_h_cea62887_1deb_4f62_a4a6_052fa0643fcf
-#define polukili_Ennemies_Spider_h_cea62887_1deb_4f62_a4a6_052fa0643fcf
+#ifndef Polukili_Ennemies_Spider_h
+#define Polukili_Ennemies_Spider_h
 
 #include <Ennemies/Ennemy.h>
 
@@ -23,5 +23,5 @@ namespace Polukili
    } /* End of namespace Polukili::Ennemies */
 } /* End of namespace Polukili */
 
-#endif // polukili_Ennemies_Spider_h_cea62887_1deb_4f62_a4a6_052fa0643fcf
+#endif 
 

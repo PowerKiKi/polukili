@@ -1,5 +1,5 @@
-#ifndef polukili_Pets_Ladybird_h_288e39df_1e1a_4006_936a_66cff687fca6
-#define polukili_Pets_Ladybird_h_288e39df_1e1a_4006_936a_66cff687fca6
+#ifndef Polukili_Pets_Ladybird_h
+#define Polukili_Pets_Ladybird_h
 
  #include <Pets/Pet.h>
 
@@ -16,5 +16,5 @@ namespace Polukili
    } /* End of namespace Polukili::Pets */
 } /* End of namespace Polukili */
 
-#endif // polukili_Pets_Ladybird_h_288e39df_1e1a_4006_936a_66cff687fca6
+#endif 
 

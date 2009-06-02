@@ -1,5 +1,5 @@
-#ifndef polukili_Rubbish_h_709325fa_b1ab_40ac_87c5_e45f99842dd7
-#define polukili_Rubbish_h_709325fa_b1ab_40ac_87c5_e45f99842dd7
+#ifndef Polukili_Rubbish_h
+#define Polukili_Rubbish_h
 
 #include <Actor.h>
 
@@ -16,5 +16,5 @@ namespace Polukili
 
 } /* End of namespace Polukili */
 
-#endif // polukili_Rubbish_h_709325fa_b1ab_40ac_87c5_e45f99842dd7
+#endif 
 

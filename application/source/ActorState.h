@@ -1,5 +1,5 @@
-#ifndef polukili_ActorState_h_42bdb625_de70_40bc_9396_0d2a7a0fba7d
-#define polukili_ActorState_h_42bdb625_de70_40bc_9396_0d2a7a0fba7d
+#ifndef Polukili_ActorState_h
+#define Polukili_ActorState_h
 
 namespace Polukili
 {
@@ -20,4 +20,4 @@ namespace Polukili
    
 }/* End of namespace Polukili */
 
-#endif // polukili_ActorState_h_42bdb625_de70_40bc_9396_0d2a7a0fba7d
+#endif

@@ -1,5 +1,5 @@
-#ifndef polukili_Players_Player_h_08f5452b_7458_424a_adf0_33de30429ebb
-#define polukili_Players_Player_h_08f5452b_7458_424a_adf0_33de30429ebb
+#ifndef Polukili_Players_Player_h
+#define Polukili_Players_Player_h
 
 #include <Actor.h>
 
@@ -56,5 +56,5 @@ namespace Polukili
    } /* End of namespace Polukili::Players */
 } /* End of namespace Polukili */
 
-#endif // polukili_Players_Player_h_08f5452b_7458_424a_adf0_33de30429ebb
+#endif 
 

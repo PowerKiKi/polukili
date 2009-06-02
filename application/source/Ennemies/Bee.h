@@ -1,5 +1,5 @@
-#ifndef polukili_Ennemies_Bee_h_897e3005_eabb_483c_8e68_7476adb41ec7
-#define polukili_Ennemies_Bee_h_897e3005_eabb_483c_8e68_7476adb41ec7
+#ifndef Polukili_Ennemies_Bee_h
+#define Polukili_Ennemies_Bee_h
 
 #include <Ennemies/Ennemy.h>
 
@@ -40,5 +40,5 @@ namespace Polukili
    } /* End of namespace Polukili::Ennemies */
 } /* End of namespace Polukili */
 
-#endif // polukili_Ennemies_Bee_h_897e3005_eabb_483c_8e68_7476adb41ec7
+#endif 
 

@@ -1,5 +1,5 @@
-#ifndef polukili_Game_h_0f2f4ee3_873c_48e0_afcf_deae99ae06dc
-#define polukili_Game_h_0f2f4ee3_873c_48e0_afcf_deae99ae06dc
+#ifndef Polukili_Game_h
+#define Polukili_Game_h
 
 
 #include <stack>
@@ -64,5 +64,5 @@ namespace Polukili
 
 } /* End of namespace Polukili */
 
-#endif // polukili_Game_h_0f2f4ee3_873c_48e0_afcf_deae99ae06dc
+#endif 
 

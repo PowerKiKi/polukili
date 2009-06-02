@@ -1,5 +1,5 @@
-#ifndef polukili_ActorAction_h_37379ac7_824a_4898_996b_f601e2feecf7
-#define polukili_ActorAction_h_37379ac7_824a_4898_996b_f601e2feecf7
+#ifndef Polukili_ActorAction_h
+#define Polukili_ActorAction_h
 
 namespace Polukili
 {
@@ -23,4 +23,4 @@ namespace Polukili
    
 }/* End of namespace Polukili */
 
-#endif // polukili_ActorAction_h_37379ac7_824a_4898_996b_f601e2feecf7
+#endif

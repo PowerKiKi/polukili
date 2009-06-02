@@ -1,5 +1,5 @@
-#ifndef polukili_Effect_h_897eab33_e849_46f9_97c7_88a8d43bd9ca
-#define polukili_Effect_h_897eab33_e849_46f9_97c7_88a8d43bd9ca
+#ifndef Polukili_Effect_h
+#define Polukili_Effect_h
 
 #include <wiisprite.h>
 
@@ -30,5 +30,5 @@ namespace Polukili
 
 } /* End of namespace Polukili */
 
-#endif // polukili_Effect_h_897eab33_e849_46f9_97c7_88a8d43bd9ca
+#endif 
 

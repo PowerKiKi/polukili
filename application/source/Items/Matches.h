@@ -1,5 +1,5 @@
-#ifndef polukili_Items_Matches_h_b0fccc8e_2396_411f_8640_65e3b0917245
-#define polukili_Items_Matches_h_b0fccc8e_2396_411f_8640_65e3b0917245
+#ifndef Polukili_Items_Matches_h
+#define Polukili_Items_Matches_h
 
 #include <Items/Item.h>
 
@@ -16,5 +16,5 @@ namespace Polukili
    } /* End of namespace Polukili::Items */
 } /* End of namespace Polukili */
 
-#endif // polukili_Items_Matches_h_b0fccc8e_2396_411f_8640_65e3b0917245
+#endif 
 

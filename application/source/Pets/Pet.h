@@ -1,5 +1,5 @@
-#ifndef polukili_Pets_Pet_h_d713f2ef_f972_4a9d_8e7a_cd74affb1f10
-#define polukili_Pets_Pet_h_d713f2ef_f972_4a9d_8e7a_cd74affb1f10
+#ifndef Polukili_Pets_Pet_h
+#define Polukili_Pets_Pet_h
 
 #include <Actor.h>
 
@@ -30,5 +30,5 @@ namespace Polukili
    } /* End of namespace Polukili::Pets */
 } /* End of namespace Polukili */
 
-#endif // polukili_Pets_Pet_h_d713f2ef_f972_4a9d_8e7a_cd74affb1f10
+#endif 
 

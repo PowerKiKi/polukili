@@ -1,5 +1,5 @@
-#ifndef polukili_Items_Deodorant_h_d1b22638_cddc_40e6_b4cb_05deb3dc4030
-#define polukili_Items_Deodorant_h_d1b22638_cddc_40e6_b4cb_05deb3dc4030
+#ifndef Polukili_Items_Deodorant_h
+#define Polukili_Items_Deodorant_h
 
 #include <Items/Item.h>
 
@@ -16,5 +16,5 @@ namespace Polukili
    } /* End of namespace Polukili::Items */
 } /* End of namespace Polukili */
 
-#endif // polukili_Items_Deodorant_h_d1b22638_cddc_40e6_b4cb_05deb3dc4030
+#endif 
 

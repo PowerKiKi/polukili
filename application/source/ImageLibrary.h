@@ -1,5 +1,5 @@
-#ifndef polukili_ImageLibrary_h_0f2f4ee3_873c_48e0_afcf_deae99ae06dc
-#define polukili_ImageLibrary_h_0f2f4ee3_873c_48e0_afcf_deae99ae06dc
+#ifndef Polukili_ImageLibrary_h
+#define Polukili_ImageLibrary_h
 
 
 #include <map>
@@ -51,5 +51,5 @@ namespace Polukili
 
 } /* End of namespace Polukili */
 
-#endif // polukili_ImageLibrary_h_0f2f4ee3_873c_48e0_afcf_deae99ae06dc
+#endif 
 

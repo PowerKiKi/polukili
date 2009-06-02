@@ -1,5 +1,5 @@
-#ifndef polukili_Players_Poupa_h_30d9123a_c896_4262_b72d_603e1b602759
-#define polukili_Players_Poupa_h_30d9123a_c896_4262_b72d_603e1b602759
+#ifndef Polukili_Players_Poupa_h
+#define Polukili_Players_Poupa_h
 
 #include <Players/Player.h>
 
@@ -25,5 +25,5 @@ namespace Polukili
    } /* End of namespace Polukili::Players */
 } /* End of namespace Polukili */
 
-#endif // polukili_Players_Poupa_h_30d9123a_c896_4262_b72d_603e1b602759
+#endif
 

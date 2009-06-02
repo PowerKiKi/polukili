@@ -1,5 +1,5 @@
-#ifndef polukili_Element_h_918d14f4_8b96_40d7_bb49_6486f4c3b303
-#define polukili_Element_h_918d14f4_8b96_40d7_bb49_6486f4c3b303
+#ifndef Polukili_Element_h
+#define Polukili_Element_h
 
 namespace Polukili
 {
@@ -19,4 +19,4 @@ namespace Polukili
    }; 
 }/* End of namespace Polukili */
 
-#endif // polukili_Element_h_918d14f4_8b96_40d7_bb49_6486f4c3b303
+#endif 

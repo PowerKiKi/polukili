@@ -1,5 +1,5 @@
-#ifndef polukili_Level_h_73616512_59b7_4686_b077_24fbdae36d1e
-#define polukili_Level_h_73616512_59b7_4686_b077_24fbdae36d1e
+#ifndef Polukili_Level_h
+#define Polukili_Level_h
 
 #include <list>
 #include <string>
@@ -106,5 +106,5 @@ namespace Polukili
 
 } /* End of namespace Polukili */
 
-#endif // polukili_Level_h_73616512_59b7_4686_b077_24fbdae36d1e
+#endif 
 

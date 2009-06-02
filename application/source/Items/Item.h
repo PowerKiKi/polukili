@@ -1,5 +1,5 @@
-#ifndef polukili_Items_Item_h_0746e841_ca0d_4c34_b8a6_7932fc127309
-#define polukili_Items_Item_h_0746e841_ca0d_4c34_b8a6_7932fc127309
+#ifndef Polukili_Items_Item_h
+#define Polukili_Items_Item_h
 
 #include <Actor.h>
 
@@ -19,5 +19,5 @@ namespace Polukili
    } /* End of namespace Polukili::Items */
 } /* End of namespace Polukili */
 
-#endif // polukili_Items_Item_h_0746e841_ca0d_4c34_b8a6_7932fc127309
+#endif 
 

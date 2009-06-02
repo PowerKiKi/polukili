@@ -1,5 +1,5 @@
-#ifndef polukili_Ennemies_Earthworm_h_8044f9df_9eda_4bc0_a4cb_fe0a3e493e4a
-#define polukili_Ennemies_Earthworm_h_8044f9df_9eda_4bc0_a4cb_fe0a3e493e4a
+#ifndef Polukili_Ennemies_Earthworm_h
+#define Polukili_Ennemies_Earthworm_h
 
 #include <Ennemies/Ennemy.h>
 
@@ -23,5 +23,5 @@ namespace Polukili
    } /* End of namespace Polukili::Ennemies */
 } /* End of namespace Polukili */
 
-#endif // polukili_Ennemies_Earthworm_h_8044f9df_9eda_4bc0_a4cb_fe0a3e493e4a
+#endif 
 

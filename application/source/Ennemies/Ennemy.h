@@ -1,5 +1,5 @@
-#ifndef polukili_Ennemies_Ennemy_h_3c76803b_6dad_4dfc_9f88_2fd20fc7f0d6
-#define polukili_Ennemies_Ennemy_h_3c76803b_6dad_4dfc_9f88_2fd20fc7f0d6
+#ifndef Polukili_Ennemies_Ennemy_h
+#define Polukili_Ennemies_Ennemy_h
 
 #include <Actor.h>
 
@@ -43,5 +43,5 @@ namespace Polukili
    } /* End of namespace Polukili::Ennemies */
 } /* End of namespace Polukili */
 
-#endif // polukili_Ennemies_Ennemy_h_3c76803b_6dad_4dfc_9f88_2fd20fc7f0d6
+#endif 
 

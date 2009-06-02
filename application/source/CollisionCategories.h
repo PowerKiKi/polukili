@@ -1,5 +1,5 @@
-#ifndef polukili_CollisionCategories_b938911c_897e_4e0a_98c4_455fbb9d4d65
-#define polukili_CollisionCategories_b938911c_897e_4e0a_98c4_455fbb9d4d65
+#ifndef Polukili_CollisionCategories_h
+#define Polukili_CollisionCategories_h
 
 namespace Polukili
 {
@@ -19,4 +19,4 @@ namespace Polukili
    
 }/* End of namespace Polukili */
 
-#endif // polukili_CollisionCategories_b938911c_897e_4e0a_98c4_455fbb9d4d65
+#endif 

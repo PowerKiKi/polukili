@@ -1,5 +1,5 @@
-#ifndef polukili_Constant_h_5932f181_5c91_439d_82ad_c1b3e506a9bf
-#define polukili_Constant_h_5932f181_5c91_439d_82ad_c1b3e506a9bf
+#ifndef Polukili_Constant_h
+#define Polukili_Constant_h
 
 #include <string>
 
@@ -47,4 +47,4 @@ namespace Polukili
    };/* End of class Constants*/
 } /* End of namespace Polukili*/
 
-#endif // polukili_Constant_h_5932f181_5c91_439d_82ad_c1b3e506a9bf
+#endif 

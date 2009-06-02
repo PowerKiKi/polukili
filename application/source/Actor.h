@@ -1,5 +1,5 @@
-#ifndef polukili_Actor_h_b64b7baa_3957_43a5_b7b0_78e992b91e8a
-#define polukili_Actor_h_b64b7baa_3957_43a5_b7b0_78e992b91e8a
+#ifndef Polukili_Actor_h
+#define Polukili_Actor_h
 
 #include <string>
 
@@ -161,5 +161,5 @@ namespace Polukili
 
 } /* End of namespace Polukili */
 
-#endif // polukili_Actor_h_b64b7baa_3957_43a5_b7b0_78e992b91e8a
+#endif 
 

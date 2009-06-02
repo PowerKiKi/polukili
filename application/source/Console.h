@@ -1,10 +1,5 @@
-/*
-	Console class
-
-	console (printf) support for libwiisprite
-*/
-#ifndef Console_h_0f2f4ee3_873c_48e0_afcf_deae99ae06dc
-#define Console_h_0f2f4ee3_873c_48e0_afcf_deae99ae06dc
+#ifndef Polukili_Console_h
+#define Polukili_Console_h
 
 #include <BibScreenFont.h>
 #include <fstream>
@@ -15,6 +10,9 @@ using namespace std;
 
 namespace Polukili
 {
+   /**
+   *	console (printf) support for libwiisprite
+   */
    class Console
    {
    public:

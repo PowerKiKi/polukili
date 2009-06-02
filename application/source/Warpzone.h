@@ -1,5 +1,5 @@
-#ifndef polukili_Warpzone_h_82bca648_bf76_4727_9cbf_e5b2c72355a6
-#define polukili_Warpzone_h_82bca648_bf76_4727_9cbf_e5b2c72355a6
+#ifndef Polukili_Warpzone_h
+#define Polukili_Warpzone_h
 
 #include <Actor.h>
 
@@ -16,5 +16,5 @@ namespace Polukili
 
 } /* End of namespace Polukili */
 
-#endif // polukili_Warpzone_h_82bca648_bf76_4727_9cbf_e5b2c72355a6
+#endif
 
