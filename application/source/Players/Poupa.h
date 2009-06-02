@@ -17,9 +17,12 @@ namespace Polukili
          /**
          * Constructor
          **/
-         Poupa(Level* level);
+         Poupa(Level* level, s32 wiimoteChannel);
          
-         //end of class Poupa
+         /**
+         * Returns the path to the image for the sprite.
+         */
+         virtual string getImagePath() const;
       };
 
    } /* End of namespace Polukili::Players */

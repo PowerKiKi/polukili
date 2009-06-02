@@ -1,17 +1,22 @@
 #include <Players/Poupa.h>
 
-#include <level.h>
+#include <Constants.h>
+#include <Console.h>
 
 namespace Polukili 
 {
    namespace Players 
    {
       /*************************************************/
-      Poupa::Poupa(Level* level)
-         : Player(level)
+      Poupa::Poupa(Level* level, s32 wiimoteChannel)
+         : Player(level, wiimoteChannel)
       {
       }
    
-   } /* End of namespace Polukili::Players */
-} /* End of namespace Polukili */
-
+      /*************************************************/
+      string Poupa::getImagePath() const
+      {
+         return Constants::basePath + "player_poupa.png";
+      }
+   } 
+}

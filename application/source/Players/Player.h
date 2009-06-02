@@ -17,7 +17,7 @@ namespace Polukili
          /**
          * Constructor.
          */
-         Player(Level* level);
+         Player(Level* level, s32 wiimoteChannel);
          
          /**
          * Destructor
@@ -32,11 +32,6 @@ namespace Polukili
          virtual void nextStep();
          
          /**
-         * Returns the path to the image for the sprite.
-         */
-         virtual string getImagePath() const;
-         
-         /**
          * Returns the width of the tile in the image (must be multiple of 4).
          */
          virtual int getImageWidth() const;
@@ -49,8 +44,8 @@ namespace Polukili
       protected:
          b2Body* aimPoint;
          b2RevoluteJoint* aimJoint;
-         //end of class Player
          Timer* bulletTimer;
+         s32 wiimoteChannel;
       };
 
    } /* End of namespace Polukili::Players */

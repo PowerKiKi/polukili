@@ -1,17 +1,23 @@
-
-
 #include <Players/Lila.h>
+
+#include <Constants.h>
+#include <Console.h>
 
 namespace Polukili 
 {
    namespace Players 
    {
       /*************************************************/
-      Lila::Lila(Level* level)
-         : Player(level)
+      Lila::Lila(Level* level, s32 wiimoteChannel)
+         : Player(level, wiimoteChannel)
       {
       }
    
-   } /* End of namespace Polukili::Players */
-} /* End of namespace Polukili */
+      /*************************************************/
+      string Lila::getImagePath() const
+      {
+         return Constants::basePath + "player_lila.png";
+      }
+   } 
+}
 

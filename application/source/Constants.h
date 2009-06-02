@@ -43,6 +43,11 @@ namespace Polukili
       static const float timeStep;
       
       static const int iterations;   
+      
+      /**
+      * The maximum numbers of players in one level. (this should never ever change unless the wii get more wiimotes)
+      */
+      static const int maximumPlayers;
    
    };/* End of class Constants*/
 } /* End of namespace Polukili*/

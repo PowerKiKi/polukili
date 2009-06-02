@@ -14,8 +14,8 @@ namespace Polukili
    namespace Players 
    {
       /*************************************************/
-      Player::Player(Level* level)
-         : Actor(level)
+      Player::Player(Level* level, s32 wiimoteChannel)
+         : Actor(level), wiimoteChannel(wiimoteChannel)
       {
          Console::log(LOG_INFO, "Player::Player() - new player");    
          this->level->players.push_back(this);
@@ -27,6 +27,7 @@ namespace Polukili
          this->level->players.remove(this);
       }
       
+      /*************************************************/
       void Player::initPhysic(const b2Vec2& position)
       {
          this->timer = new Timer;
@@ -89,7 +90,7 @@ namespace Polukili
       /*************************************************/
       void Player::nextStep()
       {
-         u16 btnsheld = WPAD_ButtonsHeld(WPAD_CHAN_0);
+         u16 btnsheld = WPAD_ButtonsHeld(this->wiimoteChannel);
          
          // moving and aiming
          this->aimPoint->ApplyForce(b2Vec2(-Constants::defaultGravity*this->aimPoint->GetMass(),0), this->aimPoint->GetPosition());
@@ -158,14 +159,7 @@ namespace Polukili
             this->body->ApplyImpulse(b2Vec2(0,-3*Constants::defaultImpulseSpeed),this->body->GetPosition());
          }  
       }  
-              
-
       
-      /*************************************************/
-      string Player::getImagePath() const
-      {
-         return Constants::basePath + "player.png";
-      }
 
       /*************************************************/
       int Player::getImageWidth() const
@@ -176,7 +170,7 @@ namespace Polukili
       /*************************************************/
       int Player::getImageHeight() const
       {
-         return 96;
+         return 48;
       }
       
    } /* End of namespace Polukili::Players */

@@ -15,9 +15,12 @@ namespace Polukili
          /**
          * Constructor
          **/
-         Luna(Level* level);
-         
-         //end of class Luna
+         Luna(Level* level, s32 wiimoteChannel);
+                  
+         /**
+         * Returns the path to the image for the sprite.
+         */
+         virtual string getImagePath() const;
       };
 
    } /* End of namespace Polukili::Players */

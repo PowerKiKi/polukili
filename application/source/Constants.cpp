@@ -12,5 +12,6 @@ namespace Polukili
    const float Constants::defaultImpulseSpeed = 10.0f;   
    const float Constants::timeStep = 1.0f / 60.0f;   
    const int Constants::iterations = 10;   
+   const int Constants::maximumPlayers = 4;   
 
 } /* End of namespace Polukili */

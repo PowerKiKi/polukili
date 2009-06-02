@@ -19,10 +19,16 @@
   </physics>
   <actors>
     <actor type="poupa" powerFactor="1" isTarget="False">
-      <point x="350" y="300" />
+      <point x="300" y="300" />
+    </actor>
+    <actor type="luna" powerFactor="1" isTarget="False">
+      <point x="350" y="305" />
     </actor>
     <actor type="kiki" powerFactor="1" isTarget="False">
-      <point x="300" y="300" />
+      <point x="400" y="310" />
+    </actor>
+    <actor type="lila" powerFactor="1" isTarget="False">
+      <point x="450" y="315" />
     </actor>
     <actor type="bee" powerFactor="1" isTarget="False">
       <point x="200" y="150" />

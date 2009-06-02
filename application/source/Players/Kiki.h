@@ -15,9 +15,12 @@ namespace Polukili
          /**
          * Constructor
          **/
-         Kiki(Level* level);
+         Kiki(Level* level, s32 wiimoteChannel);
          
-         //end of class Kiki
+         /**
+         * Returns the path to the image for the sprite.
+         */
+         virtual string getImagePath() const;
       };
 
    } /* End of namespace Polukili::Players */

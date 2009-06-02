@@ -1,17 +1,23 @@
-
-
 #include <Players/Kiki.h>
+
+#include <Constants.h>
+#include <Console.h>
 
 namespace Polukili 
 {
    namespace Players 
    {
       /*************************************************/
-      Kiki::Kiki(Level* level)
-         : Player(level)
+      Kiki::Kiki(Level* level, s32 wiimoteChannel)
+         : Player(level, wiimoteChannel)
       {
       }
       
-   } /* End of namespace Polukili::Players */
-} /* End of namespace Polukili */
+      /*************************************************/
+      string Kiki::getImagePath() const
+      {
+         return Constants::basePath + "player_kiki.png";
+      }      
+   } 
+} 
 

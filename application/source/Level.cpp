@@ -155,6 +155,8 @@ namespace Polukili
       
       // Create all actors
       data = mxmlFindElement(tree, tree, "actors", NULL, NULL, MXML_DESCEND);
+      
+      int nbPlayers = 0;
       for (child = data->child; child != 0; child = child->next)
       {
          Console::log(LOG_INFO, "Level::loadFromXML() - actor reading");
@@ -169,15 +171,26 @@ namespace Polukili
             continue;
          }
          
+         // Forbid too many players (otherwise will crash because wiimotes channels and doesn't make sense anyway)
+         if (nbPlayers >= Constants::maximumPlayers &&
+            (stricmp(type, "poupa") == 0 ||
+            stricmp(type, "luna") == 0 ||
+            stricmp(type, "kiki") == 0 ||
+            stricmp(type, "lila") == 0)
+         )
+         {
+            Console::log(LOG_INFO, "player type=%s skipped, because too many players already", type);
+         }
+         
          // Players
          if (stricmp(type, "poupa") == 0)
-            actor = new Players::Poupa(this);   
+            actor = new Players::Poupa(this, WPAD_CHAN_0 + nbPlayers++);   
          else if (stricmp(type, "luna") == 0)
-            actor = new Players::Luna(this);
+            actor = new Players::Luna(this, WPAD_CHAN_0 + nbPlayers++);
          else if (stricmp(type, "kiki") == 0)
-            actor = new Players::Kiki(this);
+            actor = new Players::Kiki(this, WPAD_CHAN_0 + nbPlayers++);
          else if (stricmp(type, "lila") == 0)
-            actor = new Players::Lila(this);
+            actor = new Players::Lila(this, WPAD_CHAN_0 + nbPlayers++);
             
          // Ennemies
          else if (stricmp(type, "bee") == 0)
