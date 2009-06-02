@@ -6,7 +6,6 @@ namespace Polukili
 {
    namespace Players 
    {
-   
       /*************************************************/
       Poupa::Poupa(Level* level)
          : Player(level)

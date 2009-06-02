@@ -6,7 +6,6 @@ namespace Polukili
 {
    namespace Players 
    {
-   
       /*************************************************/
       Lila::Lila(Level* level)
          : Player(level)

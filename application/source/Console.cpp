@@ -22,6 +22,7 @@ namespace Polukili
    static int cursor_col = 0;
    static char the_console[maximumRows][maximumColumns + 1];
 
+   /*************************************************/
    ssize_t Console_write(struct _reent* rUnused, int fdUnused, const char* ptr, size_t length)
    {
       return Console::write(string(ptr, length), 0);

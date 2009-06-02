@@ -23,7 +23,6 @@ namespace Polukili
       }
       
       /*************************************************/
-      
       void Bullet::initPhysic(const b2Vec2& position)
       {
          this->timer = new Timer;

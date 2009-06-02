@@ -4,8 +4,7 @@
 
 namespace Polukili 
 {
-   // Operations
-
+   /*************************************************/
    Effect::Effect(const wsp::Sprite* originalSprite)
    {
    }

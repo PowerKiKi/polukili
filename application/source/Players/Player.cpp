@@ -13,7 +13,6 @@ namespace Polukili
 {
    namespace Players 
    {
-
       /*************************************************/
       Player::Player(Level* level)
          : Actor(level)

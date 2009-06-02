@@ -18,6 +18,8 @@ namespace Polukili
       {
       
       }
+      
+      /*************************************************/
       void Bee::initPhysic(const b2Vec2& position)
       {
          this->timer = new Timer;
@@ -68,6 +70,7 @@ namespace Polukili
     
       }
          
+      /*************************************************/
       void Bee::render()
       {
          this->sprite->SetZoom(this->powerFactor);
@@ -76,6 +79,7 @@ namespace Polukili
          this->sprite->Draw();
       }
 
+      /*************************************************/
       void Bee::nextStep()
       {
          
