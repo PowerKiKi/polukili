@@ -56,9 +56,10 @@ namespace Polukili
       }
       
       /*************************************************/
-      int Bullet::attack(Polukili::Actor &actor)
+      void Bullet::attacks(Actor* actor)
       {
-         return 0;
+         Console::log(LOG_INFO, "bullet attacks actor");
+         actor->isAttackedBy(345);
       }
 
    } /* End of namespace Polukili::Bullets */

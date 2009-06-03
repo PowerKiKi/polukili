@@ -7,11 +7,10 @@ namespace Polukili
 {
    namespace Bullets 
    {
-
       /** 
       *  Represent a bullet/missile. 
       */
-      class Bullet : public Polukili::Actor
+      class Bullet : public Actor
       {
       public:
          
@@ -25,12 +24,11 @@ namespace Polukili
          */
          virtual ~Bullet();         
          
-         
-         
          /**
          * Initialize physic data
          */
          virtual void initPhysic(const b2Vec2& position);
+         
          /**
          * Returns the path to the image for the sprite.
          */
@@ -46,8 +44,10 @@ namespace Polukili
          */
          virtual int getImageHeight() const;
          
-
-         virtual int attack(Polukili::Actor &actor);
+         /**
+         * When a bullet attacks an actor (usuallz on collision detection).
+         */
+         virtual void attacks(Actor* actor);
 
          //end of class Bullet
       };

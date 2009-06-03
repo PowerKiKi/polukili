@@ -111,8 +111,11 @@ namespace Polukili
       * Returns wether the actor is in the given state.
       */
       bool is(ActorState state);
-
-      // Attributes
+   
+      /**
+      * Remove energy to the actor and make it die eventually
+      */
+      void isAttackedBy(int attackPower);
 
    protected:
    

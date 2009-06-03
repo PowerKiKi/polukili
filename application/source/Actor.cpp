@@ -7,17 +7,13 @@
 
 namespace Polukili 
 {
-
-   // Operations
-   
    /*************************************************/
    Actor::Actor(Level* level)
       : powerFactor(1)
    {
       Console::log(LOG_INFO, "Actor::Actor() - new actor");
       this->level = level;
-      this->level->actors.push_back(this);
-      
+      this->level->actors.push_back(this);      
    }
    
    /*************************************************/
@@ -34,7 +30,7 @@ namespace Polukili
       basePosition = position;
       bodyDef.position = position;
       this->body = level->world->CreateBody(&bodyDef);
-
+      this->body->SetUserData(this);
    }
    
    /*************************************************/
@@ -135,5 +131,11 @@ namespace Polukili
       return (this->state & state) == state;
    }
    
-} /* End of namespace Polukili */
+   /*************************************************/
+   void Actor::isAttackedBy(int attackPower)
+   {
+      Console::log(LOG_INFO, "actor died");
+      this->state = dead;
+   }
+}
 
