@@ -2,7 +2,7 @@
 <level name="Garden - test" nextLevel="" background="/apps/polukili/data/level_0_background.png" foreground="/apps/polukili/data/level_0_foreground.png" width="640" height="480">
   <physics>
     <circle radius="50">
-      <point x="350" y="80" />
+      <point x="353" y="426" />
     </circle>
     <polygon>
       <point x="0" y="430" />
@@ -15,6 +15,18 @@
       <point x="640" y="0" />
       <point x="640" y="50" />
       <point x="0" y="50" />
+    </polygon>
+    <polygon>
+      <point x="0" y="0" />
+      <point x="10" y="0" />
+      <point x="10" y="480" />
+      <point x="0" y="480" />
+    </polygon>
+    <polygon>
+      <point x="630" y="0" />
+      <point x="640" y="0" />
+      <point x="640" y="480" />
+      <point x="630" y="480" />
     </polygon>
   </physics>
   <actors>
@@ -36,7 +48,7 @@
     <actor type="bee" powerFactor="1" isTarget="False">
       <point x="200" y="200" />
     </actor>
-    <actor type="bee" powerFactor="3" isTarget="True">
+    <actor type="bee" powerFactor="2" isTarget="True">
       <point x="200" y="150" />
     </actor>
   </actors>
