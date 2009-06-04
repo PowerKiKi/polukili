@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2006-2007 Erin Catto http://www.gphysics.com
+* Copyright (c) 2006-2009 Erin Catto http://www.gphysics.com
 *
 * This software is provided 'as-is', without any express or implied
 * warranty.  In no event will the authors be held liable for any damages
@@ -25,12 +25,13 @@
 
 class b2Body;
 class b2Contact;
+class b2Fixture;
 class b2World;
 class b2BlockAllocator;
 class b2StackAllocator;
 class b2ContactListener;
 
-typedef b2Contact* b2ContactCreateFcn(b2Shape* shape1, b2Shape* shape2, b2BlockAllocator* allocator);
+typedef b2Contact* b2ContactCreateFcn(b2Fixture* fixtureA, b2Fixture* fixtureB, b2BlockAllocator* allocator);
 typedef void b2ContactDestroyFcn(b2Contact* contact, b2BlockAllocator* allocator);
 
 struct b2ContactRegister
@@ -56,8 +57,8 @@ struct b2ContactEdge
 /// This structure is used to report contact points.
 struct b2ContactPoint
 {
-	b2Shape* shape1;		///< the first shape
-	b2Shape* shape2;		///< the second shape
+	b2Fixture* fixtureA;		///< the first shape
+	b2Fixture* fixtureB;		///< the second shape
 	b2Vec2 position;		///< position in world coordinates
 	b2Vec2 velocity;		///< velocity of point on body2 relative to point on body1 (pre-solver)
 	b2Vec2 normal;			///< points from shape1 to shape2
@@ -70,8 +71,8 @@ struct b2ContactPoint
 /// This structure is used to report contact point results.
 struct b2ContactResult
 {
-	b2Shape* shape1;		///< the first shape
-	b2Shape* shape2;		///< the second shape
+	b2Fixture* fixtureA;		///< the first shape
+	b2Fixture* fixtureB;		///< the second shape
 	b2Vec2 position;		///< position in world coordinates
 	b2Vec2 normal;			///< points from shape1 to shape2
 	float32 normalImpulse;	///< the normal impulse applied to body2
@@ -101,11 +102,11 @@ public:
 	/// Get the next contact in the world's contact list.
 	b2Contact* GetNext();
 
-	/// Get the first shape in this contact.
-	b2Shape* GetShape1();
+	/// Get the first fixture in this contact.
+	b2Fixture* GetFixtureA();
 
-	/// Get the second shape in this contact.
-	b2Shape* GetShape2();
+	/// Get the second fixture in this contact.
+	b2Fixture* GetFixtureB();
 
 	//--------------- Internals Below -------------------
 public:
@@ -120,18 +121,21 @@ public:
 	};
 
 	static void AddType(b2ContactCreateFcn* createFcn, b2ContactDestroyFcn* destroyFcn,
-						b2ShapeType type1, b2ShapeType type2);
+						b2ShapeType typeA, b2ShapeType typeB);
 	static void InitializeRegisters();
-	static b2Contact* Create(b2Shape* shape1, b2Shape* shape2, b2BlockAllocator* allocator);
+	static b2Contact* Create(b2Fixture* fixtureA, b2Fixture* fixtureB, b2BlockAllocator* allocator);
 	static void Destroy(b2Contact* contact, b2BlockAllocator* allocator);
 
-	b2Contact() : m_shape1(NULL), m_shape2(NULL) {}
-	b2Contact(b2Shape* shape1, b2Shape* shape2);
+	b2Contact() : m_fixtureA(NULL), m_fixtureB(NULL) {}
+	b2Contact(b2Fixture* fixtureA, b2Fixture* fixtureB);
 	virtual ~b2Contact() {}
 
 	void Update(b2ContactListener* listener);
 	virtual void Evaluate(b2ContactListener* listener) = 0;
-	static b2ContactRegister s_registers[e_shapeTypeCount][e_shapeTypeCount];
+
+	virtual float32 ComputeTOI(const b2Sweep& sweepA, const b2Sweep& sweepB) const = 0;
+
+	static b2ContactRegister s_registers[b2_shapeTypeCount][b2_shapeTypeCount];
 	static bool s_initialized;
 
 	uint32 m_flags;
@@ -142,15 +146,11 @@ public:
 	b2Contact* m_next;
 
 	// Nodes for connecting bodies.
-	b2ContactEdge m_node1;
-	b2ContactEdge m_node2;
+	b2ContactEdge m_nodeA;
+	b2ContactEdge m_nodeB;
 
-	b2Shape* m_shape1;
-	b2Shape* m_shape2;
-
-	// Combined friction
-	float32 m_friction;
-	float32 m_restitution;
+	b2Fixture* m_fixtureA;
+	b2Fixture* m_fixtureB;
 
 	float32 m_toi;
 };
@@ -170,14 +170,14 @@ inline b2Contact* b2Contact::GetNext()
 	return m_next;
 }
 
-inline b2Shape* b2Contact::GetShape1()
+inline b2Fixture* b2Contact::GetFixtureA()
 {
-	return m_shape1;
+	return m_fixtureA;
 }
 
-inline b2Shape* b2Contact::GetShape2()
+inline b2Fixture* b2Contact::GetFixtureB()
 {
-	return m_shape2;
+	return m_fixtureB;
 }
 
 #endif

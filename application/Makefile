@@ -22,7 +22,7 @@ include $(DEVKITPPC)/wii_rules
 #---------------------------------------------------------------------------------
 TARGET		:=	../polukili/boot
 BUILD		:=	build
-SOURCES		:=	source source/Bullets source/Ennemies source/Items source/Pets source/Players lib/box2d/Collision lib/box2d/Collision/Shapes lib/box2d/Common lib/box2d/Dynamics lib/box2d/Dynamics/Contacts lib/box2d/Dynamics/Joints 
+SOURCES		:=	source source/Bullets source/Ennemies source/Items source/Pets source/Players lib/box2d/Collision lib/box2d/Collision/Shapes lib/box2d/Common lib/box2d/Dynamics lib/box2d/Dynamics/Contacts lib/box2d/Dynamics/Controllers  lib/box2d/Dynamics/Joints 
 DATA		:=
 TEXTURES	:=	textures
 INCLUDES	:=	source lib/box2d 

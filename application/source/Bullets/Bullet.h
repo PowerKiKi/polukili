@@ -30,7 +30,7 @@ namespace Polukili
          /**
          * Initialize physic data
          */
-         virtual void initPhysic(const b2Vec2& position);
+         virtual void initPhysic(const b2Vec2& position, float angle);
          /**
          * Returns the path to the image for the sprite.
          */

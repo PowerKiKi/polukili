@@ -1,5 +1,5 @@
-#ifndef Polukili_ActorAction_h
-#define Polukili_ActorAction_h
+#ifndef Polukili_ActorAction_h_3ff17742_affd_47d1_9970_fed522a38911
+#define Polukili_ActorAction_h_3ff17742_affd_47d1_9970_fed522a38911
 
 namespace Polukili
 {
@@ -8,7 +8,7 @@ namespace Polukili
    */
    enum ActorAction
    {
-      nothing        = 0
+      stopped        = 0,
       walking        = 1,
       running        = 2,
       jumping        = 4,

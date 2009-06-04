@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2006-2007 Erin Catto http://www.gphysics.com
+* Copyright (c) 2006-2009 Erin Catto http://www.gphysics.com
 *
 * This software is provided 'as-is', without any express or implied
 * warranty.  In no event will the authors be held liable for any damages
@@ -33,10 +33,10 @@ public:
 	b2ContactManager() : m_world(NULL), m_destroyImmediate(false) {}
 
 	// Implements PairCallback
-	void* PairAdded(void* proxyUserData1, void* proxyUserData2);
+	void* PairAdded(void* proxyUserDataA, void* proxyUserDataB);
 
 	// Implements PairCallback
-	void PairRemoved(void* proxyUserData1, void* proxyUserData2, void* pairUserData);
+	void PairRemoved(void* proxyUserDataA, void* proxyUserDataB, void* pairUserData);
 
 	void Destroy(b2Contact* c);
 

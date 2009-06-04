@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2006-2007 Erin Catto http://www.gphysics.com
+* Copyright (c) 2006-2009 Erin Catto http://www.gphysics.com
 *
 * This software is provided 'as-is', without any express or implied
 * warranty.  In no event will the authors be held liable for any damages
@@ -19,7 +19,7 @@
 #include "b2Settings.h"
 #include <cstdlib>
 
-b2Version b2_version = {2, 0, 1};
+b2Version b2_version = {2, 0, 2};
 
 int32 b2_byteCount = 0;
 

@@ -33,7 +33,7 @@ namespace Polukili
          
          beeShape.filter.maskBits = players+ground+bullets;
 
-         this->body->CreateShape(&beeShape);
+         this->body->CreateFixture(&beeShape);
          this->body->SetMassFromShapes();
          // bee movement ( circle ) 
          
@@ -47,7 +47,7 @@ namespace Polukili
 
          rotationCenterShapeDef.filter.categoryBits   = anchors;
          rotationCenterShapeDef.filter.maskBits       = nothing;
-         this->rotationCenter->CreateShape(&rotationCenterShapeDef);
+         this->rotationCenter->CreateFixture(&rotationCenterShapeDef);
          
          
          b2RevoluteJointDef  jointDef;

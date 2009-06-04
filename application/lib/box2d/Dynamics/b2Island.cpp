@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2006-2007 Erin Catto http://www.gphysics.com
+* Copyright (c) 2006-2009 Erin Catto http://www.gphysics.com
 *
 * This software is provided 'as-is', without any express or implied
 * warranty.  In no event will the authors be held liable for any damages
@@ -18,6 +18,7 @@
 
 #include "b2Island.h"
 #include "b2Body.h"
+#include "b2Fixture.h"
 #include "b2World.h"
 #include "Contacts/b2Contact.h"
 #include "Contacts/b2ContactSolver.h"
@@ -103,6 +104,45 @@ probably default to the slower Full NGS and let the user select the faster
 Baumgarte method in performance critical scenarios.
 */
 
+/*
+Cache Performance
+
+The Box2D solvers are dominated by cache misses. Data structures are designed
+to increase the number of cache hits. Much of misses are due to random access
+to body data. The constraint structures are iterated over linearly, which leads
+to few cache misses.
+
+The bodies are not accessed during iteration. Instead read only data, such as
+the mass values are stored with the constraints. The mutable data are the constraint
+impulses and the bodies velocities/positions. The impulses are held inside the
+constraint structures. The body velocities/positions are held in compact, temporary
+arrays to increase the number of cache hits. Linear and angular velocity are
+stored in a single array since multiple arrays lead to multiple misses.
+*/
+
+/*
+2D Rotation
+
+R = [cos(theta) -sin(theta)]
+    [sin(theta) cos(theta) ]
+
+thetaDot = omega
+
+Let q1 = cos(theta), q2 = sin(theta).
+R = [q1 -q2]
+    [q2  q1]
+
+q1Dot = -thetaDot * q2
+q2Dot = thetaDot * q1
+
+q1_new = q1_old - dt * w * q2
+q2_new = q2_old + dt * w * q1
+then normalize.
+
+This might be faster than computing sin+cos.
+However, we can compute sin+cos of the same angle fast.
+*/
+
 b2Island::b2Island(
 	int32 bodyCapacity,
 	int32 contactCapacity,
@@ -124,18 +164,21 @@ b2Island::b2Island(
 	m_contacts = (b2Contact**)m_allocator->Allocate(contactCapacity	 * sizeof(b2Contact*));
 	m_joints = (b2Joint**)m_allocator->Allocate(jointCapacity * sizeof(b2Joint*));
 
-	m_positionIterationCount = 0;
+	m_velocities = (b2Velocity*)m_allocator->Allocate(m_bodyCapacity * sizeof(b2Velocity));
+	m_positions = (b2Position*)m_allocator->Allocate(m_bodyCapacity * sizeof(b2Position));
 }
 
 b2Island::~b2Island()
 {
 	// Warning: the order should reverse the constructor order.
+	m_allocator->Free(m_positions);
+	m_allocator->Free(m_velocities);
 	m_allocator->Free(m_joints);
 	m_allocator->Free(m_contacts);
 	m_allocator->Free(m_bodies);
 }
 
-void b2Island::Solve(const b2TimeStep& step, const b2Vec2& gravity, bool correctPositions, bool allowSleep)
+void b2Island::Solve(const b2TimeStep& step, const b2Vec2& gravity, bool allowSleep)
 {
 	// Integrate velocities and apply damping.
 	for (int32 i = 0; i < m_bodyCount; ++i)
@@ -163,38 +206,6 @@ void b2Island::Solve(const b2TimeStep& step, const b2Vec2& gravity, bool correct
 		b->m_linearVelocity *= b2Clamp(1.0f - step.dt * b->m_linearDamping, 0.0f, 1.0f);
 		b->m_angularVelocity *= b2Clamp(1.0f - step.dt * b->m_angularDamping, 0.0f, 1.0f);
 
-		// Check for large velocities.
-#ifdef TARGET_FLOAT32_IS_FIXED
-				// Fixed point code written this way to prevent
-				// overflows, float code is optimized for speed
-
-		float32 vMagnitude = b->m_linearVelocity.Length();
-		if(vMagnitude > b2_maxLinearVelocity) {
-			b->m_linearVelocity *= b2_maxLinearVelocity/vMagnitude;
-		}
-		b->m_angularVelocity = b2Clamp(b->m_angularVelocity, 
-			-b2_maxAngularVelocity, b2_maxAngularVelocity);
-
-#else
-
-		if (b2Dot(b->m_linearVelocity, b->m_linearVelocity) > b2_maxLinearVelocitySquared)
-		{
-			b->m_linearVelocity.Normalize();
-			b->m_linearVelocity *= b2_maxLinearVelocity;
-		}
-		if (b->m_angularVelocity * b->m_angularVelocity > b2_maxAngularVelocitySquared)
-		{
-			if (b->m_angularVelocity < 0.0f)
-			{
-				b->m_angularVelocity = -b2_maxAngularVelocity;
-			}
-			else
-			{
-				b->m_angularVelocity = b2_maxAngularVelocity;
-			}
-		}
-#endif
-
 	}
 
 	b2ContactSolver contactSolver(step, m_contacts, m_contactCount, m_allocator);
@@ -208,14 +219,14 @@ void b2Island::Solve(const b2TimeStep& step, const b2Vec2& gravity, bool correct
 	}
 
 	// Solve velocity constraints.
-	for (int32 i = 0; i < step.maxIterations; ++i)
+	for (int32 i = 0; i < step.velocityIterations; ++i)
 	{
-		contactSolver.SolveVelocityConstraints();
-
 		for (int32 j = 0; j < m_jointCount; ++j)
 		{
 			m_joints[j]->SolveVelocityConstraints(step);
 		}
+
+		contactSolver.SolveVelocityConstraints();
 	}
 
 	// Post-solve (store impulses for warm starting).
@@ -228,6 +239,27 @@ void b2Island::Solve(const b2TimeStep& step, const b2Vec2& gravity, bool correct
 
 		if (b->IsStatic())
 			continue;
+
+		// Check for large velocities.
+		b2Vec2 translation = step.dt * b->m_linearVelocity;
+		if (b2Dot(translation, translation) > b2_maxTranslationSquared)
+		{
+			translation.Normalize();
+			b->m_linearVelocity = (b2_maxTranslation * step.inv_dt) * translation;
+		}
+
+		float32 rotation = step.dt * b->m_angularVelocity;
+		if (rotation * rotation > b2_maxRotationSquared)
+		{
+			if (rotation < 0.0)
+			{
+				b->m_angularVelocity = -step.inv_dt * b2_maxRotation;
+			}
+			else
+			{
+				b->m_angularVelocity = step.inv_dt * b2_maxRotation;
+			}
+		}
 
 		// Store positions for continuous collision.
 		b->m_sweep.c0 = b->m_sweep.c;
@@ -243,31 +275,22 @@ void b2Island::Solve(const b2TimeStep& step, const b2Vec2& gravity, bool correct
 		// Note: shapes are synchronized later.
 	}
 
-	if (correctPositions)
+	// Iterate over constraints.
+	for (int32 i = 0; i < step.positionIterations; ++i)
 	{
-		// Initialize position constraints.
-		// Contacts don't need initialization.
+		bool contactsOkay = contactSolver.SolvePositionConstraints(b2_contactBaumgarte);
+
+		bool jointsOkay = true;
 		for (int32 i = 0; i < m_jointCount; ++i)
 		{
-			m_joints[i]->InitPositionConstraints();
+			bool jointOkay = m_joints[i]->SolvePositionConstraints(b2_contactBaumgarte);
+			jointsOkay = jointsOkay && jointOkay;
 		}
 
-		// Iterate over constraints.
-		for (m_positionIterationCount = 0; m_positionIterationCount < step.maxIterations; ++m_positionIterationCount)
+		if (contactsOkay && jointsOkay)
 		{
-			bool contactsOkay = contactSolver.SolvePositionConstraints(b2_contactBaumgarte);
-
-			bool jointsOkay = true;
-			for (int i = 0; i < m_jointCount; ++i)
-			{
-				bool jointOkay = m_joints[i]->SolvePositionConstraints();
-				jointsOkay = jointsOkay && jointOkay;
-			}
-
-			if (contactsOkay && jointsOkay)
-			{
-				break;
-			}
+			// Exit early if the position errors are small.
+			break;
 		}
 	}
 
@@ -329,16 +352,27 @@ void b2Island::Solve(const b2TimeStep& step, const b2Vec2& gravity, bool correct
 	}
 }
 
-void b2Island::SolveTOI(const b2TimeStep& subStep)
+void b2Island::SolveTOI(b2TimeStep& subStep)
 {
 	b2ContactSolver contactSolver(subStep, m_contacts, m_contactCount, m_allocator);
 
-	// No warm starting needed for TOI events.
+	// No warm starting needed for TOI contact events.
+
+	// Warm starting for joints is off for now, but we need to
+	// call this function to compute Jacobians.
+	for (int32 i = 0; i < m_jointCount; ++i)
+	{
+		m_joints[i]->InitVelocityConstraints(subStep);
+	}
 
 	// Solve velocity constraints.
-	for (int32 i = 0; i < subStep.maxIterations; ++i)
+	for (int32 i = 0; i < subStep.velocityIterations; ++i)
 	{
 		contactSolver.SolveVelocityConstraints();
+		for (int32 j = 0; j < m_jointCount; ++j)
+		{
+			m_joints[j]->SolveVelocityConstraints(subStep);
+		}
 	}
 
 	// Don't store the TOI contact forces for warm starting
@@ -351,6 +385,27 @@ void b2Island::SolveTOI(const b2TimeStep& subStep)
 
 		if (b->IsStatic())
 			continue;
+
+		// Check for large velocities.
+		b2Vec2 translation = subStep.dt * b->m_linearVelocity;
+		if (b2Dot(translation, translation) > b2_maxTranslationSquared)
+		{
+			translation.Normalize();
+			b->m_linearVelocity = (b2_maxTranslation * subStep.inv_dt) * translation;
+		}
+
+		float32 rotation = subStep.dt * b->m_angularVelocity;
+		if (rotation * rotation > b2_maxRotationSquared)
+		{
+			if (rotation < 0.0)
+			{
+				b->m_angularVelocity = -subStep.inv_dt * b2_maxRotation;
+			}
+			else
+			{
+				b->m_angularVelocity = subStep.inv_dt * b2_maxRotation;
+			}
+		}
 
 		// Store positions for continuous collision.
 		b->m_sweep.c0 = b->m_sweep.c;
@@ -368,10 +423,17 @@ void b2Island::SolveTOI(const b2TimeStep& subStep)
 
 	// Solve position constraints.
 	const float32 k_toiBaumgarte = 0.75f;
-	for (int32 i = 0; i < subStep.maxIterations; ++i)
+	for (int32 i = 0; i < subStep.positionIterations; ++i)
 	{
 		bool contactsOkay = contactSolver.SolvePositionConstraints(k_toiBaumgarte);
-		if (contactsOkay)
+		bool jointsOkay = true;
+		for (int32 j = 0; j < m_jointCount; ++j)
+		{
+			bool jointOkay = m_joints[j]->SolvePositionConstraints(k_toiBaumgarte);
+			jointsOkay = jointsOkay && jointOkay;
+		}
+		
+		if (contactsOkay && jointsOkay)
 		{
 			break;
 		}
@@ -392,11 +454,12 @@ void b2Island::Report(b2ContactConstraint* constraints)
 		b2Contact* c = m_contacts[i];
 		b2ContactConstraint* cc = constraints + i;
 		b2ContactResult cr;
-		cr.shape1 = c->GetShape1();
-		cr.shape2 = c->GetShape2();
-		b2Body* b1 = cr.shape1->GetBody();
+		cr.fixtureA = c->GetFixtureA();
+		cr.fixtureB = c->GetFixtureB();
+		b2Body* bodyA = cr.fixtureA->GetBody();
 		int32 manifoldCount = c->GetManifoldCount();
 		b2Manifold* manifolds = c->GetManifolds();
+
 		for (int32 j = 0; j < manifoldCount; ++j)
 		{
 			b2Manifold* manifold = manifolds + j;
@@ -405,7 +468,7 @@ void b2Island::Report(b2ContactConstraint* constraints)
 			{
 				b2ManifoldPoint* point = manifold->points + k;
 				b2ContactConstraintPoint* ccp = cc->points + k;
-				cr.position = b1->GetWorldPoint(point->localPoint1);
+				cr.position = bodyA->GetWorldPoint(point->localPointA);
 
 				// TOI constraint results are not stored, so get
 				// the result from the constraint.

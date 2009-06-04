@@ -23,7 +23,7 @@ namespace Polukili
       }
       
       /*************************************************/
-      void Bullet::initPhysic(const b2Vec2& position)
+      void Bullet::initPhysic(const b2Vec2& position, float angle)
       {
          this->Actor::initPhysic(position);
          b2PolygonDef bulletShape;
@@ -33,8 +33,9 @@ namespace Polukili
          bulletShape.restitution = Constants::defaultRestitution;
          bulletShape.filter.categoryBits   = bullets;
          bulletShape.filter.maskBits = ground+enemies;
-         this->body->CreateShape(&bulletShape);
+         this->body->CreateFixture(&bulletShape);
          this->body->SetMassFromShapes();
+         this->body->SetAngle(angle);
       }
 
       /*************************************************/

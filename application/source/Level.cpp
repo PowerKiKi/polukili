@@ -103,7 +103,7 @@ namespace Polukili
             // deal with who collide and doesn't
             circleDef.filter.categoryBits   = 0x0001;
             
-            this->body->CreateShape(&circleDef);
+            this->body->CreateFixture(&circleDef);
             
             Console::log(LOG_INFO, "Level::loadFromXML() - circle read (radius=%f x=%f y=%f)", radius, x, y);
 
@@ -146,7 +146,7 @@ namespace Polukili
             // TO COMMENT ! perhaps creating an enum with categories
             // deal with who collide and doesn't
             polygonDef.filter.categoryBits   = 0x0001;
-            this->body->CreateShape(&polygonDef);
+            this->body->CreateFixture(&polygonDef);
             
             Console::log(LOG_INFO, "Level::loadFromXML() - polygon read");
          }
@@ -320,7 +320,7 @@ namespace Polukili
       
       Console::log(LOG_INFO, "Level::nextStep() - nextstep physic");
       
-      this->world->Step(Constants::timeStep, Constants::iterations); 
+      this->world->Step(Constants::timeStep, Constants::iterations, Constants::iterations); 
       
       Console::log(LOG_INFO, "Level::nextStep() - level nextStep end");
    }
