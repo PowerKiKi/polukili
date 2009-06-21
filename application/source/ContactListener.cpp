@@ -12,8 +12,8 @@ namespace Polukili
    {
       Console::log(LOG_INFO, "hit");
       
-      Actor* a1 = (Actor*)(point->shape1->GetBody()->GetUserData());
-      Actor* a2 = (Actor*)(point->shape2->GetBody()->GetUserData());
+      Actor* a1 = (Actor*)(point->fixtureA->GetBody()->GetUserData());
+      Actor* a2 = (Actor*)(point->fixtureB->GetBody()->GetUserData());
       
       Bullets::Bullet* bullet = dynamic_cast<Bullets::Bullet*>(a1);
       Actor* actor = dynamic_cast<Actor*>(a2);

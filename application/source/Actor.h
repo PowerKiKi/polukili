@@ -10,6 +10,7 @@
 #include <Effect.h>
 #include <Element.h>
 #include <ActorState.h>
+#include <ActorAction.h>
 #include <Timer.h>
 
 using namespace std;

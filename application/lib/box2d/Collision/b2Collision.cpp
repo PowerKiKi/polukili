@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2007 Erin Catto http://www.gphysics.com
+* Copyright (c) 2007-2009 Erin Catto http://www.gphysics.com
 *
 * This software is provided 'as-is', without any express or implied
 * warranty.  In no event will the authors be held liable for any damages
@@ -69,4 +69,72 @@ bool b2Segment::TestSegment(float32* lambda, b2Vec2* normal, const b2Segment& se
 	return false;
 }
 
+// From Real-time Collision Detection, p179.
+void b2AABB::RayCast(b2RayCastOutput* output, const b2RayCastInput& input)
+{
+	float32 tmin = -B2_FLT_MAX;
+	float32 tmax = B2_FLT_MAX;
 
+	output->hit = false;
+
+	b2Vec2 p = input.p1;
+	b2Vec2 d = input.p2 - input.p1;
+	b2Vec2 absD = b2Abs(d);
+
+	b2Vec2 normal;
+
+	for (int32 i = 0; i < 2; ++i)
+	{
+		if (absD(i) < B2_FLT_EPSILON)
+		{
+			// Parallel.
+			if (p(i) < lowerBound(i) || upperBound(i) < p(i))
+			{
+				return;
+			}
+		}
+		else
+		{
+			float32 inv_d = 1.0f / d(i);
+			float32 t1 = (lowerBound(i) - p(i)) * inv_d;
+			float32 t2 = (upperBound(i) - p(i)) * inv_d;
+
+			// Sign of the normal vector.
+			float32 s = -1.0f;
+
+			if (t1 > t2)
+			{
+				b2Swap(t1, t2);
+				s = 1.0f;
+			}
+
+			// Push the min up
+			if (t1 > tmin)
+			{
+				normal.SetZero();
+				normal(i) = s;
+				tmin = t1;
+			}
+
+			// Pull the max down
+			tmax = b2Min(tmax, t2);
+
+			if (tmin > tmax)
+			{
+				return;
+			}
+		}
+	}
+
+	// Does the ray start inside the box?
+	// Does the ray intersect beyond the max fraction?
+	if (tmin < 0.0f || input.maxFraction < tmin)
+	{
+		return;
+	}
+
+	// Intersection.
+	output->fraction = tmin;
+	output->normal = normal;
+	output->hit = true;
+}

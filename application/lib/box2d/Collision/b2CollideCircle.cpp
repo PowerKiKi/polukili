@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2007 Erin Catto http://www.gphysics.com
+* Copyright (c) 2007-2009 Erin Catto http://www.gphysics.com
 *
 * This software is provided 'as-is', without any express or implied
 * warranty.  In no event will the authors be held liable for any damages
@@ -27,13 +27,13 @@ void b2CollideCircles(
 {
 	manifold->pointCount = 0;
 
-	b2Vec2 p1 = b2Mul(xf1, circle1->GetLocalPosition());
-	b2Vec2 p2 = b2Mul(xf2, circle2->GetLocalPosition());
+	b2Vec2 p1 = b2Mul(xf1, circle1->m_p);
+	b2Vec2 p2 = b2Mul(xf2, circle2->m_p);
 
 	b2Vec2 d = p2 - p1;
 	float32 distSqr = b2Dot(d, d);
-	float32 r1 = circle1->GetRadius();
-	float32 r2 = circle2->GetRadius();
+	float32 r1 = circle1->m_radius;
+	float32 r2 = circle2->m_radius;
 	float32 radiusSum = r1 + r2;
 	if (distSqr > radiusSum * radiusSum)
 	{
@@ -64,8 +64,8 @@ void b2CollideCircles(
 
 	b2Vec2 p = 0.5f * (p1 + p2);
 
-	manifold->points[0].localPoint1 = b2MulT(xf1, p);
-	manifold->points[0].localPoint2 = b2MulT(xf2, p);
+	manifold->points[0].localPointA = b2MulT(xf1, p);
+	manifold->points[0].localPointB = b2MulT(xf2, p);
 }
 
 void b2CollidePolygonAndCircle(
@@ -76,16 +76,16 @@ void b2CollidePolygonAndCircle(
 	manifold->pointCount = 0;
 
 	// Compute circle position in the frame of the polygon.
-	b2Vec2 c = b2Mul(xf2, circle->GetLocalPosition());
+	b2Vec2 c = b2Mul(xf2, circle->m_p);
 	b2Vec2 cLocal = b2MulT(xf1, c);
 
 	// Find the min separating edge.
 	int32 normalIndex = 0;
 	float32 separation = -B2_FLT_MAX;
-	float32 radius = circle->GetRadius();
-	int32 vertexCount = polygon->GetVertexCount();
-	const b2Vec2* vertices = polygon->GetVertices();
-	const b2Vec2* normals = polygon->GetNormals();
+	float32 radius = polygon->m_radius + circle->m_radius;
+	int32 vertexCount = polygon->m_vertexCount;
+	const b2Vec2* vertices = polygon->m_vertices;
+	const b2Vec2* normals = polygon->m_normals;
 
 	for (int32 i = 0; i < vertexCount; ++i)
 	{
@@ -114,8 +114,8 @@ void b2CollidePolygonAndCircle(
 		manifold->points[0].id.features.referenceEdge = 0;
 		manifold->points[0].id.features.flip = 0;
 		b2Vec2 position = c - radius * manifold->normal;
-		manifold->points[0].localPoint1 = b2MulT(xf1, position);
-		manifold->points[0].localPoint2 = b2MulT(xf2, position);
+		manifold->points[0].localPointA = b2MulT(xf1, position);
+		manifold->points[0].localPointB = b2MulT(xf2, position);
 		manifold->points[0].separation = separation - radius;
 		return;
 	}
@@ -147,7 +147,7 @@ void b2CollidePolygonAndCircle(
 	{
 		p = vertices[vertIndex1] + u * e;
 		manifold->points[0].id.features.incidentEdge = (uint8)normalIndex;
-		manifold->points[0].id.features.incidentVertex = 0;
+		manifold->points[0].id.features.incidentVertex = b2_nullFeature;
 	}
 
 	b2Vec2 d = cLocal - p;
@@ -160,8 +160,8 @@ void b2CollidePolygonAndCircle(
 	manifold->pointCount = 1;
 	manifold->normal = b2Mul(xf1.R, d);
 	b2Vec2 position = c - radius * manifold->normal;
-	manifold->points[0].localPoint1 = b2MulT(xf1, position);
-	manifold->points[0].localPoint2 = b2MulT(xf2, position);
+	manifold->points[0].localPointA = b2MulT(xf1, position);
+	manifold->points[0].localPointB = b2MulT(xf2, position);
 	manifold->points[0].separation = dist - radius;
 	manifold->points[0].id.features.referenceEdge = 0;
 	manifold->points[0].id.features.flip = 0;

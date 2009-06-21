@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2006-2007 Erin Catto http://www.gphysics.com
+* Copyright (c) 2006-2009 Erin Catto http://www.gphysics.com
 *
 * This software is provided 'as-is', without any express or implied
 * warranty.  In no event will the authors be held liable for any damages
@@ -29,6 +29,7 @@
 class b2Shape;
 class b2CircleShape;
 class b2PolygonShape;
+class b2EdgeShape;
 
 const uint8 b2_nullFeature = UCHAR_MAX;
 
@@ -53,8 +54,8 @@ union b2ContactID
 /// requires sub-stepping in which the separation is stale.
 struct b2ManifoldPoint
 {
-	b2Vec2 localPoint1;		///< local position of the contact point in body1
-	b2Vec2 localPoint2;		///< local position of the contact point in body2
+	b2Vec2 localPointA;		///< local position of the contact point in bodyA
+	b2Vec2 localPointB;		///< local position of the contact point in bodyB
 	float32 separation;		///< the separation of the shapes along the normal vector
 	float32 normalImpulse;	///< the non-penetration impulse
 	float32 tangentImpulse;	///< the friction impulse
@@ -65,8 +66,23 @@ struct b2ManifoldPoint
 struct b2Manifold
 {
 	b2ManifoldPoint points[b2_maxManifoldPoints];	///< the points of contact
-	b2Vec2 normal;	///< the shared unit normal vector
-	int32 pointCount;	///< the number of manifold points
+	b2Vec2 normal;									///< the shared unit normal vector, this points from shapeA to shapeB.
+	int32 pointCount;								///< the number of manifold points
+};
+
+/// Ray-cast input data.
+struct b2RayCastInput
+{
+	b2Vec2 p1, p2;
+	float32 maxFraction;
+};
+
+/// Ray-cast output data.
+struct b2RayCastOutput
+{
+	b2Vec2 normal;
+	float32 fraction;
+	bool hit;
 };
 
 /// A line segment.
@@ -85,16 +101,40 @@ struct b2AABB
 	/// Verify that the bounds are sorted.
 	bool IsValid() const;
 
+	/// Get the center of the AABB.
+	b2Vec2 GetCenter() const
+	{
+		return 0.5f * (lowerBound + upperBound);
+	}
+
+	/// Get the extents of the AABB (half-widths).
+	b2Vec2 GetExtents() const
+	{
+		return 0.5f * (upperBound - lowerBound);
+	}
+
+	/// Combine two AABBs into this one.
+	void Combine(const b2AABB& aabb1, const b2AABB& aabb2)
+	{
+		lowerBound = b2Min(aabb1.lowerBound, aabb2.lowerBound);
+		upperBound = b2Max(aabb1.upperBound, aabb2.upperBound);
+	}
+
+	/// Does this aabb contain the provided AABB.
+	bool Contains(const b2AABB& aabb)
+	{
+		bool result = true;
+		result = result && lowerBound.x <= aabb.lowerBound.x;
+		result = result && lowerBound.y <= aabb.lowerBound.y;
+		result = result && aabb.upperBound.x <= upperBound.x;
+		result = result && aabb.upperBound.y <= upperBound.y;
+		return result;
+	}
+
+	void RayCast(b2RayCastOutput* output, const b2RayCastInput& input);
+
 	b2Vec2 lowerBound;	///< the lower vertex
 	b2Vec2 upperBound;	///< the upper vertex
-};
-
-/// An oriented bounding box.
-struct b2OBB
-{
-	b2Mat22 R;			///< the rotation matrix
-	b2Vec2 center;		///< the local centroid
-	b2Vec2 extents;		///< the half-widths
 };
 
 /// Compute the collision manifold between two circles.
@@ -107,23 +147,20 @@ void b2CollidePolygonAndCircle(b2Manifold* manifold,
 							   const b2PolygonShape* polygon, const b2XForm& xf1,
 							   const b2CircleShape* circle, const b2XForm& xf2);
 
-/// Compute the collision manifold between two circles.
+/// Compute the collision manifold between two polygons.
 void b2CollidePolygons(b2Manifold* manifold,
 					   const b2PolygonShape* polygon1, const b2XForm& xf1,
 					   const b2PolygonShape* polygon2, const b2XForm& xf2);
 
-/// Compute the distance between two shapes and the closest points.
-/// @return the distance between the shapes or zero if they are overlapped/touching.
-float32 b2Distance(b2Vec2* x1, b2Vec2* x2,
-				   const b2Shape* shape1, const b2XForm& xf1,
-				   const b2Shape* shape2, const b2XForm& xf2);
+/// Compute the collision manifold between an edge and a circle.
+void b2CollideEdgeAndCircle(b2Manifold* manifold,
+							const b2EdgeShape* edge, const b2XForm& xf1,
+							const b2CircleShape* circle, const b2XForm& xf2);
 
-/// Compute the time when two shapes begin to touch or touch at a closer distance.
-/// @warning the sweeps must have the same time interval.
-/// @return the fraction between [0,1] in which the shapes first touch.
-/// fraction=0 means the shapes begin touching/overlapped, and fraction=1 means the shapes don't touch.
-float32 b2TimeOfImpact(const b2Shape* shape1, const b2Sweep& sweep1,
-					   const b2Shape* shape2, const b2Sweep& sweep2);
+/// Compute the collision manifold between a polygon and an edge.
+void b2CollidePolyAndEdge(b2Manifold* manifold,
+						  const b2PolygonShape* poly, const b2XForm& xf1,
+						  const b2EdgeShape* edge, const b2XForm& xf2);
 
 
 // ---------------- Inline Functions ------------------------------------------

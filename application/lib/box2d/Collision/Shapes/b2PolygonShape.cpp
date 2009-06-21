@@ -1,6 +1,5 @@
-
 /*
-* Copyright (c) 2006-2007 Erin Catto http://www.gphysics.com
+* Copyright (c) 2006-2009 Erin Catto http://www.gphysics.com
 *
 * This software is provided 'as-is', without any express or implied
 * warranty.  In no event will the authors be held liable for any damages
@@ -19,25 +18,42 @@
 
 #include "b2PolygonShape.h"
 
-void b2PolygonDef::SetAsBox(float32 hx, float32 hy)
+void b2PolygonShape::SetAsBox(float32 hx, float32 hy)
 {
-	vertexCount = 4;
-	vertices[0].Set(-hx, -hy);
-	vertices[1].Set( hx, -hy);
-	vertices[2].Set( hx,  hy);
-	vertices[3].Set(-hx,  hy);
+	m_vertexCount = 4;
+	m_vertices[0].Set(-hx, -hy);
+	m_vertices[1].Set( hx, -hy);
+	m_vertices[2].Set( hx,  hy);
+	m_vertices[3].Set(-hx,  hy);
+	m_normals[0].Set(0.0f, -1.0f);
+	m_normals[1].Set(1.0f, 0.0f);
+	m_normals[2].Set(0.0f, 1.0f);
+	m_normals[3].Set(-1.0f, 0.0f);
+	m_centroid.SetZero();
 }
 
-void b2PolygonDef::SetAsBox(float32 hx, float32 hy, const b2Vec2& center, float32 angle)
+void b2PolygonShape::SetAsBox(float32 hx, float32 hy, const b2Vec2& center, float32 angle)
 {
-	SetAsBox(hx, hy);
+	m_vertexCount = 4;
+	m_vertices[0].Set(-hx, -hy);
+	m_vertices[1].Set( hx, -hy);
+	m_vertices[2].Set( hx,  hy);
+	m_vertices[3].Set(-hx,  hy);
+	m_normals[0].Set(0.0f, -1.0f);
+	m_normals[1].Set(1.0f, 0.0f);
+	m_normals[2].Set(0.0f, 1.0f);
+	m_normals[3].Set(-1.0f, 0.0f);
+	m_centroid = center;
+
 	b2XForm xf;
 	xf.position = center;
 	xf.R.Set(angle);
 
-	for (int32 i = 0; i < vertexCount; ++i)
+	// Transform vertices and normals.
+	for (int32 i = 0; i < m_vertexCount; ++i)
 	{
-		vertices[i] = b2Mul(xf, vertices[i]);
+		m_vertices[i] = b2Mul(xf, m_vertices[i]);
+		m_normals[i] = b2Mul(xf.R, m_normals[i]);
 	}
 }
 
@@ -87,69 +103,15 @@ static b2Vec2 ComputeCentroid(const b2Vec2* vs, int32 count)
 	return c;
 }
 
-// http://www.geometrictools.com/Documentation/MinimumAreaRectangle.pdf
-static void ComputeOBB(b2OBB* obb, const b2Vec2* vs, int32 count)
+void b2PolygonShape::Set(const b2Vec2* vertices, int32 count)
 {
-	b2Assert(count <= b2_maxPolygonVertices);
-	b2Vec2 p[b2_maxPolygonVertices + 1];
-	for (int32 i = 0; i < count; ++i)
-	{
-		p[i] = vs[i];
-	}
-	p[count] = p[0];
-
-	float32 minArea = B2_FLT_MAX;
-	
-	for (int32 i = 1; i <= count; ++i)
-	{
-		b2Vec2 root = p[i-1];
-		b2Vec2 ux = p[i] - root;
-		float32 length = ux.Normalize();
-		b2Assert(length > B2_FLT_EPSILON);
-		b2Vec2 uy(-ux.y, ux.x);
-		b2Vec2 lower(B2_FLT_MAX, B2_FLT_MAX);
-		b2Vec2 upper(-B2_FLT_MAX, -B2_FLT_MAX);
-
-		for (int32 j = 0; j < count; ++j)
-		{
-			b2Vec2 d = p[j] - root;
-			b2Vec2 r;
-			r.x = b2Dot(ux, d);
-			r.y = b2Dot(uy, d);
-			lower = b2Min(lower, r);
-			upper = b2Max(upper, r);
-		}
-
-		float32 area = (upper.x - lower.x) * (upper.y - lower.y);
-		if (area < 0.95f * minArea)
-		{
-			minArea = area;
-			obb->R.col1 = ux;
-			obb->R.col2 = uy;
-			b2Vec2 center = 0.5f * (lower + upper);
-			obb->center = root + b2Mul(obb->R, center);
-			obb->extents = 0.5f * (upper - lower);
-		}
-	}
-
-	b2Assert(minArea < B2_FLT_MAX);
-}
-
-b2PolygonShape::b2PolygonShape(const b2ShapeDef* def)
-	 : b2Shape(def)
-{
-	b2Assert(def->type == e_polygonShape);
-	m_type = e_polygonShape;
-	const b2PolygonDef* poly = (const b2PolygonDef*)def;
-
-	// Get the vertices transformed into the body frame.
-	m_vertexCount = poly->vertexCount;
-	b2Assert(3 <= m_vertexCount && m_vertexCount <= b2_maxPolygonVertices);
+	b2Assert(3 <= count && count <= b2_maxPolygonVertices);
+	m_vertexCount = count;
 
 	// Copy vertices.
 	for (int32 i = 0; i < m_vertexCount; ++i)
 	{
-		m_vertices[i] = poly->vertices[i];
+		m_vertices[i] = vertices[i];
 	}
 
 	// Compute normals. Ensure the edges have non-zero length.
@@ -164,82 +126,34 @@ b2PolygonShape::b2PolygonShape(const b2ShapeDef* def)
 	}
 
 #ifdef _DEBUG
-	// Ensure the polygon is convex.
+	// Ensure the polygon is convex and the interior
+	// is to the left of each edge.
 	for (int32 i = 0; i < m_vertexCount; ++i)
 	{
+		int32 i1 = i;
+		int32 i2 = i + 1 < m_vertexCount ? i + 1 : 0;
+		b2Vec2 edge = m_vertices[i2] - m_vertices[i1];
+
 		for (int32 j = 0; j < m_vertexCount; ++j)
 		{
 			// Don't check vertices on the current edge.
-			if (j == i || j == (i + 1) % m_vertexCount)
+			if (j == i1 || j == i2)
 			{
 				continue;
 			}
 			
-			// Your polygon is non-convex (it has an indentation).
-			// Or your polygon is too skinny.
-			float32 s = b2Dot(m_normals[i], m_vertices[j] - m_vertices[i]);
-			b2Assert(s < -b2_linearSlop);
+			b2Vec2 r = m_vertices[j] - m_vertices[i1];
+
+			// Your polygon is non-convex (it has an indentation) or
+			// has colinear edges.
+			float32 s = b2Cross(edge, r);
+			b2Assert(s > 0.0f);
 		}
-	}
-
-	// Ensure the polygon is counter-clockwise.
-	for (int32 i = 1; i < m_vertexCount; ++i)
-	{
-		float32 cross = b2Cross(m_normals[i-1], m_normals[i]);
-
-		// Keep asinf happy.
-		cross = b2Clamp(cross, -1.0f, 1.0f);
-
-		// You have consecutive edges that are almost parallel on your polygon.
-		float32 angle = asinf(cross);
-		b2Assert(angle > b2_angularSlop);
 	}
 #endif
 
 	// Compute the polygon centroid.
-	m_centroid = ComputeCentroid(poly->vertices, poly->vertexCount);
-
-	// Compute the oriented bounding box.
-	ComputeOBB(&m_obb, m_vertices, m_vertexCount);
-
-	// Create core polygon shape by shifting edges inward.
-	// Also compute the min/max radius for CCD.
-	for (int32 i = 0; i < m_vertexCount; ++i)
-	{
-		int32 i1 = i - 1 >= 0 ? i - 1 : m_vertexCount - 1;
-		int32 i2 = i;
-
-		b2Vec2 n1 = m_normals[i1];
-		b2Vec2 n2 = m_normals[i2];
-		b2Vec2 v = m_vertices[i] - m_centroid;;
-
-		b2Vec2 d;
-		d.x = b2Dot(n1, v) - b2_toiSlop;
-		d.y = b2Dot(n2, v) - b2_toiSlop;
-
-		// Shifting the edge inward by b2_toiSlop should
-		// not cause the plane to pass the centroid.
-
-		// Your shape has a radius/extent less than b2_toiSlop.
-		b2Assert(d.x >= 0.0f);
-		b2Assert(d.y >= 0.0f);
-		b2Mat22 A;
-		A.col1.x = n1.x; A.col2.x = n1.y;
-		A.col1.y = n2.x; A.col2.y = n2.y;
-		m_coreVertices[i] = A.Solve(d) + m_centroid;
-	}
-}
-
-void b2PolygonShape::UpdateSweepRadius(const b2Vec2& center)
-{
-	// Update the sweep radius (maximum radius) as measured from
-	// a local center point.
-	m_sweepRadius = 0.0f;
-	for (int32 i = 0; i < m_vertexCount; ++i)
-	{
-		b2Vec2 d = m_coreVertices[i] - center;
-		m_sweepRadius = b2Max(m_sweepRadius, d.Length());
-	}
+	m_centroid = ComputeCentroid(m_vertices, m_vertexCount);
 }
 
 bool b2PolygonShape::TestPoint(const b2XForm& xf, const b2Vec2& p) const
@@ -258,7 +172,7 @@ bool b2PolygonShape::TestPoint(const b2XForm& xf, const b2Vec2& p) const
 	return true;
 }
 
-bool b2PolygonShape::TestSegment(
+b2SegmentCollide b2PolygonShape::TestSegment(
 	const b2XForm& xf,
 	float32* lambda,
 	b2Vec2* normal,
@@ -280,28 +194,37 @@ bool b2PolygonShape::TestSegment(
 		float32 numerator = b2Dot(m_normals[i], m_vertices[i] - p1);
 		float32 denominator = b2Dot(m_normals[i], d);
 
-		// Note: we want this predicate without division:
-		// lower < numerator / denominator, where denominator < 0
-		// Since denominator < 0, we have to flip the inequality:
-		// lower < numerator / denominator <==> denominator * lower > numerator.
-
-		if (denominator < 0.0f && numerator < lower * denominator)
-		{
-			// Increase lower.
-			// The segment enters this half-space.
-			lower = numerator / denominator;
-			index = i;
+		if (denominator == 0.0f)
+		{	
+			if (numerator < 0.0f)
+			{
+				return b2_missCollide;
+			}
 		}
-		else if (denominator > 0.0f && numerator < upper * denominator)
+		else
 		{
-			// Decrease upper.
-			// The segment exits this half-space.
-			upper = numerator / denominator;
+			// Note: we want this predicate without division:
+			// lower < numerator / denominator, where denominator < 0
+			// Since denominator < 0, we have to flip the inequality:
+			// lower < numerator / denominator <==> denominator * lower > numerator.
+			if (denominator < 0.0f && numerator < lower * denominator)
+			{
+				// Increase lower.
+				// The segment enters this half-space.
+				lower = numerator / denominator;
+				index = i;
+			}
+			else if (denominator > 0.0f && numerator < upper * denominator)
+			{
+				// Decrease upper.
+				// The segment exits this half-space.
+				upper = numerator / denominator;
+			}
 		}
 
 		if (upper < lower)
 		{
-			return false;
+			return b2_missCollide;
 		}
 	}
 
@@ -311,34 +234,31 @@ bool b2PolygonShape::TestSegment(
 	{
 		*lambda = lower;
 		*normal = b2Mul(xf.R, m_normals[index]);
-		return true;
+		return b2_hitCollide;
 	}
 
-	return false;
+	*lambda = 0;
+	return b2_startsInsideCollide;
 }
 
 void b2PolygonShape::ComputeAABB(b2AABB* aabb, const b2XForm& xf) const
 {
-	b2Mat22 R = b2Mul(xf.R, m_obb.R);
-	b2Mat22 absR = b2Abs(R);
-	b2Vec2 h = b2Mul(absR, m_obb.extents);
-	b2Vec2 position = xf.position + b2Mul(xf.R, m_obb.center);
-	aabb->lowerBound = position - h;
-	aabb->upperBound = position + h;
+	b2Vec2 lower = b2Mul(xf, m_vertices[0]);
+	b2Vec2 upper = lower;
+
+	for (int32 i = 1; i < m_vertexCount; ++i)
+	{
+		b2Vec2 v = b2Mul(xf, m_vertices[i]);
+		lower = b2Min(lower, v);
+		upper = b2Max(upper, v);
+	}
+
+	b2Vec2 r(m_radius, m_radius);
+	aabb->lowerBound = lower - r;
+	aabb->upperBound = upper + r;
 }
 
-void b2PolygonShape::ComputeSweptAABB(b2AABB* aabb,
-					  const b2XForm& transform1,
-					  const b2XForm& transform2) const
-{
-	b2AABB aabb1, aabb2;
-	ComputeAABB(&aabb1, transform1);
-	ComputeAABB(&aabb2, transform2);
-	aabb->lowerBound = b2Min(aabb1.lowerBound, aabb2.lowerBound);
-	aabb->upperBound = b2Max(aabb1.upperBound, aabb2.upperBound);
-}
-
-void b2PolygonShape::ComputeMass(b2MassData* massData) const
+void b2PolygonShape::ComputeMass(b2MassData* massData, float32 density) const
 {
 	// Polygon mass, centroid, and inertia.
 	// Let rho be the polygon density in mass per unit area.
@@ -413,7 +333,7 @@ void b2PolygonShape::ComputeMass(b2MassData* massData) const
 	}
 
 	// Total mass
-	massData->mass = m_density * area;
+	massData->mass = density * area;
 
 	// Center of mass
 	b2Assert(area > B2_FLT_EPSILON);
@@ -421,29 +341,146 @@ void b2PolygonShape::ComputeMass(b2MassData* massData) const
 	massData->center = center;
 
 	// Inertia tensor relative to the local origin.
-	massData->I = m_density * I;
+	massData->I = density * I;
 }
 
-b2Vec2 b2PolygonShape::Centroid(const b2XForm& xf) const
-{
-	return b2Mul(xf, m_centroid);
-}
 
-b2Vec2 b2PolygonShape::Support(const b2XForm& xf, const b2Vec2& d) const
+float32 b2PolygonShape::ComputeSubmergedArea(	const b2Vec2& normal,
+												float32 offset,
+												const b2XForm& xf, 
+												b2Vec2* c) const
 {
-	b2Vec2 dLocal = b2MulT(xf.R, d);
-
-	int32 bestIndex = 0;
-	float32 bestValue = b2Dot(m_coreVertices[0], dLocal);
-	for (int32 i = 1; i < m_vertexCount; ++i)
+	//Transform plane into shape co-ordinates
+	b2Vec2 normalL = b2MulT(xf.R,normal);
+	float32 offsetL = offset - b2Dot(normal,xf.position);
+	
+	float32 depths[b2_maxPolygonVertices];
+	int32 diveCount = 0;
+	int32 intoIndex = -1;
+	int32 outoIndex = -1;
+	
+	bool lastSubmerged = false;
+	int32 i;
+	for (i = 0; i < m_vertexCount; ++i)
 	{
-		float32 value = b2Dot(m_coreVertices[i], dLocal);
-		if (value > bestValue)
+		depths[i] = b2Dot(normalL,m_vertices[i]) - offsetL;
+		bool isSubmerged = depths[i]<-B2_FLT_EPSILON;
+		if (i > 0)
 		{
-			bestIndex = i;
-			bestValue = value;
+			if (isSubmerged)
+			{
+				if (!lastSubmerged)
+				{
+					intoIndex = i-1;
+					diveCount++;
+				}
+			}
+			else
+			{
+				if (lastSubmerged)
+				{
+					outoIndex = i-1;
+					diveCount++;
+				}
+			}
 		}
+		lastSubmerged = isSubmerged;
 	}
 
-	return b2Mul(xf, m_coreVertices[bestIndex]);
+	switch(diveCount)
+	{
+	case 0:
+		if (lastSubmerged)
+		{
+			//Completely submerged
+			b2MassData md;
+			ComputeMass(&md, 1.0f);
+			*c = b2Mul(xf,md.center);
+			return md.mass;
+		}
+		else
+		{
+			//Completely dry
+			return 0;
+		}
+		break;
+
+	case 1:
+		if(intoIndex==-1)
+		{
+			intoIndex = m_vertexCount-1;
+		}
+		else
+		{
+			outoIndex = m_vertexCount-1;
+		}
+		break;
+	}
+
+	int32 intoIndex2 = (intoIndex+1) % m_vertexCount;
+	int32 outoIndex2 = (outoIndex+1) % m_vertexCount;
+	
+	float32 intoLambda = (0 - depths[intoIndex]) / (depths[intoIndex2] - depths[intoIndex]);
+	float32 outoLambda = (0 - depths[outoIndex]) / (depths[outoIndex2] - depths[outoIndex]);
+	
+	b2Vec2 intoVec(	m_vertices[intoIndex].x*(1-intoLambda)+m_vertices[intoIndex2].x*intoLambda,
+					m_vertices[intoIndex].y*(1-intoLambda)+m_vertices[intoIndex2].y*intoLambda);
+	b2Vec2 outoVec(	m_vertices[outoIndex].x*(1-outoLambda)+m_vertices[outoIndex2].x*outoLambda,
+					m_vertices[outoIndex].y*(1-outoLambda)+m_vertices[outoIndex2].y*outoLambda);
+	
+	// Initialize accumulator
+	float32 area = 0;
+	b2Vec2 center(0,0);
+	b2Vec2 p2 = m_vertices[intoIndex2];
+	b2Vec2 p3;
+	
+	float32 k_inv3 = 1.0f / 3.0f;
+	
+	// An awkward loop from intoIndex2+1 to outIndex2
+	i = intoIndex2;
+	while (i != outoIndex2)
+	{
+		i = (i+1) % m_vertexCount;
+		if (i == outoIndex2)
+			p3 = outoVec;
+		else
+			p3 = m_vertices[i];
+		
+		// Add the triangle formed by intoVec,p2,p3
+		{
+			b2Vec2 e1 = p2 - intoVec;
+			b2Vec2 e2 = p3 - intoVec;
+			
+			float32 D = b2Cross(e1, e2);
+			
+			float32 triangleArea = 0.5f * D;
+
+			area += triangleArea;
+			
+			// Area weighted centroid
+			center += triangleArea * k_inv3 * (intoVec + p2 + p3);
+
+		}
+		//
+		p2=p3;
+	}
+	
+	// Normalize and transform centroid
+	center *= 1.0f / area;
+	
+	*c = b2Mul(xf,center);
+	
+	return area;
+}
+
+float32 b2PolygonShape::ComputeSweepRadius(const b2Vec2& pivot) const
+{
+	b2Assert(m_vertexCount > 0);
+	float32 sr = b2DistanceSquared(m_vertices[0], pivot);
+	for (int32 i = 1; i < m_vertexCount; ++i)
+	{
+		sr = b2Max(sr, b2DistanceSquared(m_vertices[i], pivot));
+	}
+
+	return b2Sqrt(sr);
 }

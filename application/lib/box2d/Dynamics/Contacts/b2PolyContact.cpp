@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2006-2007 Erin Catto http://www.gphysics.com
+* Copyright (c) 2006-2009 Erin Catto http://www.gphysics.com
 *
 * This software is provided 'as-is', without any express or implied
 * warranty.  In no event will the authors be held liable for any damages
@@ -18,16 +18,18 @@
 
 #include "b2PolyContact.h"
 #include "../b2Body.h"
+#include "../b2Fixture.h"
 #include "../b2WorldCallbacks.h"
+#include "../../Collision/b2TimeOfImpact.h"
 #include "../../Common/b2BlockAllocator.h"
 
-#include <memory>
 #include <new>
+#include <string.h>
 
-b2Contact* b2PolygonContact::Create(b2Shape* shape1, b2Shape* shape2, b2BlockAllocator* allocator)
+b2Contact* b2PolygonContact::Create(b2Fixture* fixtureA, b2Fixture* fixtureB, b2BlockAllocator* allocator)
 {
 	void* mem = allocator->Allocate(sizeof(b2PolygonContact));
-	return new (mem) b2PolygonContact(shape1, shape2);
+	return new (mem) b2PolygonContact(fixtureA, fixtureB);
 }
 
 void b2PolygonContact::Destroy(b2Contact* contact, b2BlockAllocator* allocator)
@@ -36,31 +38,33 @@ void b2PolygonContact::Destroy(b2Contact* contact, b2BlockAllocator* allocator)
 	allocator->Free(contact, sizeof(b2PolygonContact));
 }
 
-b2PolygonContact::b2PolygonContact(b2Shape* s1, b2Shape* s2)
-	: b2Contact(s1, s2)
+b2PolygonContact::b2PolygonContact(b2Fixture* fixtureA, b2Fixture* fixtureB)
+	: b2Contact(fixtureA, fixtureB)
 {
-	b2Assert(m_shape1->GetType() == e_polygonShape);
-	b2Assert(m_shape2->GetType() == e_polygonShape);
+	b2Assert(m_fixtureA->GetType() == b2_polygonShape);
+	b2Assert(m_fixtureB->GetType() == b2_polygonShape);
 	m_manifold.pointCount = 0;
 }
 
 void b2PolygonContact::Evaluate(b2ContactListener* listener)
 {
-	b2Body* b1 = m_shape1->GetBody();
-	b2Body* b2 = m_shape2->GetBody();
+	b2Body* bodyA = m_fixtureA->GetBody();
+	b2Body* bodyB = m_fixtureB->GetBody();
 
 	b2Manifold m0;
 	memcpy(&m0, &m_manifold, sizeof(b2Manifold));
 
-	b2CollidePolygons(&m_manifold, (b2PolygonShape*)m_shape1, b1->GetXForm(), (b2PolygonShape*)m_shape2, b2->GetXForm());
+	b2CollidePolygons(	&m_manifold,
+						(b2PolygonShape*)m_fixtureA->GetShape(), bodyA->GetXForm(),
+						(b2PolygonShape*)m_fixtureB->GetShape(), bodyB->GetXForm());
 
 	bool persisted[b2_maxManifoldPoints] = {false, false};
 
 	b2ContactPoint cp;
-	cp.shape1 = m_shape1;
-	cp.shape2 = m_shape2;
-	cp.friction = m_friction;
-	cp.restitution = m_restitution;
+	cp.fixtureA = m_fixtureA;
+	cp.fixtureB = m_fixtureB;
+	cp.friction = b2MixFriction(m_fixtureA->GetFriction(), m_fixtureB->GetFriction());
+	cp.restitution = b2MixRestitution(m_fixtureA->GetRestitution(), m_fixtureB->GetRestitution());
 
 	// Match contact ids to facilitate warm starting.
 	if (m_manifold.pointCount > 0)
@@ -96,10 +100,10 @@ void b2PolygonContact::Evaluate(b2ContactListener* listener)
 					// Report persistent point.
 					if (listener != NULL)
 					{
-						cp.position = b1->GetWorldPoint(mp->localPoint1);
-						b2Vec2 v1 = b1->GetLinearVelocityFromLocalPoint(mp->localPoint1);
-						b2Vec2 v2 = b2->GetLinearVelocityFromLocalPoint(mp->localPoint2);
-						cp.velocity = v2 - v1;
+						cp.position = bodyA->GetWorldPoint(mp->localPointA);
+						b2Vec2 vA = bodyA->GetLinearVelocityFromLocalPoint(mp->localPointA);
+						b2Vec2 vB = bodyB->GetLinearVelocityFromLocalPoint(mp->localPointB);
+						cp.velocity = vB - vA;
 						cp.normal = m_manifold.normal;
 						cp.separation = mp->separation;
 						cp.id = id;
@@ -112,10 +116,10 @@ void b2PolygonContact::Evaluate(b2ContactListener* listener)
 			// Report added point.
 			if (found == false && listener != NULL)
 			{
-				cp.position = b1->GetWorldPoint(mp->localPoint1);
-				b2Vec2 v1 = b1->GetLinearVelocityFromLocalPoint(mp->localPoint1);
-				b2Vec2 v2 = b2->GetLinearVelocityFromLocalPoint(mp->localPoint2);
-				cp.velocity = v2 - v1;
+				cp.position = bodyA->GetWorldPoint(mp->localPointA);
+				b2Vec2 vA = bodyA->GetLinearVelocityFromLocalPoint(mp->localPointA);
+				b2Vec2 vB = bodyB->GetLinearVelocityFromLocalPoint(mp->localPointB);
+				cp.velocity = vB - vA;
 				cp.normal = m_manifold.normal;
 				cp.separation = mp->separation;
 				cp.id = id;
@@ -144,13 +148,25 @@ void b2PolygonContact::Evaluate(b2ContactListener* listener)
 		}
 
 		b2ManifoldPoint* mp0 = m0.points + i;
-		cp.position = b1->GetWorldPoint(mp0->localPoint1);
-		b2Vec2 v1 = b1->GetLinearVelocityFromLocalPoint(mp0->localPoint1);
-		b2Vec2 v2 = b2->GetLinearVelocityFromLocalPoint(mp0->localPoint2);
-		cp.velocity = v2 - v1;
+		cp.position = bodyA->GetWorldPoint(mp0->localPointA);
+		b2Vec2 vA = bodyA->GetLinearVelocityFromLocalPoint(mp0->localPointA);
+		b2Vec2 vB = bodyB->GetLinearVelocityFromLocalPoint(mp0->localPointB);
+		cp.velocity = vB - vA;
 		cp.normal = m0.normal;
 		cp.separation = mp0->separation;
 		cp.id = mp0->id;
 		listener->Remove(&cp);
 	}
+}
+
+float32 b2PolygonContact::ComputeTOI(const b2Sweep& sweepA, const b2Sweep& sweepB) const
+{
+	b2TOIInput input;
+	input.sweepA = sweepA;
+	input.sweepB = sweepB;
+	input.sweepRadiusA = m_fixtureA->ComputeSweepRadius(sweepA.localCenter);
+	input.sweepRadiusB = m_fixtureB->ComputeSweepRadius(sweepB.localCenter);
+	input.tolerance = b2_linearSlop;
+
+	return b2TimeOfImpact(&input, (const b2PolygonShape*)m_fixtureA->GetShape(), (const b2PolygonShape*)m_fixtureB->GetShape());
 }
