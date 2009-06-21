@@ -9,23 +9,40 @@ namespace Polukili
 {
    /*************************************************/
    Actor::Actor(Level* level)
-      : powerFactor(1)
+      : level(level), body(0), sprite(0), powerFactor(1)
    {
       Console::log(LOG_INFO, "Actor::Actor() - new actor");
-      this->level = level;
       this->level->actors.push_back(this);      
    }
    
    /*************************************************/
    Actor::~Actor()
    {
+      Console::log(LOG_INFO, "will destroy actor");
+            
       this->level->actors.remove(this);
+      
+      if (this->body)
+      {
+         Console::log(LOG_INFO, "destroy physic");
+         this->level->world->DestroyBody(this->body);    
+         this->body = 0;
+      }
+      
+      if (this->sprite)
+      {
+         Console::log(LOG_INFO, "destroy sprite");
+         delete this->sprite;
+         this->sprite = 0;
+      }
+      
+      Console::log(LOG_INFO, "destroyed");
    }
 
    /*************************************************/
    void Actor::initPhysic(const b2Vec2& position)
    {
-      this->timer = new Timer;
+      this->timer.start();
       b2BodyDef bodyDef;
       basePosition = position;
       bodyDef.position = position;
@@ -136,6 +153,12 @@ namespace Polukili
    {
       Console::log(LOG_INFO, "actor died");
       this->state = dead;
+   }
+   
+   /*************************************************/
+   void Actor::setPowerFactor(float powerFactor)
+   {
+      this->powerFactor = powerFactor;
    }
 }
 

@@ -74,6 +74,7 @@ namespace Polukili
       b2Vec2 gravity(0.0f, Constants::defaultGravity);
       bool doSleep = false;
       this->world = new b2World(worldAABB, gravity, doSleep);
+      this->world->SetContactListener(&this->game->contactListener);
       b2BodyDef groundBodyDef;
       groundBodyDef.position.Set(0.0f, 0.0f);
       
@@ -204,7 +205,9 @@ namespace Polukili
             Console::log(LOG_INFO, "Level::loadFromXML() - actor type unknown. Actor skipped.", type);
             continue;
          }
-            
+         
+         float powerFactor = (float)atof(mxmlElementGetAttr(child, "powerFactor"));
+         actor->setPowerFactor(powerFactor);
             
          Console::log(LOG_INFO, "Level::loadFromXML() - actor reading will init physic.", type);
          float x = (float)atof(mxmlElementGetAttr(child->child, "x"));
@@ -311,24 +314,27 @@ namespace Polukili
       }
       
       
-      Console::log(LOG_INFO, "Level::nextStep() - destroy dead actors");
+      Console::log(LOG_INFO, "destroy dead actors");
       // Delete all dead actors
-      for (list<Actor*>::iterator it = actorsToDelete.begin(); it != actorsToDelete.end(); it++)
-         delete *it;
+      while (!actorsToDelete.empty())
+      {
+         Console::log(LOG_INFO, "will destroy dead actor");
+         delete actorsToDelete.front();
+         actorsToDelete.pop_front();         
+         Console::log(LOG_INFO, "dead actor destroyed");
+      }      
       
       
-      
-      Console::log(LOG_INFO, "Level::nextStep() - nextstep physic");
-      
-      this->world->Step(Constants::timeStep, Constants::iterations); 
-      
-      Console::log(LOG_INFO, "Level::nextStep() - level nextStep end");
+      Console::log(LOG_INFO, "nextstep physic");      
+      this->world->Step(Constants::timeStep, Constants::iterations);      
+      Console::log(LOG_INFO, "nextstep physic end");
    }
    
    /*************************************************/
    bool Level::isFinished() const
    {
-      // Each actors reacts to current situation
+      return false; // For now we prevent level to finish. TODO remove this security and test level changing
+   
       for (list<Ennemies::Ennemy*>::const_iterator it = this->ennemies.begin(); it != this->ennemies.end(); it++)      
          if ((*it)->isTarget())
             return false;

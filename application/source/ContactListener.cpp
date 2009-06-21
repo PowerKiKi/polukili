@@ -10,13 +10,18 @@ namespace Polukili
 {
    void ContactListener::Add(const b2ContactPoint* point)
    {
-      Bullets::Bullet* bullet = static_cast<Bullets::Bullet*>(point->shape1->GetBody()->GetUserData());
-      Actor* actor = static_cast<Actor*>(point->shape2->GetBody()->GetUserData());
+      Console::log(LOG_INFO, "hit");
+      
+      Actor* a1 = (Actor*)(point->shape1->GetBody()->GetUserData());
+      Actor* a2 = (Actor*)(point->shape2->GetBody()->GetUserData());
+      
+      Bullets::Bullet* bullet = dynamic_cast<Bullets::Bullet*>(a1);
+      Actor* actor = dynamic_cast<Actor*>(a2);
       
       if (!bullet)
       {
-         actor = static_cast<Actor*>(point->shape1->GetBody()->GetUserData());
-         bullet = static_cast<Bullets::Bullet*>(point->shape2->GetBody()->GetUserData());
+         bullet = dynamic_cast<Bullets::Bullet*>(a2);
+         actor = dynamic_cast<Actor*>(a1);
       }
       
       if (bullet && actor)
@@ -24,6 +29,13 @@ namespace Polukili
          Console::log(LOG_INFO, "bullets(%d) hits actor(%d)", bullet, actor);
          bullet->attacks(actor);
       }
+      else if (bullet && !actor)
+      {
+         Console::log(LOG_INFO, "bullets(%d) hits wall", bullet);
+         bullet->attacksWalls();
+      }
+      else
+         Console::log(LOG_INFO, "other hit");
    }
 
    void ContactListener::Persist(const b2ContactPoint* point)

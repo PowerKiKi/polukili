@@ -1,5 +1,6 @@
 #include <Ennemies/Ennemy.h>
 
+#include <Console.h>
 #include <Constants.h>
 #include <Level.h>
 
@@ -17,7 +18,9 @@ namespace Polukili
       /*************************************************/
       Ennemy::~Ennemy()
       {
+         Console::log(LOG_INFO, "will destroy ennemy");
          this->level->ennemies.remove(this);
+         Console::log(LOG_INFO, "destroyed");
       }
 
       /*************************************************/

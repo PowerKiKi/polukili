@@ -10,8 +10,7 @@ namespace Polukili
    /*************************************************/
    Timer::Timer()
    {
-      this->startTime = gettime();
-      this->started = true;
+      this->start();
    }
 
    /*************************************************/

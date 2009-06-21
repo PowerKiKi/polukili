@@ -24,7 +24,7 @@ namespace Polukili
       
       this->gameWindow.InitVideo();      
       this->gameWindow.SetBackground((GXColor){ 0, 0, 0, 255 });
-      Console::log(LOG_INFO, "Game::Game() - video initialised");
+      Console::log(LOG_INFO, "Game::Game() - video initialised"); 
       
       // Initialise Wiimote
       WPAD_Init();

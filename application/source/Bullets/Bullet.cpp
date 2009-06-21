@@ -60,8 +60,14 @@ namespace Polukili
       {
          Console::log(LOG_INFO, "bullet attacks actor");
          actor->isAttackedBy(345);
+         //this->state = dead;
       }
-
-   } /* End of namespace Polukili::Bullets */
-} /* End of namespace Polukili */
-
+      
+      /*************************************************/
+      void Bullet::attacksWalls()
+      {
+         Console::log(LOG_INFO, "bullet attacks wall");
+         this->state = dead;
+      }
+   } 
+}

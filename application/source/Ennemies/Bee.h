@@ -17,6 +17,12 @@ namespace Polukili
          **/
          Bee(Level* level);
          
+         /**
+         * Destructor
+         */
+         virtual ~Bee();
+         
+         
          virtual void initPhysic(const b2Vec2& position);
 
 

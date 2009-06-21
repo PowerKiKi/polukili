@@ -13,6 +13,7 @@
 #include <Level.h>
 #include <ImageLibrary.h>
 #include <BibScreenFont.h>
+#include <ContactListener.h>
 #include <Console.h>
 
 using namespace std;
@@ -53,6 +54,7 @@ namespace Polukili
    public:
       
       ImageLibrary imageLibrary;
+      ContactListener contactListener;
       
    private:
       stack< Level* > levels;

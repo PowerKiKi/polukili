@@ -14,9 +14,21 @@ namespace Polukili
    {
       /*************************************************/
       Bee::Bee(Level* level)
-         : Ennemy(level)
+         : Ennemy(level), rotationCenter(0)
       {
       
+      }
+      
+      /*************************************************/
+      Bee::~Bee()
+      {
+         Console::log(LOG_INFO, "will destroy bee");
+         if (this->rotationCenter)
+         {
+            this->level->world->DestroyBody(this->rotationCenter);
+            this->rotationCenter = 0;
+         }
+         Console::log(LOG_INFO, "destroyed");
       }
       
       /*************************************************/

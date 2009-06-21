@@ -45,9 +45,14 @@ namespace Polukili
          virtual int getImageHeight() const;
          
          /**
-         * When a bullet attacks an actor (usuallz on collision detection).
+         * When a bullet attacks an actor (usually on collision detection).
          */
          virtual void attacks(Actor* actor);
+         
+         /**
+         * When a bullet attacks a wall (usually will destroy itself).
+         */
+         virtual void attacksWalls();
 
          //end of class Bullet
       };

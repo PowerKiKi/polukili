@@ -116,6 +116,11 @@ namespace Polukili
       * Remove energy to the actor and make it die eventually
       */
       void isAttackedBy(int attackPower);
+      
+      /** 
+      *  Sets the factor of power for the actor. The highest the factor, the biggest the actor (zoom on sprite) and the most powerful he is. Value 1 is default factor.
+      */
+      void setPowerFactor(float powerFactor);
 
    protected:
    
@@ -143,23 +148,20 @@ namespace Polukili
       *  Current state of the actor. It may be several state at once (flags).
       */
       ActorState state;
-
+   
       /** 
       *  The factor of power for the actor. The highest the factor, the biggest the actor (zoom on sprite) and the most powerful he is. Value 1 is default factor.
       */
-      double powerFactor;
+      float powerFactor;
       
-      Timer* timer;
+      Timer timer;
 
    private:
 
       /** 
       *  Current effect on the actor.
       */
-      Effect* effect;
-      
-      
-      //end of class Actor
+      Effect* effect;   
    };
 
 } /* End of namespace Polukili */
