@@ -8,8 +8,7 @@
 #include <Level.h>
 #include <Bullets/Bullet.h>
 #include <CollisionCategories.h>
-
-
+#include <PeriodicTimer.h>
 
 namespace Polukili 
 {
@@ -21,6 +20,7 @@ namespace Polukili
       {
          Console::log(LOG_INFO, "Player::Player() - new player");    
          this->level->players.push_back(this);
+         this->bulletTimer = new PeriodicTimer(250);
       }
       
       /*************************************************/
@@ -34,7 +34,6 @@ namespace Polukili
       {
          this->Actor::initPhysic(position);
          this->body->SetFixedRotation(true);
-         this->bulletTimer = new Timer;
          b2PolygonDef playerShape;
          playerShape.SetAsBox((((float)this->getImageWidth() / Constants::pixelsPerUnits) / 2.0f), (((float)this->getImageHeight() / Constants::pixelsPerUnits) / 2.0f));
          playerShape.density = Constants::defaultDensity;
@@ -142,7 +141,7 @@ namespace Polukili
          //Shooting & Jumping
          if(btnsheld & WPAD_BUTTON_1)
          {
-            if(this->bulletTimer->getMilliseconds()>=250)
+            if(this->bulletTimer->isExpired())
             {
                Console::log(LOG_INFO, "will shoot");
                Bullets::Bullet* bullet = new Bullets::Bullet(this->level);
@@ -151,7 +150,6 @@ namespace Polukili
                //bullet->body->SetAngle(this->aimJoint->GetJointAngle());
                
                Console::log(LOG_INFO, "shot");
-               this->bulletTimer->reset();
             }              
          }
          if(btnsheld & WPAD_BUTTON_2 )

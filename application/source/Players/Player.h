@@ -2,6 +2,7 @@
 #define Polukili_Players_Player_h
 
 #include <Actor.h>
+#include <PeriodicTimer.h>
 
 
 namespace Polukili 
@@ -76,7 +77,7 @@ namespace Polukili
       protected:
          b2Body* aimPoint;
          b2RevoluteJoint* aimJoint;
-         Timer* bulletTimer;
+         PeriodicTimer* bulletTimer;
          s32 wiimoteChannel;
                /** 
          *  The graphical sprite.
