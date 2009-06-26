@@ -15,6 +15,7 @@ namespace Polukili
 {
 
    fstream Console::logFile;
+   bool Console::enabled(true);
 
    static const int tabSize = 4;
    static const int maximumRows = 24;
@@ -56,6 +57,17 @@ namespace Polukili
    };
 
    /*************************************************/
+   Console::Console()
+   {
+   }
+
+   /*************************************************/
+   Console::~Console()
+   {
+   
+   }
+
+   /*************************************************/
    void Console::initialize(BibScreenFont* font)
    {
       this->font = font;
@@ -95,6 +107,9 @@ namespace Polukili
    /*************************************************/
    void Console::log(const char* file, const char* function, int line, const string& input, ...)
    {
+      if (!Console::enabled)
+         return;
+         
       // Format message
       va_list args;
       va_start(args, input);
@@ -219,5 +234,19 @@ namespace Polukili
 
       return i;  
    }
-   
+
+
+   /*************************************************/
+   void Console::enable(bool enabled)
+   {
+      Console::enabled = true;      
+      this->log(LOG_INFO, "log is %s", enabled ? "enabled" : "disabled");
+      Console::enabled = enabled;
+   }
+      
+   /*************************************************/
+   bool Console::isEnabled() const
+   {
+      return Console::enabled;
+   }
 }

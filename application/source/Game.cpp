@@ -15,7 +15,6 @@ namespace Polukili
 {
    /*************************************************/
    Game::Game()
-      : consoleVisible(true)
    {
       wsp::Image* fontImage = this->imageLibrary.get(Constants::basePath + "font.png");
       this->font.Initialize(fontImage, fontImage->GetWidth() / 16, fontImage->GetHeight() / 16, font_metrics);
@@ -57,7 +56,7 @@ namespace Polukili
          level->nextStep();
          level->render();
          
-         if (this->consoleVisible)
+         if (this->console.isEnabled())
             this->console.render();
             
          this->gameWindow.Flush();
@@ -79,7 +78,7 @@ namespace Polukili
 
          // We return to the launcher application via exit
          if (pressed & WPAD_BUTTON_HOME) exit(0);
-         if (pressed & WPAD_BUTTON_PLUS) this->consoleVisible = !this->consoleVisible;
+         if (pressed & WPAD_BUTTON_PLUS) this->console.enable(!this->console.isEnabled());
       }
    }
    

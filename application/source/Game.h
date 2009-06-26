@@ -61,7 +61,6 @@ namespace Polukili
       wsp::GameWindow gameWindow;
       BibScreenFont font;
       Console console;
-      bool consoleVisible;
    };
 
 } /* End of namespace Polukili */

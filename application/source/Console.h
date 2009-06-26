@@ -16,6 +16,16 @@ namespace Polukili
    class Console
    {
    public:
+      
+      /**
+      * Constructor.
+      */
+      Console();
+   
+      /**
+      * Destructor.
+      */
+      virtual ~Console();
 
       static void log(const char* file, const char* function, int line, const string& input, ...);
       static ssize_t write(const string&, const char* prefix = 0);
@@ -24,10 +34,22 @@ namespace Polukili
       void render();
       void clear();
       
+      /**
+      * Enable or disable the console log feature. 
+      * (Even when disabled printf() are redirected to log file, only Console::log() is disabled)
+      */
+      void enable(bool enabled);
+      
+      /**
+      * Returns wether the console is enabled.
+      */
+      bool isEnabled() const;
+      
       
       static fstream logFile;
    private:
       BibScreenFont* font;
+      static bool enabled;
    };
 }
 
