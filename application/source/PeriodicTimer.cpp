@@ -7,18 +7,32 @@
 
 namespace Polukili
 {
+   /*************************************************/
+   PeriodicTimer::PeriodicTimer()
+      : nextExpiry(0)
+   {
+      this->setPeriod(1000);
+      this->isExpired(); // to consume current period
+   }
 
    /*************************************************/
    PeriodicTimer::PeriodicTimer(int period)
-      : period(millisecs_to_ticks(period))
+      : nextExpiry(0)
    {
-      this->reset();
+      this->setPeriod(period);
+      this->isExpired(); // to consume current period
    }
 
    /*************************************************/
    PeriodicTimer::~PeriodicTimer()
    {
       
+   }
+   
+   /*************************************************/
+   void PeriodicTimer::setPeriod(int period)
+   {
+      this->period = millisecs_to_ticks(period);
    }
 
    /*************************************************/

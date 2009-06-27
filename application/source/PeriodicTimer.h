@@ -15,7 +15,12 @@ namespace Polukili
    public:
       
       /**
-      * Constructor a periodic timer with period in milliseconds.
+      * Constructor with a period of 1 second.
+      */
+      PeriodicTimer();
+      
+      /**
+      * Constructor for a periodic timer with period in milliseconds.
       */
       PeriodicTimer(int period);
       
@@ -23,6 +28,11 @@ namespace Polukili
       * Destructor.
       */
       ~PeriodicTimer();
+      
+      /**
+      * Sets the period in milliseconds.
+      */
+      void setPeriod(int period);
       
       /**
       * Returns if the period is over. If true, the period must be consumed.
@@ -37,7 +47,6 @@ namespace Polukili
    private:
       u64 period;
       u64 nextExpiry;
-      bool isConsumed;
    };
 }
 

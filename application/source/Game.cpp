@@ -48,16 +48,20 @@ namespace Polukili
    void Game::run(const string& initialLevel)
    {
       this->changeLevel(initialLevel);
+      int frameCount = 0;
+      char framePerSecond[16];
       
       while (!this->levels.empty())
       {
          Level* level = this->levels.top();
-                  
+
          level->nextStep();
          level->render();
          
          if (this->console.isEnabled())
             this->console.render();
+            
+         this->font.DisplayText(580, 16, framePerSecond);
             
          this->gameWindow.Flush();
          
@@ -79,6 +83,14 @@ namespace Polukili
          // We return to the launcher application via exit
          if (pressed & WPAD_BUTTON_HOME) exit(0);
          if (pressed & WPAD_BUTTON_PLUS) this->console.enable(!this->console.isEnabled());
+         
+         // Count FPS
+         frameCount++;
+         if (this->fpsTimer.isExpired())
+         {            
+            sprintf(framePerSecond, "%2d FPS", frameCount);
+            frameCount = 0;
+         }
       }
    }
    

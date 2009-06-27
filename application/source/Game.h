@@ -15,6 +15,7 @@
 #include <BibScreenFont.h>
 #include <ContactListener.h>
 #include <Console.h>
+#include <PeriodicTimer.h>
 
 using namespace std;
 
@@ -61,6 +62,7 @@ namespace Polukili
       wsp::GameWindow gameWindow;
       BibScreenFont font;
       Console console;
+      PeriodicTimer fpsTimer;
    };
 
 } /* End of namespace Polukili */
