@@ -75,8 +75,7 @@ namespace Polukili
          virtual void render();      
          
       protected:
-         b2Body* aimPoint;
-         b2RevoluteJoint* aimJoint;
+         float aimAngle;
          PeriodicTimer* bulletTimer;
          s32 wiimoteChannel;
                /** 

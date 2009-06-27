@@ -36,6 +36,10 @@ namespace Polukili
          this->body->CreateFixture(&bulletShape);
          this->body->SetMassFromShapes();
          this->body->SetAngle(angle);
+         b2Vec2 shotImpulse;
+         shotImpulse.x = 2*cos(angle);
+         shotImpulse.y = 2*sin(angle);
+         this->body->ApplyImpulse(shotImpulse, this->body->GetPosition());
       }
 
       /*************************************************/

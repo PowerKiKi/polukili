@@ -16,7 +16,7 @@ namespace Polukili
    {
       /*************************************************/
       Player::Player(Level* level, s32 wiimoteChannel)
-         : Actor(level), wiimoteChannel(wiimoteChannel)
+         : Actor(level), aimAngle(0), wiimoteChannel(wiimoteChannel)
       {
          Console::log(LOG_INFO, "Player::Player() - new player");    
          this->level->players.push_back(this);
@@ -48,35 +48,6 @@ namespace Polukili
          this->body->SetMassFromShapes();        
          
          
-         b2BodyDef aimDef;
-         aimDef.position.x = position.x + 1.0f; 
-         aimDef.position.y = position.y; 
-         this->aimPoint = level->world->CreateBody(&aimDef);
-         b2CircleDef aimShape;
-         aimShape.density = 0.01f;
-
-         aimShape.radius = 0.01f;
-         aimShape.localPosition.Set(0.0f, 0.0f);
-
-         aimShape.filter.categoryBits   = anchors;
-         aimShape.filter.maskBits      = nothing;
-         this->aimPoint->CreateFixture(&aimShape);
-         this->aimPoint->SetMassFromShapes();  
-         
-         b2RevoluteJointDef  jointDef;
-         jointDef.Initialize(this->body, this->aimPoint, this->body->GetPosition());
-        
-         jointDef.lowerAngle = (-180*(b2_pi/180)); // -180 degrees
-         jointDef.upperAngle = (0*(b2_pi/180)); // -180 degrees
-         jointDef.enableLimit = true;
-         jointDef.motorSpeed = 3.0f;
-         jointDef.maxMotorTorque = 100000.0f; 
-         jointDef.enableMotor    = true;
-         jointDef.collideConnected = false;
-
-         this->aimJoint =  dynamic_cast<b2RevoluteJoint*> (level->world->CreateJoint(&jointDef));
-
-         
 
          
 
@@ -88,10 +59,7 @@ namespace Polukili
          u16 btnsheld = WPAD_ButtonsHeld(this->wiimoteChannel);
          
          // moving and aiming
-         this->aimPoint->ApplyForce(b2Vec2(-Constants::defaultGravity*this->aimPoint->GetMass(),0), this->aimPoint->GetPosition());
-         //Console::log(LOG_INFO, "%f",this->aimJoint->GetJointAngle() / b2_pi );
-         //Console::log(LOG_INFO, "%f",this->aimJoint->GetMotorSpeed() );
-         
+ 
  
            
 
@@ -99,43 +67,43 @@ namespace Polukili
          {
             //WPAD_BUTTON_UP only
             this->body->ApplyImpulse(b2Vec2(-Constants::defaultImpulseSpeed,0),this->body->GetPosition());
-            /*if(this->aimJoint->GetJointAngle()>(-180*(b2_pi/180)))
-               this->aimJoint->SetMotorSpeed(-100.0f);*/
+            if(this->aimAngle>(-180*(b2_pi/180)))
+               this->aimAngle-=0.1;
          }
          if(btnsheld & WPAD_BUTTON_RIGHT )
          {
             if(btnsheld & WPAD_BUTTON_UP)
             {
                //WPAD_BUTTON_UP & WPAD_BUTTON_RIGHT
-               /*if(this->aimJoint->GetJointAngle()>(-135*(b2_pi/180)))
-                  this->aimJoint->SetMotorSpeed(-100.0f);
-               if(this->aimJoint->GetJointAngle()<(-135*(b2_pi/180)))
-                  this->aimJoint->SetMotorSpeed(100.0f);*/
+               if(this->aimAngle>(-135*(b2_pi/180)))
+                  this->aimAngle-=0.1;
+               if(this->aimAngle<(-135*(b2_pi/180)))
+                  this->aimAngle+=0.1;
             }  
             else if (btnsheld & WPAD_BUTTON_DOWN)
             {
                //WPAD_BUTTON_RIGHT & WPAD_BUTTON_DOWN
-               /*if(this->aimJoint->GetJointAngle()>(-45*(b2_pi/180)))
-                  this->aimJoint->SetMotorSpeed(-100.0f);
-               if(this->aimJoint->GetJointAngle()<(-45*(b2_pi/180)))
-                  this->aimJoint->SetMotorSpeed(100.0f);*/
+               if(this->aimAngle>(-45*(b2_pi/180)))
+                  this->aimAngle-=0.1;
+               if(this->aimAngle<(-45*(b2_pi/180)))
+                  this->aimAngle+=0.1;
               
             }
             else
             {
                //WPAD_BUTTON_RIGHT
-               /*if(this->aimJoint->GetJointAngle()>(-90*(b2_pi/180)))
-                  this->aimJoint->SetMotorSpeed(-100.0f);
-               if(this->aimJoint->GetJointAngle()<(-90*(b2_pi/180)))
-                  this->aimJoint->SetMotorSpeed(100.0f);*/
+               if(this->aimAngle>(-90*(b2_pi/180)))
+                  this->aimAngle-=0.1;
+               if(this->aimAngle<(-90*(b2_pi/180)))
+                  this->aimAngle+=0.1;
             }            
          }            
          if(btnsheld & WPAD_BUTTON_DOWN && !(btnsheld & WPAD_BUTTON_RIGHT))
          {
             //WPAD_BUTTON_DOWN only
             this->body->ApplyImpulse(b2Vec2(Constants::defaultImpulseSpeed,0),this->body->GetPosition());
-            /*if(this->aimJoint->GetJointAngle()<(0*(b2_pi/180)))
-               this->aimJoint->SetMotorSpeed(100.0f);*/
+            if(this->aimAngle<(0*(b2_pi/180)))
+               this->aimAngle+=0.1;
          }            
 
          //Shooting & Jumping
@@ -146,8 +114,11 @@ namespace Polukili
                Console::log(LOG_INFO, "will shoot");
                Bullets::Bullet* bullet = new Bullets::Bullet(this->level);
                bullet->loadGraphics();
-               bullet->initPhysic(this->aimPoint->GetPosition(), this->aimJoint->GetJointAngle());
-               //bullet->body->SetAngle(this->aimJoint->GetJointAngle());
+               b2Vec2 aimPos;
+               aimPos.x = this->body->GetPosition().x + cos(this->aimAngle);
+               aimPos.y = this->body->GetPosition().y + sin(this->aimAngle);
+               bullet->initPhysic(aimPos, this->aimAngle);
+               
                
                Console::log(LOG_INFO, "shot");
             }              
@@ -220,9 +191,11 @@ namespace Polukili
       void Player::render()
       {
          this->Actor::render();
-         this->aimSprite->SetRotation((float)this->aimPoint->GetAngle() / M_PI * 90.0);
-         b2Vec2 pos = aimPoint->GetPosition();
-         this->aimSprite->SetPosition(Constants::pixelsPerUnits * pos.x, Constants::pixelsPerUnits * pos.y);
+         this->aimSprite->SetRotation(this->aimAngle / M_PI * 90.0);
+         b2Vec2 aimPos;
+         aimPos.x = this->body->GetPosition().x + cos(this->aimAngle);
+         aimPos.y = this->body->GetPosition().y + sin(this->aimAngle);
+         this->aimSprite->SetPosition(Constants::pixelsPerUnits * aimPos.x, Constants::pixelsPerUnits * aimPos.y);
          this->aimSprite->Draw();
       }
          
