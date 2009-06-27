@@ -10,7 +10,7 @@ namespace Polukili
 {
    /*************************************************/
    Actor::Actor(Level* level)
-      : level(level), body(0), sprite(0), powerFactor(1)
+      : level(level), body(0), sprite(0), state(normal), powerFactor(1)
    {
       Console::log(LOG_INFO, "Actor::Actor() - new actor");
       this->level->actors.push_back(this);      
