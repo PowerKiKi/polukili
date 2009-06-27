@@ -67,10 +67,10 @@ namespace Polukili
       
       // Create the physic world and ground body
       b2AABB worldAABB;
-      worldAABB.lowerBound.Set(0, 0);
+      worldAABB.lowerBound.Set(-Constants::physicMargin / Constants::pixelsPerUnits, -Constants::physicMargin / Constants::pixelsPerUnits);
       float width = (float)atof(mxmlElementGetAttr(data, "width"));
       float height = (float)atof(mxmlElementGetAttr(data, "height"));
-      worldAABB.upperBound.Set(width / Constants::pixelsPerUnits, height / Constants::pixelsPerUnits);
+      worldAABB.upperBound.Set((Constants::physicMargin + width) / Constants::pixelsPerUnits, (Constants::physicMargin + height) / Constants::pixelsPerUnits);
       b2Vec2 gravity(0.0f, Constants::defaultGravity);
       bool doSleep = false;
       this->world = new b2World(worldAABB, gravity, doSleep);

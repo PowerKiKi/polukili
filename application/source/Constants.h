@@ -48,6 +48,11 @@ namespace Polukili
       * The maximum numbers of players in one level. (this should never ever change unless the wii get more wiimotes)
       */
       static const int maximumPlayers;
+      
+      /**
+      * The margin in pixels applied on the physical world to be sure that no body will be create out of the world.
+      */
+      static const int physicMargin;
    
    };/* End of class Constants*/
 } /* End of namespace Polukili*/
