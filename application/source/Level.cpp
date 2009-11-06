@@ -325,7 +325,7 @@ namespace Polukili
       }      
       
       
-      Console::log(LOG_INFO, "nextstep physic");      
+      Console::log(LOG_INFO, "nextstep physic with %d actors", this->actors.size());
       this->world->Step(Constants::timeStep, Constants::iterations, Constants::iterations);      
       Console::log(LOG_INFO, "nextstep physic end");
    }
