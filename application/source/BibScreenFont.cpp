@@ -38,7 +38,7 @@ void BibScreenFont::DisplayText (int nXScreenLoc, int nYScreenLoc, const char * 
 
 		// Every time we blit a letter we need to move to the right 
 		// for the start of the next blit
-		nXScreenLoc += nCharWidths [cChar];
+		nXScreenLoc += nCharWidths[(int)cChar];
 	}
 }
 
