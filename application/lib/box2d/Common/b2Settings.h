@@ -22,7 +22,7 @@
 #include <assert.h>
 #include <math.h>
 
-#define B2_NOT_USED(x) x
+#define B2_NOT_USED(x) (void)(x)
 #define b2Assert(A) assert(A)
 
 // need to include NDS jtypes.h instead of 
