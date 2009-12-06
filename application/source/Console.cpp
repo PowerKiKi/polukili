@@ -7,6 +7,7 @@
 
 #include <stdio.h>
 #include <sys/iosupport.h>
+#include <stdarg.h>
 #include <wiisprite.h>
 
 #include <Constants.h>
