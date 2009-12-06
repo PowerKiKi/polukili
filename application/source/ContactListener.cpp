@@ -8,12 +8,12 @@
 
 namespace Polukili
 {
-   void ContactListener::Add(const b2ContactPoint* point)
+   void ContactListener::BeginContact(b2Contact* contact)
    {
       Console::log(LOG_INFO, "hit");
       
-      Actor* a1 = (Actor*)(point->fixtureA->GetBody()->GetUserData());
-      Actor* a2 = (Actor*)(point->fixtureB->GetBody()->GetUserData());
+      Actor* a1 = (Actor*)(contact->GetFixtureA()->GetBody()->GetUserData());
+      Actor* a2 = (Actor*)(contact->GetFixtureB()->GetBody()->GetUserData());
       
       Bullets::Bullet* bullet = dynamic_cast<Bullets::Bullet*>(a1);
       Actor* actor = dynamic_cast<Actor*>(a2);
@@ -37,14 +37,5 @@ namespace Polukili
       else
          Console::log(LOG_INFO, "other hit");
    }
-
-   void ContactListener::Persist(const b2ContactPoint* point)
-   {
    
-   }
-
-   void ContactListener::Remove(const b2ContactPoint* point)
-   {
-   
-   }
 }
