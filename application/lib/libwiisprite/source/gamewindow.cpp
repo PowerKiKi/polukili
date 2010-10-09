@@ -4,10 +4,10 @@
 #include <string.h>
 #include "gamewindow.h"
 
-#define DEFAULT_FIFO_SIZE (1024*1024)
+#define DEFAULT_FIFO_SIZE (256*1024)
 
 //extern GXRModeObj TVEurgb60Hz480IntDf;
-
+        
 namespace wsp{
 	// Initializes the static members
 	u32 GameWindow::_width = 0;
@@ -15,6 +15,8 @@ namespace wsp{
 	bool GameWindow::_initialized = false;
 	Image* GameWindow::_lastimage = NULL;
 	bool GameWindow::_lastimagebilinear = false;
+	Mtx                  GXmodelView2D;
+
 	
 	GameWindow::GameWindow() :
 		_fb(0), _first(true), _rmode(NULL), _gp_fifo(NULL)
@@ -27,7 +29,7 @@ namespace wsp{
 	}
 
 	void GameWindow::InitVideo(){
-		// This Code is taken from many examples, but modified for this lib
+	// This Code is taken from many examples, but modified for this lib
 		if(_initialized)return;
 		// Start initializing
 		VIDEO_Init();
@@ -46,7 +48,7 @@ namespace wsp{
 			exit(0);
 			return;
 		}
-
+		
 		//_rmode = &TVEurgb60Hz480IntDf; // Fixes display mode for 480i PAL. Is in next libogc release.
 		// Do some Init work
 		VIDEO_Configure(_rmode);
