@@ -9,8 +9,10 @@ int main(int argc, char **argv)
 {
    fatInitDefault();
 
-   Polukili::Game game;
-   game.run(Polukili::Constants::basePath + "level_0.xml");
+   {
+	   Polukili::Game game;
+	   game.run(Polukili::Constants::basePath + "level_0.xml");
+   }
 
-   return 0;
+   exit(0);
 }

@@ -1,10 +1,9 @@
 #ifndef Polukili_Effect_h
 #define Polukili_Effect_h
 
-#include <wiisprite.h>
-
 namespace Polukili 
 {
+   class Sprite;
 
    /** 
    * It basically add a semi-transparent animated sprite over the 
@@ -16,14 +15,14 @@ namespace Polukili
       // Operations
    public:
 
-      Effect(const wsp::Sprite* originalSprite);
+      Effect(const Sprite* originalSprite);
 
       // Attributes
 
    private:
-      wsp::Sprite sprite;
+      Sprite* sprite;
       double duration;
-      const wsp::Sprite* originalSprite;
+      const Sprite* originalSprite;
 
       //end of class Effect
    };

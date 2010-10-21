@@ -9,6 +9,7 @@
 #include <Bullets/Bullet.h>
 #include <CollisionCategories.h>
 #include <PeriodicTimer.h>
+#include <Sprite.h>
 
 namespace Polukili 
 {
@@ -34,23 +35,19 @@ namespace Polukili
       {
          this->Actor::initPhysic(position);
          this->body->SetFixedRotation(true);
-         b2PolygonDef playerShape;
+         b2PolygonShape playerShape;
          playerShape.SetAsBox((((float)this->getImageWidth() / Constants::pixelsPerUnits) / 2.0f), (((float)this->getImageHeight() / Constants::pixelsPerUnits) / 2.0f));
-         playerShape.density = Constants::defaultDensity;
-         playerShape.friction = Constants::defaultFriction;
-         playerShape.restitution = Constants::defaultRestitution;
-
-         playerShape.filter.categoryBits   = players;
-         playerShape.filter.maskBits      = ground+enemies;
+		 
+		 b2FixtureDef playerDef;
+		 playerDef.shape = &playerShape;
+         playerDef.density = Constants::defaultDensity;
+         playerDef.friction = Constants::defaultFriction;
+         playerDef.restitution = Constants::defaultRestitution;
+//         playerDef.filter.categoryBits   = players;
+//         playerDef.filter.maskBits      = ground + enemies;
          
          
-         this->body->CreateFixture(&playerShape);
-         this->body->SetMassFromShapes();        
-         
-         
-
-         
-
+         this->body->CreateFixture(&playerDef);    
       }
       
       /*************************************************/
@@ -66,7 +63,7 @@ namespace Polukili
          if(btnsheld & WPAD_BUTTON_UP && !(btnsheld & WPAD_BUTTON_RIGHT))
          {
             //WPAD_BUTTON_UP only
-            this->body->ApplyImpulse(b2Vec2(-Constants::defaultImpulseSpeed,0),this->body->GetPosition());
+            this->body->ApplyLinearImpulse(b2Vec2(-Constants::defaultImpulseSpeed,0),this->body->GetPosition());
             if(this->aimAngle>(-180*(b2_pi/180)))
                this->aimAngle-=0.1;
          }
@@ -101,7 +98,7 @@ namespace Polukili
          if(btnsheld & WPAD_BUTTON_DOWN && !(btnsheld & WPAD_BUTTON_RIGHT))
          {
             //WPAD_BUTTON_DOWN only
-            this->body->ApplyImpulse(b2Vec2(Constants::defaultImpulseSpeed,0),this->body->GetPosition());
+            this->body->ApplyLinearImpulse(b2Vec2(Constants::defaultImpulseSpeed,0),this->body->GetPosition());
             if(this->aimAngle<(0*(b2_pi/180)))
                this->aimAngle+=0.1;
          }            
@@ -125,7 +122,7 @@ namespace Polukili
          }
          if(btnsheld & WPAD_BUTTON_2 )
          {
-            this->body->ApplyImpulse(b2Vec2(0,-3*Constants::defaultImpulseSpeed),this->body->GetPosition());
+            this->body->ApplyLinearImpulse(b2Vec2(0,-3*Constants::defaultImpulseSpeed),this->body->GetPosition());
          }
 
       }  
@@ -167,11 +164,10 @@ namespace Polukili
       
          this->Actor::loadGraphics();
          
-         wsp::Image* aimImage = this->level->game->imageLibrary.get(this->getAimImagePath());
-         this->aimSprite = new wsp::Sprite();    
-         this->aimSprite->SetImage(aimImage, this->getAimImageWidth(), this->getAimImageHeight());
-         this->aimSprite->SetRefPixelPositioning(wsp::REFPIXEL_POS_PIXEL);
-         this->aimSprite->SetRefPixelPosition(((int)this->getAimImageWidth()/2),(int)(this->getAimImageHeight()/2));
+         GRRLIB_texImg* aimImage = this->level->game->imageLibrary.get(this->getAimImagePath());
+         this->aimSprite = new Sprite(aimImage, this->getAimImageWidth(), this->getAimImageHeight());
+ //        this->aimSprite->SetRefPixelPositioning(wsp::REFPIXEL_POS_PIXEL);
+ //        this->aimSprite->SetRefPixelPosition(((int)this->getAimImageWidth()/2),(int)(this->getAimImageHeight()/2));
       }
       
       /*************************************************/ 
@@ -191,12 +187,12 @@ namespace Polukili
       void Player::render()
       {
          this->Actor::render();
-         this->aimSprite->SetRotation(this->aimAngle / M_PI * 90.0);
+         this->aimSprite->setRotation(this->aimAngle / M_PI * 90.0);
          b2Vec2 aimPos;
          aimPos.x = this->body->GetPosition().x + cos(this->aimAngle);
          aimPos.y = this->body->GetPosition().y + sin(this->aimAngle);
-         this->aimSprite->SetPosition(Constants::pixelsPerUnits * aimPos.x, Constants::pixelsPerUnits * aimPos.y);
-         this->aimSprite->Draw();
+         this->aimSprite->setPosition(Constants::pixelsPerUnits * aimPos.x, Constants::pixelsPerUnits * aimPos.y);
+         this->aimSprite->draw();
       }
          
    } /* End of namespace Polukili::Players */

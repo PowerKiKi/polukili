@@ -1,11 +1,10 @@
 #ifndef Polukili_ImageLibrary_h
 #define Polukili_ImageLibrary_h
 
-
 #include <map>
 #include <string>
 
-#include <wiisprite.h>
+#include <grrlib.h>
 
 using namespace std;
 
@@ -26,14 +25,14 @@ namespace Polukili
       ImageLibrary();
       
       /*
-      * Desstructor.
+      * Destructor.
       */
       virtual ~ImageLibrary();
       
       /*
       * Get an image from path. It will be loaded if needed.
       */
-      wsp::Image* get(const string& filename);
+      GRRLIB_texImg* get(const string& filename);
       
       /*
       * Remove the image from library if it exist (deallocate memory)
@@ -44,7 +43,7 @@ namespace Polukili
 
       // Attributes
    private:
-      map<string, wsp::Image* > images;
+      map<string, GRRLIB_texImg* > images;
 
       //end of class Game
    };

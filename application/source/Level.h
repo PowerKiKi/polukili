@@ -4,7 +4,7 @@
 #include <list>
 #include <string>
 
-#include <Box2D.h>
+#include <Box2D/Box2D.h>
 
 #include <Actor.h>
 
@@ -57,7 +57,7 @@ namespace Polukili
       virtual void loadFromXML(const string& filename);
       
       /** 
-      *  Load graphics data (wsp::Image) for the whole level (including actors).
+      *  Load graphics data (GRRLIB_texImg) for the whole level (including actors).
       */
       virtual void loadGraphics();
 
@@ -94,8 +94,8 @@ namespace Polukili
    private: 
       string backgroundPath;
       string foregroundPath;
-      wsp::Sprite* backgroundSprite;
-      wsp::Sprite* foregroundSprite;
+      Sprite* backgroundSprite;
+      Sprite* foregroundSprite;
       
       /** 
       *  The physic body.

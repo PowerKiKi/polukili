@@ -22,10 +22,10 @@ include $(DEVKITPPC)/wii_rules
 #---------------------------------------------------------------------------------
 TARGET		:=	../polukili/boot
 BUILD		:=	build
-SOURCES		:=	source source/Bullets source/Ennemies source/Items source/Pets source/Players lib/box2d/Source/Collision lib/box2d/Source/Collision/Shapes lib/box2d/Source/Common lib/box2d/Source/Dynamics lib/box2d/Source/Dynamics/Contacts lib/box2d/Source/Dynamics/Controllers lib/box2d/Source/Dynamics/Joints lib/libwiisprite/source 
-DATA		:=
+SOURCES		:=	source source/Bullets source/Ennemies source/Items source/Pets source/Players lib/box2d/Box2D/Collision lib/box2d/Box2D/Collision/Shapes lib/box2d/Box2D/Common lib/box2d/Box2D/Dynamics lib/box2d/Box2D/Dynamics/Contacts lib/box2d/Box2D/Dynamics/Joints lib/libwiisprite/source 
+DATA		:= data
 TEXTURES	:=	textures
-INCLUDES	:=	source lib/box2d/Include lib/libwiisprite/source
+INCLUDES	:=	source lib/box2d lib/libwiisprite/source
 
 #---------------------------------------------------------------------------------
 # options for code generation
@@ -39,7 +39,7 @@ LDFLAGS	=	-g $(MACHDEP) -Wl,-Map,$(notdir $@).map
 #---------------------------------------------------------------------------------
 # any extra libraries we wish to link with the project
 #---------------------------------------------------------------------------------
-LIBS	:= -lpng -lz -lfat -lmxml -lwiiuse -lbte -logc -lm
+LIBS	:= -lgrrlib -lfreetype -lpngu -lpng -ljpeg -lz -lfat -lmxml -lwiiuse -lbte -logc -lm
 
 #---------------------------------------------------------------------------------
 # list of directories containing libraries, this must be the top level containing
@@ -127,6 +127,14 @@ else
 $(OUTPUT).dol: $(OUTPUT).elf
 $(OUTPUT).elf: $(OFILES)
 
+#---------------------------------------------------------------------------------
+# This rule links in binary data with the .ttf extension
+#---------------------------------------------------------------------------------
+%.ttf.o	:	%.ttf
+#---------------------------------------------------------------------------------
+	@echo $(notdir $<)
+	$(bin2o)
+	
 #---------------------------------------------------------------------------------
 # This rule links in binary data with the .bin extension
 #---------------------------------------------------------------------------------

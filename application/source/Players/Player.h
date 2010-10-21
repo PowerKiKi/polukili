@@ -60,7 +60,7 @@ namespace Polukili
          */
          virtual string getAimImagePath() const;    
          /** 
-         *  Load graphics data (wsp::Image) for the actor. In most cases the same Image will be loaded once for all instance of a specific class.
+         *  Load graphics data (GRRLIB_texImg) for the actor. In most cases the same Image will be loaded once for all instance of a specific class.
          */
          virtual void loadGraphics();
 
@@ -81,7 +81,7 @@ namespace Polukili
                /** 
          *  The graphical sprite.
          */
-         wsp::Sprite* aimSprite;
+         Sprite* aimSprite;
       };
 
    } /* End of namespace Polukili::Players */

@@ -1,7 +1,7 @@
 #ifndef Polukili_ContactListener_h
 #define Polukili_ContactListener_h
 
-#include <Box2D.h>
+#include <Box2D/Box2D.h>
 
 using namespace std;
 

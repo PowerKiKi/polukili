@@ -1,14 +1,9 @@
-/*
-	Console class
-
-	console (printf) support for libwiisprite
-*/
 #include <Console.h>
 
 #include <stdio.h>
 #include <sys/iosupport.h>
 #include <stdarg.h>
-#include <wiisprite.h>
+#include <grrlib.h>
 
 #include <Constants.h>
 
@@ -23,7 +18,7 @@ namespace Polukili
    static const int maximumColumns = 80;
    static int cursor_row = 0;
    static int cursor_col = 0;
-   static char the_console[maximumRows][maximumColumns + 1];
+   static wchar_t the_console[maximumRows][maximumColumns + 1];
 
    /*************************************************/
    ssize_t Console_write(struct _reent* rUnused, int fdUnused, const char* ptr, size_t length)
@@ -69,7 +64,7 @@ namespace Polukili
    }
 
    /*************************************************/
-   void Console::initialize(BibScreenFont* font)
+   void Console::initialize(GRRLIB_ttfFont* font)
    {
       this->font = font;
       cursor_row = 0;
@@ -89,9 +84,11 @@ namespace Polukili
    /*************************************************/
    void Console::render()
    {
+      unsigned int fontsize = 20;
       for (int i = 0; i < maximumRows; i ++)
       {
-         this->font->DisplayText(16, 16 + i * this->font->getCharacterHeight(), the_console[i]);
+         GRRLIB_PrintfTTFW(16, 16 + i * fontsize,this->font, the_console[i], fontsize, RGBA(255,0,0,0));
+         //this->font->DisplayText(16, 16 + i * this->font->getCharacterHeight(), the_console[i]);
       }
    }
 

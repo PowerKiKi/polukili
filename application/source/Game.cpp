@@ -1,13 +1,13 @@
 #include <Game.h>
 
-#include <wiisprite.h>
-#include <Box2D.h>
+#include <grrlib.h>
+#include <Box2D/Box2D.h>
 #include <fat.h>
 #include <gccore.h>
 #include <wiiuse/wpad.h>
 
 #include <Level.h>
-#include <font_metrics.h>
+#include <FreeMonoBold_ttf.h>
 #include <Console.h>
 #include <Constants.h>
 
@@ -16,13 +16,14 @@ namespace Polukili
    /*************************************************/
    Game::Game()
    {
-      wsp::Image* fontImage = this->imageLibrary.get(Constants::basePath + "font.png");
-      this->font.Initialize(fontImage, fontImage->GetWidth() / 16, fontImage->GetHeight() / 16, font_metrics);
-      this->console.initialize(&this->font);
+      this->font = GRRLIB_LoadTTF(FreeMonoBold_ttf, FreeMonoBold_ttf_size);
+      this->console.initialize(this->font);
       Console::log(LOG_INFO, "=============================================================");
       
-      this->gameWindow.InitVideo();      
-      this->gameWindow.SetBackground((GXColor){ 0, 0, 0, 255 });
+      GRRLIB_Init();
+      // Black background
+      GRRLIB_SetBackgroundColour(0x00, 0x00, 0x00, 0xFF);
+
       Console::log(LOG_INFO, "Game::Game() - video initialised"); 
       
       // Initialise Wiimote
@@ -42,6 +43,9 @@ namespace Polukili
          delete this->levels.top();
          this->levels.pop();
       }
+
+      GRRLIB_FreeTTF(this->font);
+      GRRLIB_Exit();
    }
    
    /*************************************************/
@@ -49,21 +53,23 @@ namespace Polukili
    {
       this->changeLevel(initialLevel);
       int frameCount = 0;
-      char framePerSecond[16];
+      char framePerSecond[32] = "";
       
       while (!this->levels.empty())
       {
+
          Level* level = this->levels.top();
 
          level->nextStep();
          level->render();
          
          if (this->console.isEnabled())
-            this->console.render();
-            
-         this->font.DisplayText(580, 16, framePerSecond);
-            
-         this->gameWindow.Flush();
+           this->console.render();
+
+      //   GRRLIB_PrintfTTFW(580, 16, this->font, framePerSecond, 20, RGBA(255,0,0,0));
+		 
+         GRRLIB_Render();  // Render the frame buffer to the screen
+
          
          // If level is finished, resume the previous one
          if (level->isFinished())
@@ -81,7 +87,7 @@ namespace Polukili
          u32 pressed = WPAD_ButtonsDown(WPAD_CHAN_0);
 
          // We return to the launcher application via exit
-         if (pressed & WPAD_BUTTON_HOME) exit(0);
+         if (pressed & WPAD_BUTTON_HOME) return;
          if (pressed & WPAD_BUTTON_PLUS) this->console.enable(!this->console.isEnabled());
          
          // Count FPS

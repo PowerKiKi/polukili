@@ -23,23 +23,25 @@ namespace Polukili
       }
       
       /*************************************************/
-      void Bullet::initPhysic(const b2Vec2& position, float angle)
+      void Bullet::initPhysic(const b2Vec2& position, float32 angle)
       {
-         this->Actor::initPhysic(position);
-         b2PolygonDef bulletShape;
+         this->Actor::initPhysic(position, angle);
+         b2PolygonShape bulletShape;
          bulletShape.SetAsBox(((float)this->getImageWidth() * this->powerFactor / Constants::pixelsPerUnits) / 2.0f, ((float)this->getImageHeight() * this->powerFactor / Constants::pixelsPerUnits) / 2.0f);
-         bulletShape.density = Constants::defaultDensity;
-         bulletShape.friction = Constants::defaultFriction;
-         bulletShape.restitution = Constants::defaultRestitution;
-         bulletShape.filter.categoryBits   = bullets;
-         bulletShape.filter.maskBits = ground+enemies;
-         this->body->CreateFixture(&bulletShape);
-         this->body->SetMassFromShapes();
-         this->body->SetAngle(angle);
+         
+		 b2FixtureDef bulletDef;
+		 bulletDef.shape = &bulletShape;
+         bulletDef.density = Constants::defaultDensity;
+         bulletDef.friction = Constants::defaultFriction;
+         bulletDef.restitution = Constants::defaultRestitution;
+		 bulletDef.filter.categoryBits   = bullets;
+         bulletDef.filter.maskBits = ground + enemies;
+         this->body->CreateFixture(&bulletDef);
+
          b2Vec2 shotImpulse;
          shotImpulse.x = 2*cos(angle);
          shotImpulse.y = 2*sin(angle);
-         this->body->ApplyImpulse(shotImpulse, this->body->GetPosition());
+         this->body->ApplyLinearImpulse(shotImpulse, this->body->GetPosition());
       }
 
       /*************************************************/

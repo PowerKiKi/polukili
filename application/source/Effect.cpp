@@ -1,11 +1,11 @@
-
-
 #include <Effect.h>
+
+#include <Sprite.h>
 
 namespace Polukili 
 {
    /*************************************************/
-   Effect::Effect(const wsp::Sprite* originalSprite)
+   Effect::Effect(const Sprite* originalSprite)
    {
    }
 

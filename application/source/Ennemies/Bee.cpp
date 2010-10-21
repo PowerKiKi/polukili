@@ -5,8 +5,9 @@
 #include <Console.h>
 #include <Constants.h>
 #include <Level.h>
-#include <Box2D.h>
+#include <Box2D/Box2D.h>
 #include <CollisionCategories.h>
+#include <Sprite.h>
  
 namespace Polukili 
 {
@@ -35,31 +36,35 @@ namespace Polukili
       void Bee::initPhysic(const b2Vec2& position)
       {
          this->Actor::initPhysic(position);
-         b2CircleDef beeShape;
-         beeShape.radius=((float)this->getImageWidth() * this->powerFactor / Constants::pixelsPerUnits) / 2.0f;
-         beeShape.density = Constants::defaultDensity;
-         beeShape.friction = Constants::defaultFriction;
-         beeShape.restitution = Constants::defaultRestitution;
+         b2CircleShape beeShape;
+         beeShape.m_radius=((float)this->getImageWidth() * this->powerFactor / Constants::pixelsPerUnits) / 2.0f;
+		 
+		 b2FixtureDef beeDef;
+         beeDef.shape = &beeShape;
+         beeDef.density = Constants::defaultDensity;
+         beeDef.friction = Constants::defaultFriction;
+         beeDef.restitution = Constants::defaultRestitution;
+         beeDef.filter.categoryBits   = enemies;
+         beeDef.filter.maskBits = players + ground + bullets;
 
-         beeShape.filter.categoryBits   = enemies;
-         
-         beeShape.filter.maskBits = players+ground+bullets;
-
-         this->body->CreateFixture(&beeShape);
-         this->body->SetMassFromShapes();
+         this->body->CreateFixture(&beeDef);
+		 
+		 
          // bee movement ( circle ) 
          
-         b2BodyDef rotationCenterDef;
-         rotationCenterDef.position.Set(basePosition.x+1.0f,basePosition.y);
-         this->rotationCenter = level->world->CreateBody(&rotationCenterDef);
+         b2BodyDef rotationCenterBodyDef;
+         rotationCenterBodyDef.position.Set(basePosition.x + 1.0f, basePosition.y);
+         this->rotationCenter = level->world->CreateBody(&rotationCenterBodyDef);
          
-         b2CircleDef rotationCenterShapeDef;
-         rotationCenterShapeDef.radius = 0.2f;
-         rotationCenterShapeDef.localPosition.Set(0.0f, 0.0f);
-
-         rotationCenterShapeDef.filter.categoryBits   = anchors;
-         rotationCenterShapeDef.filter.maskBits       = nothing;
-         this->rotationCenter->CreateFixture(&rotationCenterShapeDef);
+         b2CircleShape rotationCenterShape;
+         rotationCenterShape.m_radius = 0.2f;
+         rotationCenterShape.m_p.Set(0.0f, 0.0f);
+		 
+		 b2FixtureDef rotationCenterDef;
+         rotationCenterDef.shape = &rotationCenterShape;
+         rotationCenterDef.filter.categoryBits   = anchors;
+         rotationCenterDef.filter.maskBits       = nothing;
+         this->rotationCenter->CreateFixture(&rotationCenterDef);
          
          
          b2RevoluteJointDef  jointDef;
@@ -77,10 +82,10 @@ namespace Polukili
       /*************************************************/
       void Bee::render()
       {
-         this->sprite->SetZoom(this->powerFactor);
+         this->sprite->setZoom(this->powerFactor);
          b2Vec2 pos = body->GetPosition();
-         this->sprite->SetPosition(Constants::pixelsPerUnits * pos.x, Constants::pixelsPerUnits * pos.y);
-         this->sprite->Draw();
+         this->sprite->setPosition(Constants::pixelsPerUnits * pos.x, Constants::pixelsPerUnits * pos.y);
+         this->sprite->draw();
       }
 
       /*************************************************/

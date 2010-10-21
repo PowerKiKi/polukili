@@ -3,9 +3,8 @@
 
 #include <string>
 
-#include <wiisprite.h>
 #include <mxml.h>
-#include <Box2D.h>
+#include <Box2D/Box2D.h>
 
 #include <Effect.h>
 #include <Element.h>
@@ -44,7 +43,7 @@ namespace Polukili
       virtual void render();
 
       /** 
-      *  Load graphics data (wsp::Image) for the actor. In most cases the same Image will be loaded once for all instance of a specific class.
+      *  Load graphics data (GRRLIB_texImg) for the actor. In most cases the same Image will be loaded once for all instance of a specific class.
       */
       virtual void loadGraphics();
 
@@ -64,17 +63,17 @@ namespace Polukili
       virtual void nextStep();
 
       /** 
-      *  Returns if the actor accept annother actor to be dropped on itself. 
+      *  Returns if the actor accept another actor to be dropped on itself.
       */
       virtual bool acceptDrop(Actor &actorToBeDropped);
 
       /** 
-      *  Returns wether the actor is weak against the specified element.
+      *  Returns whether the actor is weak against the specified element.
       */
       virtual bool isWeak(Element element);
 
       /** 
-      *  Returns wether the actor is strong against the specified element.
+      *  Returns whether the actor is strong against the specified element.
       */
       virtual bool isStrong(Element element);
 
@@ -91,7 +90,7 @@ namespace Polukili
       /**
       * Initialize physic data
       */
-      virtual void initPhysic(const b2Vec2& position);
+      virtual void initPhysic(const b2Vec2& position, float32 angle = 0);
 
       /**
       * Returns the path to the image for the sprite.
@@ -143,7 +142,7 @@ namespace Polukili
       /** 
       *  The graphical sprite.
       */
-      wsp::Sprite* sprite;
+      Sprite* sprite;
 
       /** 
       *  Current state of the actor. It may be several state at once (flags).

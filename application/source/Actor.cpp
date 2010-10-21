@@ -4,7 +4,7 @@
 #include <Console.h>
 #include <Game.h>
 #include <Level.h>
-
+#include <Sprite.h>
 
 namespace Polukili 
 {
@@ -41,24 +41,27 @@ namespace Polukili
    }
 
    /*************************************************/
-   void Actor::initPhysic(const b2Vec2& position)
+   void Actor::initPhysic(const b2Vec2& position, float32 angle)
    {
       this->timer.start();
       b2BodyDef bodyDef;
       basePosition = position;
       bodyDef.position = position;
-      this->body = level->world->CreateBody(&bodyDef);
+      bodyDef.angle = angle;
+	  bodyDef.type = b2_dynamicBody;
+	  Console::log(LOG_INFO, "positon is: %f, %f", position.x, position.y);
+      this->body = this->level->world->CreateBody(&bodyDef);
       this->body->SetUserData(this);
    }
    
    /*************************************************/
    void Actor::render()
    {
-      this->sprite->SetZoom(this->powerFactor);
-      this->sprite->SetRotation((float)this->body->GetAngle() / M_PI * 90.0);
-      b2Vec2 pos = body->GetPosition();
-      this->sprite->SetPosition(Constants::pixelsPerUnits * pos.x, Constants::pixelsPerUnits * pos.y);
-      this->sprite->Draw();
+      this->sprite->setZoom(this->powerFactor);
+      this->sprite->setRotation((float)this->body->GetAngle() / M_PI * 90.0);
+      b2Vec2 pos = this->body->GetPosition();
+      this->sprite->setPosition(Constants::pixelsPerUnits * pos.x, Constants::pixelsPerUnits * pos.y);
+      this->sprite->draw();
    }
 
    /*************************************************/
@@ -70,11 +73,10 @@ namespace Polukili
    /*************************************************/
    void Actor::loadGraphics()
    {
-      wsp::Image* image = this->level->game->imageLibrary.get(this->getImagePath());
-      this->sprite = new wsp::Sprite();      
-      this->sprite->SetImage(image, this->getImageWidth(), this->getImageHeight());
-      this->sprite->SetRefPixelPositioning(wsp::REFPIXEL_POS_PIXEL);
-      this->sprite->SetRefPixelPosition(((int)this->getImageWidth()/2),(int)(this->getImageHeight()/2));
+      GRRLIB_texImg* image = this->level->game->imageLibrary.get(this->getImagePath());
+      this->sprite = new Sprite(image, this->getImageWidth(), this->getImageHeight());
+   //   this->sprite->SetRefPixelPositioning(wsp::REFPIXEL_POS_PIXEL);
+   //   this->sprite->SetRefPixelPosition(((int)this->getImageWidth()/2),(int)(this->getImageHeight()/2));
    }
 
    /*************************************************/

@@ -3,13 +3,15 @@
 #include <string>
 
 #include <mxml.h>
-#include <Box2D.h>
+#include <Box2D/Box2D.h>
 
 #include <Console.h>
 #include <Constants.h>
 #include <Game.h>
 #include <ImageLibrary.h>
+#include <Sprite.h>
 
+#include <CollisionCategories.h>
 #include <Bullets/Bullet.h>
 #include <Pets/Pet.h>
 #include <Players/Player.h>
@@ -66,14 +68,9 @@ namespace Polukili
       
       
       // Create the physic world and ground body
-      b2AABB worldAABB;
-      worldAABB.lowerBound.Set(-Constants::physicMargin / Constants::pixelsPerUnits, -Constants::physicMargin / Constants::pixelsPerUnits);
-      float width = (float)atof(mxmlElementGetAttr(data, "width"));
-      float height = (float)atof(mxmlElementGetAttr(data, "height"));
-      worldAABB.upperBound.Set((Constants::physicMargin + width) / Constants::pixelsPerUnits, (Constants::physicMargin + height) / Constants::pixelsPerUnits);
       b2Vec2 gravity(0.0f, Constants::defaultGravity);
       bool doSleep = false;
-      this->world = new b2World(worldAABB, gravity, doSleep);
+      this->world = new b2World(gravity, doSleep);
       this->world->SetContactListener(&this->game->contactListener);
       b2BodyDef groundBodyDef;
       groundBodyDef.position.Set(0.0f, 0.0f);
@@ -97,12 +94,14 @@ namespace Polukili
             float x = (float)atof(mxmlElementGetAttr(child->child, "x"));
             float y = (float)atof(mxmlElementGetAttr(child->child, "y"));
             
-            b2CircleDef circleDef;
-            circleDef.radius = radius / Constants::pixelsPerUnits;
-            circleDef.localPosition.Set(x / Constants::pixelsPerUnits, y / Constants::pixelsPerUnits);
-            // TO COMMENT ! perhaps creating an enum with categories
-            // deal with who collide and doesn't
-            circleDef.filter.categoryBits   = 0x0001;
+			
+            b2CircleShape circleShape;
+            circleShape.m_radius = radius / Constants::pixelsPerUnits;
+            circleShape.m_p.Set(x / Constants::pixelsPerUnits, y / Constants::pixelsPerUnits);
+            
+			b2FixtureDef circleDef;
+			circleDef.shape = &circleShape;
+//			circleDef.filter.categoryBits = ground;
             
             this->body->CreateFixture(&circleDef);
             
@@ -112,28 +111,28 @@ namespace Polukili
          else if (stricmp(child->value.element.name, "polygon") == 0)
          {
             Console::log(LOG_INFO, "Level::loadFromXML() - polygon reading");
-            b2PolygonDef polygonDef;
-            polygonDef.vertexCount = 0;
+            b2PolygonShape polygonShape;
+            polygonShape.m_vertexCount = 0;
             for (mxml_node_t* point = child->child; point != 0; point = point->next)
             {
                float x = (float)atof(mxmlElementGetAttr(point, "x"));
                float y = (float)atof(mxmlElementGetAttr(point, "y"));
                
                Console::log(LOG_INFO, "Level::loadFromXML() - polygon reading before set");
-               polygonDef.vertices[polygonDef.vertexCount++].Set(x / Constants::pixelsPerUnits, y / Constants::pixelsPerUnits);
-               Console::log(LOG_INFO, "Level::loadFromXML() - polygon reading values x=%f y=%f", (float)polygonDef.vertices[polygonDef.vertexCount - 1].x, (float)polygonDef.vertices[polygonDef.vertexCount - 1].y);
+               polygonShape.m_vertices[polygonShape.m_vertexCount++].Set(x / Constants::pixelsPerUnits, y / Constants::pixelsPerUnits);
+               Console::log(LOG_INFO, "Level::loadFromXML() - polygon reading values x=%f y=%f", (float)polygonShape.m_vertices[polygonShape.m_vertexCount - 1].x, (float)polygonShape.m_vertices[polygonShape.m_vertexCount - 1].y);
             }
 
 
-            for (int32 i = 0; i < polygonDef.vertexCount; ++i)
+            for (int32 i = 0; i < polygonShape.m_vertexCount; ++i)
             {
                int32 i1 = i;
-               int32 i2 = i + 1 < polygonDef.vertexCount ? i + 1 : 0;
-               b2Vec2 edge = polygonDef.vertices[i2] - polygonDef.vertices[i1];
-               Console::log(LOG_INFO, "Level::loadFromXML() - checking:  p1 x=%f p1 y=%f", (float)polygonDef.vertices[i1].x , (float)polygonDef.vertices[i1].y);
-               Console::log(LOG_INFO, "Level::loadFromXML() - checking:  p2 x=%f p2 y=%f", (float)polygonDef.vertices[i2].x , (float)polygonDef.vertices[i2].y);
+               int32 i2 = i + 1 < polygonShape.m_vertexCount ? i + 1 : 0;
+               b2Vec2 edge = polygonShape.m_vertices[i2] - polygonShape.m_vertices[i1];
+               Console::log(LOG_INFO, "Level::loadFromXML() - checking:  p1 x=%f p1 y=%f", (float)polygonShape.m_vertices[i1].x , (float)polygonShape.m_vertices[i1].y);
+               Console::log(LOG_INFO, "Level::loadFromXML() - checking:  p2 x=%f p2 y=%f", (float)polygonShape.m_vertices[i2].x , (float)polygonShape.m_vertices[i2].y);
                Console::log(LOG_INFO, "Level::loadFromXML() - checking:  edge x=%f edge y=%f", (float)edge.x , (float)edge.y);
-               Console::log(LOG_INFO, "Level::loadFromXML() - checking:  length=%f minimum=%f", (float)edge.LengthSquared() , (float)(B2_FLT_EPSILON * B2_FLT_EPSILON));
+               Console::log(LOG_INFO, "Level::loadFromXML() - checking:  length=%f minimum=%f", (float)edge.LengthSquared() , (float)(FLT_EPSILON * FLT_EPSILON));
                
                
                //b2Assert(edge.LengthSquared() > B2_FLT_EPSILON * B2_FLT_EPSILON);
@@ -142,11 +141,13 @@ namespace Polukili
             }
 
             
-            Console::log(LOG_INFO, "Level::loadFromXML() - polygon vertex count=%d", polygonDef.vertexCount);
+            Console::log(LOG_INFO, "Level::loadFromXML() - polygon vertex count=%d", polygonShape.m_vertexCount);
             Console::log(LOG_INFO, this->body ? "not null" : "null");
-            // TO COMMENT ! perhaps creating an enum with categories
-            // deal with who collide and doesn't
-            polygonDef.filter.categoryBits   = 0x0001;
+            
+			
+			b2FixtureDef polygonDef;
+			polygonDef.shape = &polygonShape;
+//            polygonDef.filter.categoryBits   = ground;
             this->body->CreateFixture(&polygonDef);
             
             Console::log(LOG_INFO, "Level::loadFromXML() - polygon read");
@@ -168,7 +169,7 @@ namespace Polukili
             Console::log(LOG_INFO, "Level::loadFromXML() - actor type=%s", type);
          else
          {
-            Console::log(LOG_INFO, "Level::loadFromXML() - actor type not found. Actor skipped.", type);
+            Console::log(LOG_INFO, "Level::loadFromXML() - actor type '%s' not found. Actor skipped.", type);
             continue;
          }
          
@@ -209,11 +210,11 @@ namespace Polukili
          float powerFactor = (float)atof(mxmlElementGetAttr(child, "powerFactor"));
          actor->setPowerFactor(powerFactor);
             
-         Console::log(LOG_INFO, "Level::loadFromXML() - actor reading will init physic.", type);
+         Console::log(LOG_INFO, "Level::loadFromXML() - actor '%s' will init physic.", type);
          float x = (float)atof(mxmlElementGetAttr(child->child, "x"));
          float y = (float)atof(mxmlElementGetAttr(child->child, "y"));
          actor->initPhysic(b2Vec2(x / Constants::pixelsPerUnits, y / Constants::pixelsPerUnits));
-         Console::log(LOG_INFO, "Level::loadFromXML() - actor reading init physic.", type);
+         Console::log(LOG_INFO, "Level::loadFromXML() - actor '%s' init physic at position (%f, %f).", type, x, y);
          
          Ennemies::Ennemy* ennemy = dynamic_cast<Ennemies::Ennemy*>(actor);
          if (ennemy && stricmp(mxmlElementGetAttr(child, "isTarget"), "True") == 0)
@@ -231,19 +232,17 @@ namespace Polukili
    /*************************************************/
    void Level::loadGraphics()
    {
-      wsp::Image* image;
+      GRRLIB_texImg* image;
       image = this->game->imageLibrary.get(this->backgroundPath);
       if (image)
       {
-         this->backgroundSprite = new wsp::Sprite();
-         this->backgroundSprite->SetImage(image, image->GetWidth(), image->GetHeight());
+         this->backgroundSprite = new Sprite(image, image->w, image->h);
       }
          
       image = this->game->imageLibrary.get(this->foregroundPath);
       if (image)
       {
-         this->foregroundSprite = new wsp::Sprite();
-         this->foregroundSprite->SetImage(image, image->GetWidth(), image->GetHeight());
+         this->foregroundSprite = new Sprite(image, image->w, image->h);
       }
       
       for (list<Actor*>::iterator it = this->actors.begin(); it != this->actors.end(); it++)
@@ -278,7 +277,7 @@ namespace Polukili
       Console::log(LOG_INFO, "Level::render() - begin");
       
       if (this->backgroundSprite)
-         this->backgroundSprite->Draw();      
+         this->backgroundSprite->draw();
    
       for (list<Ennemies::Ennemy*>::iterator it = this->ennemies.begin(); it != this->ennemies.end(); it++)
          (*it)->render();
@@ -293,7 +292,7 @@ namespace Polukili
          (*it)->render();
       
       if (this->foregroundSprite)
-         this->foregroundSprite->Draw();
+         this->foregroundSprite->draw();
       Console::log(LOG_INFO, "Level::render() - end");
    }
    
@@ -326,7 +325,8 @@ namespace Polukili
       
       
       Console::log(LOG_INFO, "nextstep physic with %d actors", this->actors.size());
-      this->world->Step(Constants::timeStep, Constants::iterations, Constants::iterations);      
+	  Console::log(LOG_INFO, "this->world->Step(%f, %d, %d);", Constants::timeStep, Constants::iterations, Constants::iterations);
+      this->world->Step(Constants::timeStep, Constants::iterations, Constants::iterations);
       Console::log(LOG_INFO, "nextstep physic end");
    }
    

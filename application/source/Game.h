@@ -4,15 +4,14 @@
 
 #include <stack>
 
-#include <wiisprite.h>
-#include <Box2D.h>
+#include <grrlib.h>
+#include <Box2D/Box2D.h>
 #include <fat.h>
 #include <gccore.h>
 #include <wiiuse/wpad.h>
 
 #include <Level.h>
 #include <ImageLibrary.h>
-#include <BibScreenFont.h>
 #include <ContactListener.h>
 #include <Console.h>
 #include <PeriodicTimer.h>
@@ -36,7 +35,7 @@ namespace Polukili
       Game();
       
       /**
-      * Desstructor.
+      * Destructor.
       */
       virtual ~Game();
       
@@ -59,8 +58,7 @@ namespace Polukili
       
    private:
       stack< Level* > levels;
-      wsp::GameWindow gameWindow;
-      BibScreenFont font;
+      GRRLIB_ttfFont* font;
       Console console;
       PeriodicTimer fpsTimer;
    };
