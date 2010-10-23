@@ -18,7 +18,7 @@ namespace Polukili
    static const int maximumColumns = 80;
    static int cursor_row = 0;
    static int cursor_col = 0;
-   static wchar_t the_console[maximumRows][maximumColumns + 1];
+   static char the_console[maximumRows][maximumColumns + 1];
 
    /*************************************************/
    ssize_t Console_write(struct _reent* rUnused, int fdUnused, const char* ptr, size_t length)
@@ -74,21 +74,20 @@ namespace Polukili
       devoptab_list[STD_ERR] = &wsp_dotab_stdout;
 
       setvbuf(stdout, NULL , _IONBF, 0);
-      
+
       remove(Polukili::Constants::logFilename.c_str());
       Console::logFile.open(Polukili::Constants::logFilename.c_str(), ios::out | ios::trunc);
-      
+
       this->clear();
    }
 
    /*************************************************/
    void Console::render()
    {
-      unsigned int fontsize = 20;
+      unsigned int fontsize = 12;
       for (int i = 0; i < maximumRows; i ++)
       {
-         GRRLIB_PrintfTTFW(16, 16 + i * fontsize,this->font, the_console[i], fontsize, RGBA(255,0,0,0));
-         //this->font->DisplayText(16, 16 + i * this->font->getCharacterHeight(), the_console[i]);
+         GRRLIB_PrintfTTF(16, 16 + i * fontsize,this->font, the_console[i], fontsize, RGBA(255,0,0,0));
       }
    }
 
@@ -99,7 +98,7 @@ namespace Polukili
       {
          the_console[i][0] = '\0';
          the_console[i][maximumColumns] = '\0';
-      }   
+      }
    }
 
    /*************************************************/
@@ -107,17 +106,17 @@ namespace Polukili
    {
       if (!Console::enabled)
          return;
-         
+
       // Format message
       va_list args;
       va_start(args, input);
       char buffer[1024];
       int length = vsprintf(buffer, input.c_str(), args);
-      
-      // Format prefix 
+
+      // Format prefix
       char prefixBUffer[1024];
       sprintf(prefixBUffer, "%s:%d - %s - ", file, line, function);
-      
+
       // Print in console
       Console::write(string(buffer, length), prefixBUffer);
    }
@@ -127,7 +126,7 @@ namespace Polukili
    ssize_t Console::write(const string& input, const char* prefix)
    {
       string message(input + '\n');
-      
+
       // Get timestamp
       const int l = 50;
       char timeBuffer[l];
@@ -136,15 +135,15 @@ namespace Polukili
       time(&t);
       pt = localtime(&t);
       strftime(timeBuffer, l, "%Y-%m-%d %H:%M:%S ", pt);
-      
+
       // Log to file
-      Console::logFile << timeBuffer;      
-      if (prefix)      
-         Console::logFile <<  prefix;
+      Console::logFile << timeBuffer;
+      if (prefix)
+         Console::logFile << prefix;
       Console::logFile << message;
       Console::logFile.flush();
 
-      
+
       if (message.empty())
          return -1;
 
@@ -190,12 +189,12 @@ namespace Polukili
                case '\t':
                   // Fill the gap for tab with spaces, but do not overflow if tab is the last character of the line
                   {
-                     int gapSize = (cursor_col % tabSize) ? (cursor_col % tabSize) : tabSize;               
+                     int gapSize = (cursor_col % tabSize) ? (cursor_col % tabSize) : tabSize;
                      for (int g = 0; g < gapSize && cursor_col < maximumColumns; g++)
                         the_console[cursor_row][cursor_col++] = ' ';
                   }
                   the_console[cursor_row][cursor_col] = '\0';
-                     
+
                   break;
                default:
                   the_console[cursor_row][cursor_col] = chr;
@@ -230,14 +229,14 @@ namespace Polukili
          }
       }
 
-      return i;  
+      return i;
    }
 
 
    /*************************************************/
    void Console::enable(bool enabled)
    {
-      Console::enabled = true;      
+      Console::enabled = true;
       this->log(LOG_INFO, "log is %s", enabled ? "enabled" : "disabled");
       Console::enabled = enabled;
    }

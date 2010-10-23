@@ -302,8 +302,6 @@ namespace Polukili
       Console::log(LOG_INFO, "Level::nextStep() - level nextStep begin");
       list<Actor*> actorsToDelete;
       
-      WPAD_ScanPads();
-      
       // Each actors reacts to current situation
       for (list<Actor*>::iterator it = this->actors.begin(); it != this->actors.end(); it++)
       {

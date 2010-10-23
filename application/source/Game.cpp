@@ -11,16 +11,37 @@
 #include <Console.h>
 #include <Constants.h>
 
+
+
+// RGBA Colors
+#define GRRLIB_BLACK   0x000000FF
+#define GRRLIB_MAROON  0x800000FF
+#define GRRLIB_GREEN   0x008000FF
+#define GRRLIB_OLIVE   0x808000FF
+#define GRRLIB_NAVY    0x000080FF
+#define GRRLIB_PURPLE  0x800080FF
+#define GRRLIB_TEAL    0x008080FF
+#define GRRLIB_GRAY    0x808080FF
+#define GRRLIB_SILVER  0xC0C0C0FF
+#define GRRLIB_RED     0xFF0000FF
+#define GRRLIB_LIME    0x00FF00FF
+#define GRRLIB_YELLOW  0xFFFF00FF
+#define GRRLIB_BLUE    0x0000FFFF
+#define GRRLIB_FUCHSIA 0xFF00FFFF
+#define GRRLIB_AQUA    0x00FFFFFF
+#define GRRLIB_WHITE   0xFFFFFFFF
+
+
 namespace Polukili 
 {
    /*************************************************/
    Game::Game()
    {
+      GRRLIB_Init();
       this->font = GRRLIB_LoadTTF(FreeMonoBold_ttf, FreeMonoBold_ttf_size);
       this->console.initialize(this->font);
       Console::log(LOG_INFO, "=============================================================");
       
-      GRRLIB_Init();
       // Black background
       GRRLIB_SetBackgroundColour(0x00, 0x00, 0x00, 0xFF);
 
@@ -44,7 +65,11 @@ namespace Polukili
          this->levels.pop();
       }
 
-      GRRLIB_FreeTTF(this->font);
+      if (this->font)
+      {
+         GRRLIB_FreeTTF(this->font);
+      }
+
       GRRLIB_Exit();
    }
    
@@ -57,6 +82,7 @@ namespace Polukili
       
       while (!this->levels.empty())
       {
+         WPAD_ScanPads();
 
          Level* level = this->levels.top();
 
@@ -66,11 +92,12 @@ namespace Polukili
          if (this->console.isEnabled())
            this->console.render();
 
-      //   GRRLIB_PrintfTTFW(580, 16, this->font, framePerSecond, 20, RGBA(255,0,0,0));
+         // Render FPS
+         GRRLIB_PrintfTTF(570, 32, this->font, framePerSecond, 16, GRRLIB_RED);
 		 
          GRRLIB_Render();  // Render the frame buffer to the screen
 
-         
+
          // If level is finished, resume the previous one
          if (level->isFinished())
          {
@@ -89,11 +116,11 @@ namespace Polukili
          // We return to the launcher application via exit
          if (pressed & WPAD_BUTTON_HOME) return;
          if (pressed & WPAD_BUTTON_PLUS) this->console.enable(!this->console.isEnabled());
-         
+
          // Count FPS
          frameCount++;
          if (this->fpsTimer.isExpired())
-         {            
+         {
             sprintf(framePerSecond, "%2d FPS", frameCount);
             frameCount = 0;
          }
