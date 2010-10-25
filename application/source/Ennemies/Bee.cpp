@@ -33,7 +33,7 @@ namespace Polukili
       }
       
       /*************************************************/
-      void Bee::initPhysic(const b2Vec2& position)
+      void Bee::initPhysic(const b2Vec2& position, float32 angle)
       {
          this->Actor::initPhysic(position);
          b2CircleShape beeShape;

@@ -29,12 +29,12 @@ namespace Polukili
          b2PolygonShape bulletShape;
          bulletShape.SetAsBox(((float)this->getImageWidth() * this->powerFactor / Constants::pixelsPerUnits) / 2.0f, ((float)this->getImageHeight() * this->powerFactor / Constants::pixelsPerUnits) / 2.0f);
          
-		 b2FixtureDef bulletDef;
-		 bulletDef.shape = &bulletShape;
+         b2FixtureDef bulletDef;
+         bulletDef.shape = &bulletShape;
          bulletDef.density = Constants::defaultDensity;
          bulletDef.friction = Constants::defaultFriction;
          bulletDef.restitution = Constants::defaultRestitution;
-		 bulletDef.filter.categoryBits   = bullets;
+         bulletDef.filter.categoryBits = bullets;
          bulletDef.filter.maskBits = ground + enemies;
          this->body->CreateFixture(&bulletDef);
 

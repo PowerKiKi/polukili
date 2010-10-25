@@ -84,7 +84,7 @@ namespace Polukili
    /*************************************************/
    void Console::render()
    {
-      unsigned int fontsize = 12;
+      unsigned int fontsize = 14;
       for (int i = 0; i < maximumRows; i ++)
       {
          GRRLIB_PrintfTTF(16, 16 + i * fontsize,this->font, the_console[i], fontsize, RGBA(255,0,0,0));

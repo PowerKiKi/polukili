@@ -29,7 +29,7 @@ namespace Polukili
 {
    /*************************************************/
    Level::Level(Game* game)
-      : world(0), game(game), backgroundSprite(0), foregroundSprite(0)
+      : world(0), game(game), backgroundSprite(0), foregroundSprite(0), body(0)
    {
       // Nothing do to here
    }
@@ -42,7 +42,7 @@ namespace Polukili
    
       while (!this->actors.empty())
          delete this->actors.front();
-        
+
       if (this->world != 0)
          delete this->world;
    }
@@ -72,6 +72,7 @@ namespace Polukili
       bool doSleep = false;
       this->world = new b2World(gravity, doSleep);
       this->world->SetContactListener(&this->game->contactListener);
+      this->world->SetDebugDraw(&this->game->debugDraw);
       b2BodyDef groundBodyDef;
       groundBodyDef.position.Set(0.0f, 0.0f);
       
@@ -145,8 +146,8 @@ namespace Polukili
             Console::log(LOG_INFO, this->body ? "not null" : "null");
             
 			
-			b2FixtureDef polygonDef;
-			polygonDef.shape = &polygonShape;
+            b2FixtureDef polygonDef;
+            polygonDef.shape = &polygonShape;
 //            polygonDef.filter.categoryBits   = ground;
             this->body->CreateFixture(&polygonDef);
             
@@ -293,6 +294,7 @@ namespace Polukili
       
       if (this->foregroundSprite)
          this->foregroundSprite->draw();
+
       Console::log(LOG_INFO, "Level::render() - end");
    }
    
@@ -323,8 +325,9 @@ namespace Polukili
       
       
       Console::log(LOG_INFO, "nextstep physic with %d actors", this->actors.size());
-	  Console::log(LOG_INFO, "this->world->Step(%f, %d, %d);", Constants::timeStep, Constants::iterations, Constants::iterations);
+      Console::log(LOG_INFO, "this->world->Step(%f, %d, %d);", Constants::timeStep, Constants::iterations, Constants::iterations);
       this->world->Step(Constants::timeStep, Constants::iterations, Constants::iterations);
+      this->world->ClearForces();
       Console::log(LOG_INFO, "nextstep physic end");
    }
    

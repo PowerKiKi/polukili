@@ -31,15 +31,15 @@ namespace Polukili
       }
       
       /*************************************************/
-      void Player::initPhysic(const b2Vec2& position)
+      void Player::initPhysic(const b2Vec2& position, float32 angle)
       {
          this->Actor::initPhysic(position);
          this->body->SetFixedRotation(true);
          b2PolygonShape playerShape;
          playerShape.SetAsBox((((float)this->getImageWidth() / Constants::pixelsPerUnits) / 2.0f), (((float)this->getImageHeight() / Constants::pixelsPerUnits) / 2.0f));
-		 
-		 b2FixtureDef playerDef;
-		 playerDef.shape = &playerShape;
+
+         b2FixtureDef playerDef;
+         playerDef.shape = &playerShape;
          playerDef.density = Constants::defaultDensity;
          playerDef.friction = Constants::defaultFriction;
          playerDef.restitution = Constants::defaultRestitution;

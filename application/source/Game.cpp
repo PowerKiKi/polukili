@@ -85,16 +85,18 @@ namespace Polukili
          WPAD_ScanPads();
 
          Level* level = this->levels.top();
-
          level->nextStep();
          level->render();
-         
+
+         if (this->debugDrawEnabled)
+            level->world->DrawDebugData();
+
          if (this->console.isEnabled())
            this->console.render();
 
          // Render FPS
          GRRLIB_PrintfTTF(570, 32, this->font, framePerSecond, 16, GRRLIB_RED);
-		 
+
          GRRLIB_Render();  // Render the frame buffer to the screen
 
 
@@ -116,6 +118,7 @@ namespace Polukili
          // We return to the launcher application via exit
          if (pressed & WPAD_BUTTON_HOME) return;
          if (pressed & WPAD_BUTTON_PLUS) this->console.enable(!this->console.isEnabled());
+         if (pressed & WPAD_BUTTON_MINUS) this->debugDrawEnabled = !this->debugDrawEnabled;
 
          // Count FPS
          frameCount++;

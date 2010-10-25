@@ -13,6 +13,7 @@
 #include <Level.h>
 #include <ImageLibrary.h>
 #include <ContactListener.h>
+#include <DebugDraw.h>
 #include <Console.h>
 #include <PeriodicTimer.h>
 
@@ -55,12 +56,19 @@ namespace Polukili
       
       ImageLibrary imageLibrary;
       ContactListener contactListener;
+
+
+      /**
+       * The instance to draw debug physics.
+       */
+      DebugDraw debugDraw;
       
    private:
       stack< Level* > levels;
       GRRLIB_ttfFont* font;
       Console console;
       PeriodicTimer fpsTimer;
+      bool debugDrawEnabled;
    };
 
 } /* End of namespace Polukili */

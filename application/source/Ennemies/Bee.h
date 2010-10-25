@@ -23,7 +23,7 @@ namespace Polukili
          virtual ~Bee();
          
          
-         virtual void initPhysic(const b2Vec2& position);
+         virtual void initPhysic(const b2Vec2& position, float32 angle = 0);
 
 
          /** 
