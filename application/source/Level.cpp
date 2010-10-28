@@ -102,7 +102,7 @@ namespace Polukili
             
 			b2FixtureDef circleDef;
 			circleDef.shape = &circleShape;
-//			circleDef.filter.categoryBits = ground;
+			circleDef.filter.categoryBits = ground;
             
             this->body->CreateFixture(&circleDef);
             
@@ -148,7 +148,7 @@ namespace Polukili
 			
             b2FixtureDef polygonDef;
             polygonDef.shape = &polygonShape;
-//            polygonDef.filter.categoryBits   = ground;
+            polygonDef.filter.categoryBits   = ground;
             this->body->CreateFixture(&polygonDef);
             
             Console::log(LOG_INFO, "Level::loadFromXML() - polygon read");

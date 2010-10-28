@@ -36,6 +36,7 @@ namespace Polukili
 {
    /*************************************************/
    Game::Game()
+    : font(0), debugDrawEnabled(false)
    {
       GRRLIB_Init();
       this->font = GRRLIB_LoadTTF(FreeMonoBold_ttf, FreeMonoBold_ttf_size);

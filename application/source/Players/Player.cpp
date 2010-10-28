@@ -43,8 +43,8 @@ namespace Polukili
          playerDef.density = Constants::defaultDensity;
          playerDef.friction = Constants::defaultFriction;
          playerDef.restitution = Constants::defaultRestitution;
-//         playerDef.filter.categoryBits   = players;
-//         playerDef.filter.maskBits      = ground + enemies;
+         playerDef.filter.categoryBits   = players;
+         playerDef.filter.maskBits      = ground + enemies;
          
          
          this->body->CreateFixture(&playerDef);    
