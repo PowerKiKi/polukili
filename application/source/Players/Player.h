@@ -85,7 +85,7 @@ namespace Polukili
       };
 
    } /* End of namespace Polukili::Players */
-} /* End of namespace Polukili */
+} 
 
 #endif 
 

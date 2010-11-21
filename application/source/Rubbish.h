@@ -14,7 +14,7 @@ namespace Polukili
       //end of class Rubbish
    };
 
-} /* End of namespace Polukili */
+} 
 
 #endif 
 

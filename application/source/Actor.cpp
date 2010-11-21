@@ -75,8 +75,7 @@ namespace Polukili
    {
       GRRLIB_texImg* image = this->level->game->imageLibrary.get(this->getImagePath());
       this->sprite = new Sprite(image, this->getImageWidth(), this->getImageHeight());
-   //   this->sprite->SetRefPixelPositioning(wsp::REFPIXEL_POS_PIXEL);
-   //   this->sprite->SetRefPixelPosition(((int)this->getImageWidth()/2),(int)(this->getImageHeight()/2));
+      this->sprite->setReferencePosition(((int)this->getImageWidth()/2),(int)(this->getImageHeight()/2));
    }
 
    /*************************************************/

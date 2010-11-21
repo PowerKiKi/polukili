@@ -19,5 +19,5 @@ namespace Polukili
          this->level->pets.remove(this);
       }
    } /* End of namespace Polukili::Pets */
-} /* End of namespace Polukili */
+} 
 

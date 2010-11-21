@@ -4,7 +4,7 @@
 namespace Polukili
 {
    /** 
-   *  The possible collsision categories ( box2d can handle up to 16 categories.
+   *  The possible collision categories ( box2d can handle up to 16 categories.
    */
    enum CollisionCategories
    {
@@ -17,6 +17,6 @@ namespace Polukili
       
    };
    
-}/* End of namespace Polukili */
+}
 
 #endif 

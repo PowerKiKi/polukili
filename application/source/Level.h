@@ -104,7 +104,7 @@ namespace Polukili
 
    };
 
-} /* End of namespace Polukili */
+} 
 
 #endif 
 

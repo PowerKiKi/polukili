@@ -35,7 +35,7 @@ namespace Polukili
          bulletDef.friction = Constants::defaultFriction;
          bulletDef.restitution = Constants::defaultRestitution;
          bulletDef.filter.categoryBits = bullets;
-         bulletDef.filter.maskBits = ground + enemies;
+         bulletDef.filter.maskBits = ground | enemies;
          this->body->CreateFixture(&bulletDef);
 
          b2Vec2 shotImpulse;

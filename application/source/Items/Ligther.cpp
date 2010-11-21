@@ -8,6 +8,6 @@ namespace Polukili
    {
 
 
-   } /* End of namespace Polukili::Items */
-} /* End of namespace Polukili */
+   }
+} 
 

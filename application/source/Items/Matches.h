@@ -13,8 +13,8 @@ namespace Polukili
          //end of class Matches
       };
 
-   } /* End of namespace Polukili::Items */
-} /* End of namespace Polukili */
+   }
+} 
 
 #endif 
 

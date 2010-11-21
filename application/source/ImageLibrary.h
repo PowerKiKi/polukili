@@ -48,7 +48,7 @@ namespace Polukili
       //end of class Game
    };
 
-} /* End of namespace Polukili */
+} 
 
 #endif 
 

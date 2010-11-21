@@ -164,7 +164,7 @@ namespace Polukili
       Effect* effect;   
    };
 
-} /* End of namespace Polukili */
+} 
 
 #endif 
 

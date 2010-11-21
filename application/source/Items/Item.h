@@ -16,8 +16,8 @@ namespace Polukili
          //end of class Item
       };
 
-   } /* End of namespace Polukili::Items */
-} /* End of namespace Polukili */
+   }
+} 
 
 #endif 
 

@@ -14,7 +14,7 @@ namespace Polukili
       //end of class Warpzone
    };
 
-} /* End of namespace Polukili */
+} 
 
 #endif
 

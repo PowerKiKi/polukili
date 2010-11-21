@@ -58,7 +58,7 @@ namespace Polukili
       };
 
    } /* End of namespace Polukili::Bullets */
-} /* End of namespace Polukili */
+} 
 
 #endif
 

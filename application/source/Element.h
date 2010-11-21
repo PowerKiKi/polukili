@@ -17,6 +17,6 @@ namespace Polukili
       electricity    = 64,
       ice            = 128
    }; 
-}/* End of namespace Polukili */
+}
 
 #endif 

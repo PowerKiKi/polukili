@@ -148,5 +148,5 @@ namespace Polukili
       Console::log(LOG_INFO, "Game::changeLevel() - end");
    }
 
-} /* End of namespace Polukili */
+} 
 

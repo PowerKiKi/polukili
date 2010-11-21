@@ -13,8 +13,8 @@ namespace Polukili
          //end of class Deodorant
       };
 
-   } /* End of namespace Polukili::Items */
-} /* End of namespace Polukili */
+   }
+} 
 
 #endif 
 

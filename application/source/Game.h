@@ -71,7 +71,7 @@ namespace Polukili
       bool debugDrawEnabled;
    };
 
-} /* End of namespace Polukili */
+} 
 
 #endif 
 

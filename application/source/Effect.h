@@ -27,7 +27,7 @@ namespace Polukili
       //end of class Effect
    };
 
-} /* End of namespace Polukili */
+} 
 
 #endif 
 

@@ -39,6 +39,11 @@ namespace Polukili
       void setPosition(int x, int y);
 
       /**
+       * Defines the reference position for the sprite (or offset)
+       */
+      void setReferencePosition(int x, int y);
+
+      /**
        * Defines the current zoom factor
        */
       void setZoom(float factor);
@@ -57,11 +62,13 @@ namespace Polukili
 
       int x;
       int y;
+      int referenceX;
+      int referenceY;
       float factor;
       int angle;
    };
 
-} /* End of namespace Polukili */
+} 
 
 #endif 
 

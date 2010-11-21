@@ -18,6 +18,6 @@ namespace Polukili
       dying          = 64,
    };
    
-}/* End of namespace Polukili */
+}
 
 #endif

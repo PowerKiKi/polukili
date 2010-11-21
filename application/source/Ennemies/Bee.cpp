@@ -45,7 +45,7 @@ namespace Polukili
          beeDef.friction = Constants::defaultFriction;
          beeDef.restitution = Constants::defaultRestitution;
          beeDef.filter.categoryBits   = enemies;
-         beeDef.filter.maskBits = players + ground + bullets;
+         beeDef.filter.maskBits = players | ground | bullets;
 
          this->body->CreateFixture(&beeDef);
 		 
@@ -96,5 +96,5 @@ namespace Polukili
          
       }
    } /* End of namespace Polukili::Ennemies */
-} /* End of namespace Polukili */
+} 
 

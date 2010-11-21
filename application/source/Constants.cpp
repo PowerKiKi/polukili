@@ -14,4 +14,4 @@ namespace Polukili
    const int Constants::iterations = 10;
    const int Constants::maximumPlayers = 4;
    const int Constants::physicMargin = 640;
-} /* End of namespace Polukili */
+} 

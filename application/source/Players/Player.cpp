@@ -44,7 +44,7 @@ namespace Polukili
          playerDef.friction = Constants::defaultFriction;
          playerDef.restitution = Constants::defaultRestitution;
          playerDef.filter.categoryBits   = players;
-         playerDef.filter.maskBits      = ground + enemies;
+         playerDef.filter.maskBits      = ground | enemies;
          
          
          this->body->CreateFixture(&playerDef);    
@@ -196,5 +196,5 @@ namespace Polukili
       }
          
    } /* End of namespace Polukili::Players */
-} /* End of namespace Polukili */
+} 
 

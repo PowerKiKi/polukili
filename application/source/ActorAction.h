@@ -21,6 +21,6 @@ namespace Polukili
       movingDown     = 512,
    };
    
-}/* End of namespace Polukili */
+}
 
 #endif

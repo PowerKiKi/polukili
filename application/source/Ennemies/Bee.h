@@ -44,7 +44,7 @@ namespace Polukili
       };
 
    } /* End of namespace Polukili::Ennemies */
-} /* End of namespace Polukili */
+} 
 
 #endif 
 
