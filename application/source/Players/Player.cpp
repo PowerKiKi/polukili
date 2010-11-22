@@ -47,7 +47,7 @@ namespace Polukili
          playerDef.filter.maskBits      = ground | enemies;
          
          
-         this->body->CreateFixture(&playerDef);    
+         this->body->CreateFixture(&playerDef);
       }
       
       /*************************************************/

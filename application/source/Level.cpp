@@ -112,39 +112,22 @@ namespace Polukili
          else if (stricmp(child->value.element.name, "polygon") == 0)
          {
             Console::log(LOG_INFO, "Level::loadFromXML() - polygon reading");
-            b2PolygonShape polygonShape;
-            polygonShape.m_vertexCount = 0;
+
+            b2Vec2 vertices[b2_maxPolygonVertices];
+            int count = 0;
             for (mxml_node_t* point = child->child; point != 0; point = point->next)
             {
                float x = (float)atof(mxmlElementGetAttr(point, "x"));
                float y = (float)atof(mxmlElementGetAttr(point, "y"));
                
                Console::log(LOG_INFO, "Level::loadFromXML() - polygon reading before set");
-               polygonShape.m_vertices[polygonShape.m_vertexCount++].Set(x / Constants::pixelsPerUnits, y / Constants::pixelsPerUnits);
-               Console::log(LOG_INFO, "Level::loadFromXML() - polygon reading values x=%f y=%f", (float)polygonShape.m_vertices[polygonShape.m_vertexCount - 1].x, (float)polygonShape.m_vertices[polygonShape.m_vertexCount - 1].y);
+               vertices[count++].Set(x / Constants::pixelsPerUnits, y / Constants::pixelsPerUnits);
+               Console::log(LOG_INFO, "Level::loadFromXML() - polygon reading values x=%f y=%f", (float)vertices[count - 1].x, (float)vertices[count - 1].y);
             }
 
-
-            for (int32 i = 0; i < polygonShape.m_vertexCount; ++i)
-            {
-               int32 i1 = i;
-               int32 i2 = i + 1 < polygonShape.m_vertexCount ? i + 1 : 0;
-               b2Vec2 edge = polygonShape.m_vertices[i2] - polygonShape.m_vertices[i1];
-               Console::log(LOG_INFO, "Level::loadFromXML() - checking:  p1 x=%f p1 y=%f", (float)polygonShape.m_vertices[i1].x , (float)polygonShape.m_vertices[i1].y);
-               Console::log(LOG_INFO, "Level::loadFromXML() - checking:  p2 x=%f p2 y=%f", (float)polygonShape.m_vertices[i2].x , (float)polygonShape.m_vertices[i2].y);
-               Console::log(LOG_INFO, "Level::loadFromXML() - checking:  edge x=%f edge y=%f", (float)edge.x , (float)edge.y);
-               Console::log(LOG_INFO, "Level::loadFromXML() - checking:  length=%f minimum=%f", (float)edge.LengthSquared() , (float)(FLT_EPSILON * FLT_EPSILON));
-               
-               
-               //b2Assert(edge.LengthSquared() > B2_FLT_EPSILON * B2_FLT_EPSILON);
-               //m_normals[i] = b2Cross(edge, 1.0f);
-               //m_normals[i].Normalize();
-            }
-
-            
-            Console::log(LOG_INFO, "Level::loadFromXML() - polygon vertex count=%d", polygonShape.m_vertexCount);
-            Console::log(LOG_INFO, this->body ? "not null" : "null");
-            
+            b2PolygonShape polygonShape;
+            polygonShape.Set(vertices, count);
+            Console::log(LOG_INFO, "Level::loadFromXML() - polygon reading after set");
 			
             b2FixtureDef polygonDef;
             polygonDef.shape = &polygonShape;

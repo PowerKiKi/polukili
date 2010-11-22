@@ -49,7 +49,7 @@ namespace Polukili
       bodyDef.position = position;
       bodyDef.angle = angle;
 	  bodyDef.type = b2_dynamicBody;
-	  Console::log(LOG_INFO, "positon is: %f, %f", position.x, position.y);
+	  Console::log(LOG_INFO, "position is: %f, %f", position.x, position.y);
       this->body = this->level->world->CreateBody(&bodyDef);
       this->body->SetUserData(this);
    }

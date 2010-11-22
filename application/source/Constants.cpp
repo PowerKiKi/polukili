@@ -3,7 +3,7 @@
 namespace Polukili 
 {
    const string Constants::basePath("/APPS/Polukili/DATA/");   
-   const string Constants::logFilename(Constants::basePath + "polukili.log");   
+   const string Constants::logFilename(Constants::basePath + "polukili.log.txt");
    const int Constants::pixelsPerUnits = 48;       
    const float Constants::defaultGravity = 9.81f;
    const float Constants::defaultDensity = 5.0f;      
