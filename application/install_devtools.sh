@@ -1,5 +1,5 @@
 #!/bin/bash
-PATH_POLUKILI=`dirname $0`
+PATH_POLUKILI=`dirname $(readlink -f $0)`
 PATH_GRRLIB="$PATH_POLUKILI/../../grrlib"
 
 # (inspired by "official instructions":http://devkitpro.org/wiki/Getting_Started/devkitPPC)
@@ -8,9 +8,10 @@ PATH_GRRLIB="$PATH_POLUKILI/../../grrlib"
 sudo apt-get install git subversion
 
 # Install devkitpro
-echo "export DEVKITPRO=/opt/devkitpro" >> ~/.bashrc
-echo "export DEVKITPPC=\$DEVKITPRO/devkitPPC" >> ~/.bashrc
-bash
+DEVKITPRO=/opt/devkitpro
+DEVKITPPC=$DEVKITPRO/devkitPPC
+echo "export DEVKITPRO=$DEVKITPRO" >> ~/.bashrc
+echo "export DEVKITPPC=$DEVKITPPC" >> ~/.bashrc
 sudo mkdir -p $DEVKITPRO
 sudo chmod 777 $DEVKITPRO
 cd $DEVKITPRO/
@@ -38,10 +39,10 @@ tar -xvjf mxml-2.6-ppc.tar.bz2
 # Install GRRLIB
 mkdir -p $PATH_GRRLIB
 svn checkout http://grrlib.googlecode.com/svn/trunk/ $PATH_GRRLIB
-cd "$PATH_GRRLIB/GRRLIB"
-make all install
 
-# Compile polukili
-cd $PATH_POLUKILI
-make
+# Compilation instruction 
+echo "________________________________________________________________________"
+echo "Installation completed !"
+echo "Open a new terminal and run the following command:"
+echo "cd $PATH_GRRLIB/GRRLIB && make all install && cd $PATH_POLUKILI && make"
 
