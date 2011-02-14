@@ -16,6 +16,7 @@ namespace Polukili
       burning        = 16,
       collapsing     = 32,
       dying          = 64,
+      attacked       = 128,
    };
    
 }

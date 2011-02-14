@@ -78,15 +78,6 @@ namespace Polukili
 
     
       }
-         
-      /*************************************************/
-      void Bee::render()
-      {
-         this->sprite->setZoom(this->powerFactor);
-         b2Vec2 pos = body->GetPosition();
-         this->sprite->setPosition(Constants::pixelsPerUnits * pos.x, Constants::pixelsPerUnits * pos.y);
-         this->sprite->draw();
-      }
 
       /*************************************************/
       void Bee::nextStep()

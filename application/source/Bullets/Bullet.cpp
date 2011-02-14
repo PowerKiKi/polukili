@@ -13,6 +13,7 @@ namespace Polukili
       Bullet::Bullet(Level* level)
          : Actor(level)
       {
+         this->maxHealth = 0;
          this->level->bullets.push_back(this);
       }
       
@@ -66,8 +67,8 @@ namespace Polukili
       void Bullet::attacks(Actor* actor)
       {
          Console::log(LOG_INFO, "bullet attacks actor");
-         actor->isAttackedBy(345);
-         //this->state = dead;
+         actor->isAttackedBy(1, neutral);
+         this->state = dead;
       }
       
       /*************************************************/

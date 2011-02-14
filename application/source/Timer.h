@@ -13,7 +13,7 @@ namespace Polukili
    class Timer
    {
    public:
-      //Timer is automaticaly started on creation
+      //Timer is automatically started on creation
       Timer();
       ~Timer();
       

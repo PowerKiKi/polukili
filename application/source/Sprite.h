@@ -34,6 +34,11 @@ namespace Polukili
       void draw();
 
       /**
+      *  Draw the health bar on screen according to current positions.
+      */
+      void drawHealth(int health, int maxHealth);
+
+      /**
        * Defines the current position
        */
       void setPosition(int x, int y);

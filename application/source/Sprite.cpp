@@ -20,11 +20,33 @@ namespace Polukili
    {
       Console::log(LOG_INFO, "will destroy sprite");
    }
-   
+
    /*************************************************/
    void Sprite::draw()
    {
       GRRLIB_DrawImg(this->x - this->referenceX, this->y - this->referenceY, this->image, this->angle, this->factor, this->factor, 0xFFFFFFFF);
+   }
+
+   /*************************************************/
+   void Sprite::drawHealth(int health, int maxHealth)
+   {
+      if (maxHealth <= 0)
+    	  return;
+
+      const f32 width = 50;
+      GRRLIB_Rectangle 	(this->x - this->referenceX, this->y - this->referenceY,
+    		width * this->factor,
+      		5,
+      		RGBA(255, 0, 0, 255),
+      		1
+      	);
+
+      GRRLIB_Rectangle 	(this->x - this->referenceX, this->y - this->referenceY,
+    		(float)health / (float)maxHealth * width * (float)this->factor,
+      		5,
+      		RGBA(0, 255, 0, 255),
+      		1
+      	);
    }
 
    /*************************************************/

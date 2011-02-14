@@ -25,11 +25,6 @@ namespace Polukili
          
          virtual void initPhysic(const b2Vec2& position, float32 angle = 0);
 
-
-         /** 
-         *  Render the actor on screen according to current physic data and loaded sprite. Also render special effects if needed.
-         */
-         virtual void render();
          
          /** 
          *  Define the behavior of the bee for the next step. Apply forces/actions/modifications based on current context (wiimote inputs, state changes based on time, etc.)

@@ -11,6 +11,7 @@
 #include <ActorState.h>
 #include <ActorAction.h>
 #include <Timer.h>
+#include <PeriodicTimer.h>
 
 using namespace std;
 
@@ -19,7 +20,7 @@ namespace Polukili
    class Level;
 
    /** 
-   *  The highest parent for every object in games, eg: players, bullets, ennemies, levels...
+   *  The highest parent for every object in games, eg: players, bullets, enemies, levels...
    */
    class Actor
    {
@@ -108,14 +109,24 @@ namespace Polukili
       virtual int getImageHeight() const;
       
       /**
-      * Returns wether the actor is in the given state.
+      * Returns whether the actor is in the given state.
       */
       bool is(ActorState state);
+
+      /**
+       * Add a state to the current state.
+       */
+      void addState(ActorState state);
+
+      /**
+       * Remove a state from the current state.
+       */
+      void removeState(ActorState state);
    
       /**
       * Remove energy to the actor and make it die eventually
       */
-      void isAttackedBy(int attackPower);
+      void isAttackedBy(int attackPower, Element attackElement);
       
       /** 
       *  Sets the factor of power for the actor. The highest the factor, the biggest the actor (zoom on sprite) and the most powerful he is. Value 1 is default factor.
@@ -153,7 +164,17 @@ namespace Polukili
       *  The factor of power for the actor. The highest the factor, the biggest the actor (zoom on sprite) and the most powerful he is. Value 1 is default factor.
       */
       float powerFactor;
+
+      /**
+       * The maximum health point.
+       */
+      int maxHealth;
       
+      /**
+       * The health point of this actor. If it reaches zero, he dies.
+       */
+      int health;
+
       Timer timer;
 
    private:
@@ -161,7 +182,8 @@ namespace Polukili
       /** 
       *  Current effect on the actor.
       */
-      Effect* effect;   
+      Effect* effect;
+      PeriodicTimer healthTimer;
    };
 
 } 

@@ -10,10 +10,12 @@ namespace Polukili
 {
    /*************************************************/
    Actor::Actor(Level* level)
-      : level(level), body(0), sprite(0), state(normal), powerFactor(1)
+      : level(level), body(0), sprite(0), state(normal), powerFactor(1), maxHealth(5), health(5)
    {
       Console::log(LOG_INFO, "Actor::Actor() - new actor");
-      this->level->actors.push_back(this);      
+      this->level->actors.push_back(this);
+
+      this->healthTimer.setPeriod(2000);
    }
    
    /*************************************************/
@@ -62,6 +64,17 @@ namespace Polukili
       b2Vec2 pos = this->body->GetPosition();
       this->sprite->setPosition(Constants::pixelsPerUnits * pos.x, Constants::pixelsPerUnits * pos.y);
       this->sprite->draw();
+
+      // Draw health if needed
+      if (this->is(attacked))
+      {
+    	  this->sprite->drawHealth(this->health, this->maxHealth);
+
+          if (this->healthTimer.isExpired())
+          {
+        	  this->removeState(attacked);
+          }
+      }
    }
 
    /*************************************************/
@@ -149,12 +162,37 @@ namespace Polukili
    {
       return (this->state & state) == state;
    }
+
+   /*************************************************/
+   void Actor::addState(ActorState state)
+   {
+	   this->state = (ActorState)(this->state | state);
+   }
    
    /*************************************************/
-   void Actor::isAttackedBy(int attackPower)
+   void Actor::removeState(ActorState state)
    {
-      Console::log(LOG_INFO, "actor died");
-      this->state = dead;
+	   this->state = (ActorState)(this->state & ~state);
+   }
+
+   /*************************************************/
+   void Actor::isAttackedBy(int attackPower, Element attackElement)
+   {
+      Console::log(LOG_INFO, "actor attacked");
+      if (this->isWeak(attackElement))
+    	  attackPower = attackElement * 1.5;
+      if (this->isStrong(attackElement))
+    	  attackPower = attackElement * 0.5;
+
+      this->health -= attackPower;
+
+	  this->healthTimer.reset();
+	  this->addState(attacked);
+
+      if (this->health <= 0)
+      {
+    	  this->state = dead;
+      }
    }
    
    /*************************************************/
